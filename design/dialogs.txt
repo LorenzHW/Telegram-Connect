@@ -1,0 +1,72 @@
+########### LAUNCH INTENT ############
+
+U: Start Daily Telegrams
+A: Welcome to Daily Telegrams. Daily Telegrams let's you connect your Telegram Messenger with Alexa. Now, you are currently not authorized.
+   Do you want to authorize your self?
+
+
+U: Start Daily Telegrams
+A: Welcome to Daily Telegrams. I can help you to send a Telegram or check your for new Telegrams. So, which do you need?
+U: Send a Telegram /// Check my Telegrams
+
+U: Start Daily Telegrams
+A: Welcome to Daily Telegrams. You got new messages. Do you want to hear them?
+U: Yes
+
+
+########### MESSAGE INTENT ############
+A:You got new Telegrams from Tom, Sophia and Tennis & Golf:
+  Tom texted: 'Bli Bla Blub'
+  Do you want to reply?
+U: No
+A: Ok, Sophia texted:
+   'sup?'
+   Do you want to reply?
+U: Yes
+
+A: You got no new Telegrams. Anything else I can help you with?
+U: Yes
+A: Alright, I can help you send a Telegram or check for new Telegrams. So, which do you need? || Send a Telegram // (New Intent)
+
+########### SEND INTENT ############ //TODO: One-step-correction + no match error / no input error
+
+A: Okay, what is the first name of your contact?
+U: Tom
+A: Got it. What is the message for Tom?
+U: 'Some short message'
+A: Got it, Message sent. Is there anything else I can helpy you with?
+U: Yes Intent // No Intent // Send Intent // Message Intent
+
+-- FIRST/Second LEVEL NO MATCH --
+A: Okay, what is the first name of your contact?
+U: Tom
+A: Sorry, to whom?
+U: Tom.
+A: Hmm/Umm, I can't find any Tom. I found Tom, Thomas, and Tod. To whom should I send the Telegram?
+A: Got it. What is the message for Tom?
+U: 'Some short message'
+A: Done. Is there anything else I can help you with?
+U: Yes Intent // No Intent // Send Intent // Message Intent
+
+
+A: Okay, what is the first name of your contact?
+U: Tom
+A: Sorry, to whom?
+U: Tom.
+A: Hmm/Umm, I can't find any Tom. I found Tom, Thomas, and Tod. To whom should I send the Telegram?
+U: Some Bullshit
+A: Hm/Umm/Sorry, I am still having trouble to understand that name. 
+   Try to send a Message to this contact via the 'speed dial feature'. Check the skill description for more information. Bye for now.
+
+
+
+
+########### Authorization Intent INTENT ############
+
+U: Yes
+A: You have not added a Telephone Number. Visit the website mentioned in the skill description, login and enter your telephone number. Then try again.
+
+U: Yes
+A: You received a code on your phone. What is the Code?
+U: 1337
+A: You are now authorized. Do you want to check if you got new Telegrams?

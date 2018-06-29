@@ -1,0 +1,8 @@
+class Constants(object):
+    APPLICATION_ID = 'amzn1.ask.skill.490095af-aaf5-4375-86cc-4b079064ff73'
+    ACCESS_TOKEN = None
+    ROUTER = None
+
+
+class DialogConstants(object):
+    SLOTS_TO_UPDATE = None
