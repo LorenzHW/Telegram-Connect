@@ -1,10 +1,8 @@
 ##############################
 # Program Entry
 ##############################
-##############################
-# Program Entry
-##############################
-from src.skill.intents.generic_intent_handlery import GenericIntentHandler
+from src.skill.router import IntentRouter
+from src.skill.intents.generic_intent_handler import GenericIntentHandler
 from src.skill.utils.constants import Constants
 from src.skill.utils.exceptions import BackendException
 from src.skill.utils.responses import statement, ResponseOptions

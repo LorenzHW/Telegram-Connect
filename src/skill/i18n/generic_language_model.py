@@ -79,7 +79,7 @@ class GenericLanguageModel(object):
         # Required intents
         ##############################
         self.WELCOME_TITLE = "Welcome"
-        self.WELCOME = "Willkommen"
+        self.WELCOME = "Welcome"
 
         self.FALLBACK_TITLE = "Sorry?"
         self.FALLBACK = "Sorry, what did you say?"
