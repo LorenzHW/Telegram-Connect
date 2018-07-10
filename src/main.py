@@ -11,19 +11,6 @@ from src.skill.intents.send_intent import SendIntentHandler
 
 sb = SkillBuilder()
 
-
-class AbstractDailyTelegramsRequestHandler(AbstractRequestHandler):
-
-    def __init__(self):
-        self.i18n = LanguageModel()
-
-    def can_handle(self, handler_input):
-        pass
-
-    def handle(self, handler_input):
-        pass
-
-
 class LaunchRequestHandler(AbstractRequestHandler):
     # Handler for Skill Launch
     def can_handle(self, handler_input):
