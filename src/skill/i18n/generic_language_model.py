@@ -95,3 +95,6 @@ class GenericLanguageModel(object):
 
     def get_random_acceptance_ack(self):
         return random.choice(self.ACCEPTANCE_ACKS)
+
+    def get_random_goodbye(self):
+        return random.choice(self.GOODBYES)

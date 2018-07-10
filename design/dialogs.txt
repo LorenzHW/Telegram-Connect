@@ -6,7 +6,7 @@ A: Welcome to Daily Telegrams. Daily Telegrams let's you connect your Telegram M
 
 
 U: Start Daily Telegrams
-A: Welcome to Daily Telegrams. I can help you to send a Telegram or check your for new Telegrams. So, which do you need?
+A: Welcome to Daily Telegrams. I can help you to send a Telegram or check for new Telegrams. So, which do you need?
 U: Send a Telegram /// Check my Telegrams
 
 U: Start Daily Telegrams

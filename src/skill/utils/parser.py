@@ -41,10 +41,6 @@ def get_most_likely_contact(contacts, slot_value):
 
     for index, c in enumerate(contacts):
         percentage = s.similar(c.first_name, slot_value)
-        print(percentage)
-        print("PERCENTAGE")
-        print("PERCENTAGE")
-        print("PERCENTAGE")
         if percentage > 0.7 and percentage > prev_percentage:
             prev_percentage = percentage
             contact = contacts[index]
