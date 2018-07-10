@@ -6,7 +6,8 @@ from ask_sdk_model.ui import SimpleCard
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.intents.general_intents import HelpIntentHandler, CancelOrStopIntentHandler, \
     FallbackIntentHandler, SessionEndedRequestHandler, CatchAllExceptionHandler
-from src.skill.intents.interceptors import LoggingRequestInterceptor, CardResponseInterceptor
+from src.skill.intents.interceptors import LoggingRequestInterceptor, CardResponseInterceptor, \
+    PreviousIntentInterceptor
 from src.skill.intents.message_intent import MessageIntentHandler
 from src.skill.intents.send_intent import SendIntentHandler
 from src.skill.intents.yes_no_intents import YesIntentHandler, NoIntentHandler
@@ -20,12 +21,9 @@ class LaunchRequestHandler(AbstractRequestHandler):
         return is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
-        sess_attrs = handler_input.attributes_manager.session_attributes
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
-
         speech_text = i18n.WELCOME
         speech_text = "Welcome to Daily Telegrams. You have got new Telegrams. Do you want to hear them?"
-        sess_attrs["PREV_INTENT"] = "LaunchIntent"
 
         handler_input.response_builder.speak(speech_text).set_card(
             SimpleCard("Hello World", speech_text)).set_should_end_session(
@@ -45,6 +43,7 @@ sb.add_request_handler(SessionEndedRequestHandler())
 
 sb.add_global_request_interceptor(LoggingRequestInterceptor())
 sb.add_global_response_interceptor(CardResponseInterceptor())
+sb.add_global_response_interceptor(PreviousIntentInterceptor())
 
 sb.add_exception_handler(CatchAllExceptionHandler())
 

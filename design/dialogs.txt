@@ -28,7 +28,7 @@ A: You got no new Telegrams. Anything else I can help you with?
 U: Yes
 A: Alright, I can help you send a Telegram or check for new Telegrams. So, which do you need? || Send a Telegram // (New Intent)
 
-########### SEND INTENT ############ //TODO: One-step-correction + no match error / no input error
+########### SEND INTENT ############
 -- GOLDEN PATH --
 A: Okay, what is the first name of your contact?
 U: Tom
@@ -38,20 +38,11 @@ A: Got it, Message sent. Is there anything else I can helpy you with?
 U: Yes Intent || No Intent || Send Intent || Message Intent
 
 -- FIRST LEVEL NO MATCH --
-A: Okay, what is the first name of your contact?
-U: Uhh wait
-A: Sorry, to whom?
 
 -- SECOND LEVEL NO MATCH --
-A: Okay, what is the first name of your contact?
-U: Uhh wait
-A: Sorry, to whom?
-U: ahhhh.
-A: Sorry, what is the first name of your contact?
 
 -- Max No Match--
 A: This seems beyond my my expertise. Goodbye || Sorry, I'm still having trouble, so you may want to try the speed dial feature instead.
-
 
 -- MATCH BUT NO CONTACT BACKEND --
 A: Okay, what is the first name of your contact?

@@ -61,7 +61,6 @@ class SendIntentHandler(AbstractRequestHandler):
                 self.send_telegram()
                 speech_text = "Done. Is there anything else I can help you with?"
                 sess_attrs.clear()
-                sess_attrs["PREV_INTENT"] = "SendIntent"
 
         handler_input.response_builder.speak(speech_text).set_should_end_session(False)
 
