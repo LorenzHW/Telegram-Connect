@@ -29,34 +29,47 @@ U: Yes
 A: Alright, I can help you send a Telegram or check for new Telegrams. So, which do you need? || Send a Telegram // (New Intent)
 
 ########### SEND INTENT ############ //TODO: One-step-correction + no match error / no input error
-
+-- GOLDEN PATH --
 A: Okay, what is the first name of your contact?
 U: Tom
 A: Got it. What is the message for Tom?
 U: 'Some short message'
 A: Got it, Message sent. Is there anything else I can helpy you with?
-U: Yes Intent // No Intent // Send Intent // Message Intent
+U: Yes Intent || No Intent || Send Intent || Message Intent
 
--- FIRST/Second LEVEL NO MATCH --
+-- FIRST LEVEL NO MATCH --
+A: Okay, what is the first name of your contact?
+U: Uhh wait
+A: Sorry, to whom?
+
+-- SECOND LEVEL NO MATCH --
+A: Okay, what is the first name of your contact?
+U: Uhh wait
+A: Sorry, to whom?
+U: ahhhh.
+A: Sorry, what is the first name of your contact?
+
+-- Max No Match--
+A: This seems beyond my my expertise. Goodbye || Sorry, I'm still having trouble, so you may want to try the speed dial feature instead.
+
+
+-- MATCH BUT NO CONTACT BACKEND --
 A: Okay, what is the first name of your contact?
 U: Tom
-A: Sorry, to whom?
-U: Tom.
-A: Hmm/Umm, I can't find any Tom. I found Tom, Thomas, and Tod. To whom should I send the Telegram?
-A: Got it. What is the message for Tom?
+A: Hmm/Umm, I can't find any Tom. I found Tommy, Thomas, and Tod. To whom should I send the Telegram?
+U: Tommy
+A: Got it. What is the message for Tommy?
 U: 'Some short message'
-A: Done. Is there anything else I can help you with?
-U: Yes Intent // No Intent // Send Intent // Message Intent
-
+A: Got it, Message sent. Is there anything else I can help you with?
+U: Yes Intent || No Intent || Send Intent || Message Intent
 
 A: Okay, what is the first name of your contact?
 U: Tom
-A: Sorry, to whom?
-U: Tom.
-A: Hmm/Umm, I can't find any Tom. I found Tom, Thomas, and Tod. To whom should I send the Telegram?
-U: Some Bullshit
-A: Hm/Umm/Sorry, I am still having trouble to understand that name. 
-   Try to send a Message to this contact via the 'speed dial feature'. Check the skill description for more information. Bye for now.
+A: Hmm/Umm, I can't find any Tom. I found Tommy, Thomas, and Tod. To whom should I send the Telegram? // ONLY LISTEN FOR THE THREE NAMES HERE!
+U: 'Some Bullshit'
+A: Sorry, to whom? // ONLY LISTEN FOR THE THREE NAMES HERE!
+U: 'Some Bullshit'
+A: This seems beyond my my expertise. Goodbye || Sorry, I'm still having trouble, so you may want to try the speed dial feature instead.
 
 
 

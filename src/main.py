@@ -1,66 +1,55 @@
-##############################
-# Program Entry
-##############################
-from src.skill.router import IntentRouter
-from src.skill.intents.generic_intent_handler import GenericIntentHandler
-from src.skill.utils.constants import Constants
-from src.skill.utils.exceptions import BackendException
-from src.skill.utils.responses import statement, ResponseOptions
+from ask_sdk_core.dispatch_components import AbstractRequestHandler
+from ask_sdk_core.skill_builder import SkillBuilder
+from ask_sdk_core.utils import is_request_type
+from ask_sdk_model.ui import SimpleCard
+
+from src.skill.i18n.language_model import LanguageModel
+from src.skill.intents.general_intents import HelpIntentHandler, CancelOrStopIntentHandler, \
+    FallbackIntentHandler, SessionEndedRequestHandler, CatchAllExceptionHandler
+from src.skill.intents.interceptors import LoggingRequestInterceptor, CardResponseInterceptor
+from src.skill.intents.send_intent import SendIntentHandler
+
+sb = SkillBuilder()
 
 
-def lambda_handler(event, context):
-    locale = event['request']['locale']
-    request_type = event['request']['type']  # 'LaunchRequest' or 'IntentRequest'
-    # cuz CustomIntentHandler does not exist yet. Needed for error messages
-    generic_handler = GenericIntentHandler(locale)
-    response_options = ResponseOptions()
+class AbstractDailyTelegramsRequestHandler(AbstractRequestHandler):
 
-    if Constants.APPLICATION_ID != event['session']['application']['applicationId']:
-        response_options.set_options(generic_handler.i18n.ERROR, generic_handler.i18n.ERROR)
-        return statement(response_options)
-    try:
-        if 'accessToken' not in event['session']['user']:
-            Constants.ACCESS_TOKEN = None
-        else:
-            Constants.ACCESS_TOKEN = event['session']['user']["accessToken"]
+    def __init__(self):
+        self.i18n = LanguageModel()
 
-        if Constants.ROUTER is None:
-            try:
-                Constants.ROUTER = IntentRouter(locale)
-            except IndexError:
-                # ok: self.bingbong_account_id = self.bingbong_service.get_bingbong_account().id
-                # throws error. Not exactly sure why this happens..
-                # actually I check if the user deletes his account --> http error 401
-                title = generic_handler.i18n.ACCOUNT_LINKING_REQUIRED_TITLE
-                body = generic_handler.i18n.ACCOUNT_LINKING_REQUIRED
-                response_options.set_options(title, body, account_card=True)
-                return statement(response_options)
+    def can_handle(self, handler_input):
+        pass
 
-        if event['session']['new']:
-            # Constants.ROUTER.custom_intent_handler.update_objects_on_new_session()
-            pass
-        else:
-            # Constants.ROUTER.custom_intent_handler.update_objects_on_new_lambda_call(locale)
-            pass
+    def handle(self, handler_input):
+        pass
 
-        if request_type == 'LaunchRequest':
-            return Constants.ROUTER.route_launch_request(event, context)
-        elif request_type == 'IntentRequest':
-            return Constants.ROUTER.route_intent_request(event, context)
-    except BackendException as http_error_code:
-        if http_error_code.args[0] == 401:
-            # Unauthorized: Happens when user enables alexa skill with valid account
-            # then deletes account on my webserver and uses skill again
-            title = generic_handler.i18n.ACCOUNT_LINKING_REQUIRED_TITLE
-            body = generic_handler.i18n.ACCOUNT_LINKING_REQUIRED
-            response_options.set_options(title, body, account_card=True)
-            return statement(response_options)
 
-        if 500 <= http_error_code.args[0] < 600:
-            response_options.set_options(generic_handler.i18n.ERROR,
-                                         generic_handler.i18n.SERVER_ERROR)
-            return statement(response_options)
-        else:
-            response_options.set_options(generic_handler.i18n.BACKEND_EXCEPTION_TITLE,
-                                         generic_handler.i18n.BACKEND_EXCEPTION)
-            return statement(response_options)
+class LaunchRequestHandler(AbstractRequestHandler):
+    # Handler for Skill Launch
+    def can_handle(self, handler_input):
+        return is_request_type("LaunchRequest")(handler_input)
+
+    def handle(self, handler_input):
+        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+
+        speech_text = i18n.WELCOME
+
+        handler_input.response_builder.speak(speech_text).set_card(
+            SimpleCard("Hello World", speech_text)).set_should_end_session(
+            False)
+        return handler_input.response_builder.response
+
+
+sb.add_request_handler(LaunchRequestHandler())
+sb.add_request_handler(SendIntentHandler())
+sb.add_request_handler(HelpIntentHandler())
+sb.add_request_handler(CancelOrStopIntentHandler())
+sb.add_request_handler(FallbackIntentHandler())
+sb.add_request_handler(SessionEndedRequestHandler())
+
+sb.add_global_request_interceptor(LoggingRequestInterceptor())
+sb.add_global_response_interceptor(CardResponseInterceptor())
+
+sb.add_exception_handler(CatchAllExceptionHandler())
+
+handler = sb.lambda_handler()
