@@ -11,6 +11,7 @@ from src.skill.intents.send_intent import SendIntentHandler
 
 sb = SkillBuilder()
 
+
 class LaunchRequestHandler(AbstractRequestHandler):
     # Handler for Skill Launch
     def can_handle(self, handler_input):
