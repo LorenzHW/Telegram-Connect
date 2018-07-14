@@ -9,3 +9,10 @@ class Contact(object):
         self.first_name = first_name
         self.speed_dial_number = speed_dial_number
         self.last_name = last_name
+
+
+class Conversation(object):
+    def __init__(self, sender, telegrams, is_group):
+        self.sender = sender
+        self.telegrams = telegrams
+        self.is_group = is_group

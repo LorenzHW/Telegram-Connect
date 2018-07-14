@@ -1,6 +1,6 @@
 import requests
 
-from src.skill.models.general_models import Contact
+from src.skill.models.general_models import Contact, Conversation
 from src.skill.utils.constants import Constants
 
 
@@ -13,6 +13,18 @@ class TelethonService(object):
 
     def __init__(self):
         pass
+
+    def get_conversations(self):
+        conversations = []
+
+        conversations.append(Conversation("Tom", ["first message", "second message"], False))
+        conversations.append(
+            Conversation("Tennis and Golf",
+                         ["Rainer wrote: Rafa is awesome", "Thomas wrote: What's up suckers?"], True))
+        conversations.append(Conversation("Sophia", ["Yo dud"], False))
+        conversations.append(Conversation("Some Bot", ["Yo dud"], False))
+
+        return conversations
 
     def get_potential_contacts(self, fist_name):
         potential_contacts = []
