@@ -3,6 +3,7 @@ from ask_sdk_core.utils import is_intent_name
 from ask_sdk_model import Intent
 from ask_sdk_model.dialog import ElicitSlotDirective
 
+from src.skill.i18n.language_model import LanguageModel
 from src.skill.models.general_models import Contact
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.parser import get_most_likely_contact
@@ -19,23 +20,27 @@ class SendIntentHandler(AbstractRequestHandler):
         slots = handler_input.request_envelope.request.intent.slots
         updated_intent = Intent("SendIntent", slots)
         sess_attrs = handler_input.attributes_manager.session_attributes
+        i18n = LanguageModel(handler_input.request_envelope.request.locale)
 
         for slot_name in slots:
             slot = slots[slot_name]
             if slot_name == "first_name" and slots["message"].value is None:
                 if slot.value is None:
                     slot_to_elicit = "first_name"
-                    speech_text = "Okay, what is the first name of your contact?"
+                    speech_text = i18n.FIRST_NAME
                 else:
                     if not sess_attrs.get("CONTACT0"):
                         # TODO: REQUEST INTO BACKEND: GETS USERS
                         contacts = self.telethon_service.get_potential_contacts(slot.value)
                         if len(contacts) == 1:
                             slot_to_elicit = "message"
-                            speech_text = "Got it, what is the message for Tom?"
+                            speech_text = i18n.MESSAGE.format(contacts[0].first_name)
                         else:
                             slot_to_elicit = "first_name"
-                            speech_text = "Umm, I can't find any contact with that name. I found Tommy, Thomas, and Tod. To whom should I send the Telegram?"
+                            name_1 = contacts[0].first_name
+                            name_2 = contacts[1].first_name
+                            name_3 = contacts[2].first_name
+                            speech_text = i18n.NO_CONTACT.format(name_1, name_2, name_3)
 
                             for index, contact in enumerate(contacts):
                                 sess_attrs["CONTACT" + str(index)] = contact.first_name
@@ -46,10 +51,8 @@ class SendIntentHandler(AbstractRequestHandler):
 
                         if contact:
                             slot_to_elicit = "message"
-                            speech_text = "Got it, what is the message for {}?".format(
-                                contact.first_name)
+                            speech_text = i18n.MESSAGE.format(contact.first_name)
                         else:
-
                             handler_input.response_builder.speak(
                                 "To risky bro").set_should_end_session(True)
                             return handler_input.response_builder.response
@@ -59,7 +62,7 @@ class SendIntentHandler(AbstractRequestHandler):
 
             if slot.name == "message" and slot.value:
                 self.send_telegram()
-                speech_text = "Done. Is there anything else I can help you with?"
+                speech_text = i18n.ANYTHING_ELSE
                 sess_attrs.clear()
 
         handler_input.response_builder.speak(speech_text).set_should_end_session(False)
