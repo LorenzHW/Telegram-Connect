@@ -17,7 +17,16 @@ class YesIntentHandler(AbstractRequestHandler):
         sess_attrs = handler_input.attributes_manager.session_attributes
         previous_intent = sess_attrs.get("PREV_INTENT")
 
-        if previous_intent == "SendIntent":
+        # User answered Yes on question: "Do you want to reply?"
+        if previous_intent == "AMAZON.YesIntent" or previous_intent == "AMAZON.NoIntent" and \
+                sess_attrs.get("TELEGRAMS"):
+            speech_text = "Ok, let's send a Telegram"
+            handler_input.response_builder.speak(speech_text).set_should_end_session(False)
+            return handler_input.response_builder.response
+
+        # User answered Yes on question: "Is there anything else I can help you with?"
+        if previous_intent == "SendIntent" or previous_intent == "AMAZON.YesIntent" or previous_intent == "AMAZON.NoIntent" \
+                and not sess_attrs.get("TELEGRAMS"):
             speech_text = "I can help you to send a Telegram or check for new Telegrams. So, which do you need?"
             handler_input.response_builder.speak(speech_text).set_should_end_session(False)
             return handler_input.response_builder.response
@@ -43,6 +52,20 @@ class NoIntentHandler(AbstractRequestHandler):
         if previous_intent == "SendIntent":
             speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
             handler_input.response_builder.speak(speech_text).set_should_end_session(True)
+
+        # User answered No on the question if he wants to reply
+        if (previous_intent == "AMAZON.YesIntent" or previous_intent == "AMAZON.NoIntent") and \
+                sess_attrs.get("TELEGRAMS"):
+            speech_text = MessageIntentHandler().get_messages(handler_input)
+            handler_input.response_builder.speak(speech_text).set_should_end_session(False)
+            return handler_input.response_builder.response
+
+        # User answered Yes on question: "Is there anything else I can help you with?
+        if previous_intent == "AMAZON.YesIntent" or previous_intent == "AMAZON.NoIntent" \
+                and not sess_attrs.get("TELEGRAMS"):
+            speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
+            handler_input.response_builder.speak(speech_text).set_should_end_session(True)
+            return handler_input.response_builder.response
 
         if previous_intent == "LaunchIntent":
             speech_text = i18n.get_random_ack() + ", I can help you to send a Telegram or check for new Telegrams. So, which do you need?"
