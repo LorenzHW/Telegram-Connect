@@ -12,7 +12,7 @@ class Contact(object):
 
 
 class Conversation(object):
-    def __init__(self, sender, telegrams, is_group):
+    def __init__(self, sender, telegrams, is_group=False):
         self.sender = sender
         self.telegrams = telegrams
         self.is_group = is_group

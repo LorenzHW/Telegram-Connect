@@ -17,12 +17,16 @@ class TelethonService(object):
     def get_conversations(self):
         conversations = []
 
-        conversations.append(Conversation("Tom", ["first message", "second message"], False))
+        conversations.append(Conversation("Tom", ["Hey man how is it going? <break time='100ms'/>",
+                                                  "I am chillin here <break time='100ms'/>",
+                                                  "This is the last message <break time='350ms'/>"]))  # longer break here
         conversations.append(
             Conversation("Tennis and Golf",
-                         ["Rainer wrote: Rafa is awesome", "Thomas wrote: What's up suckers?"], True))
-        conversations.append(Conversation("Sophia", ["Yo dud"], False))
-        conversations.append(Conversation("Some Bot", ["Yo dud"], False))
+                         [
+                             "Rainer wrote: Rafa is awesome <break time='100ms'/> He is literally the greated player on sand that ever existed <break time='200ms'/>",
+                             "Thomas wrote: Definitely true <break time='350ms'/>"], True))
+        conversations.append(Conversation("Sophia", ["Yo dude <break time='350ms'/>"]))
+        conversations.append(Conversation("Some Bot", ["Yo dude <break time='350ms'/>"]))
 
         return conversations
 
