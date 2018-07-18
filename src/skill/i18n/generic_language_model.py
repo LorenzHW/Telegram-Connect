@@ -98,5 +98,5 @@ class GenericLanguageModel(object):
         return random.choice(self.THINKING)
 
     def get_random_anyting_else(self):
-        random_anyting_else = random.choice(self.GOODBYES)
-        self.get_random_done_ack() + ". " + random_anyting_else
+        random_anyting_else = random.choice(self.ANYTHING_ELSE)
+        return self.get_random_done_ack() + ". " + random_anyting_else

@@ -23,7 +23,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
         speech_text = i18n.WELCOME
-        speech_text = "Welcome to Daily Telegrams. You have got new Telegrams. Do you want to hear them?"
+        speech_text = "Welcome to Daily Telegrams. You got new Telegrams. Do you want to hear them?"
 
         handler_input.response_builder.speak(speech_text).set_card(
             SimpleCard("Hello World", speech_text)).set_should_end_session(

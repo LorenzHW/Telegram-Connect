@@ -2,7 +2,7 @@ from ask_sdk_core.dispatch_components import AbstractRequestInterceptor, Abstrac
 from ask_sdk_model.ui import SimpleCard
 
 from src.skill.utils.constants import Constants
-from src.skill.utils.parser import convert_speech_to_text
+from src.skill.utils.utils import convert_speech_to_text
 
 
 class LoggingRequestInterceptor(AbstractRequestInterceptor):
