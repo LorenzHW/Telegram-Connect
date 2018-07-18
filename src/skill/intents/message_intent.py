@@ -17,18 +17,23 @@ class MessageIntentHandler(AbstractRequestHandler):
         handler_input.response_builder.speak(speech_text).set_should_end_session(False)
         return handler_input.response_builder.response
 
-    def get_messages(self, handler_input):
+    def get_telegram(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
 
         if not sess_attrs.get("TELEGRAMS"):
             conversations = self.telethon_service.get_conversations()
             first_names = self.get_first_names(conversations)
-            speech_texts = self.construct_speech_texts(conversations)
-            sess_attrs["TELEGRAMS"] = speech_texts
+            contacts = [telegram.sender for telegram in conversations]
+            spoken_telegrams = self.spoken_telegrams(conversations)
+
+            sess_attrs["TELEGRAMS"] = spoken_telegrams
             sess_attrs["TELEGRAMS_COUNTER"] = 0
+            sess_attrs["CONTACTS"] = contacts
+
             speech_text = "You got new Telegrams from: " + first_names
-            speech_text = speech_text + sess_attrs["TELEGRAMS"][sess_attrs["TELEGRAMS_COUNTER"]]
+            speech_text = speech_text + spoken_telegrams[sess_attrs["TELEGRAMS_COUNTER"]]
             speech_text = speech_text + "<break time='200ms'/> Do you want to reply?"
+
             sess_attrs["TELEGRAMS_COUNTER"] += 1
         elif sess_attrs["TELEGRAMS_COUNTER"] < len(sess_attrs["TELEGRAMS"]):
             speech_text = sess_attrs["TELEGRAMS"][sess_attrs["TELEGRAMS_COUNTER"]]
@@ -40,18 +45,19 @@ class MessageIntentHandler(AbstractRequestHandler):
             sess_attrs.pop("TELEGRAMS_COUNTER")
         return speech_text
 
-    def get_first_names(self, telegrams):
+    def get_first_names(self, conversations):
         first_names = []
 
-        for telegram in telegrams[:-1]:
+        # Don't loop over last, because we add an 'and' for the voice output
+        for telegram in conversations[:-1]:
             first_names.append(telegram.sender)
 
-        first_names = ", ".join(first_names) + ", and " + telegrams[
+        first_names = ", ".join(first_names) + ", and " + conversations[
             -1].sender + ". <break time='200ms'/>"
 
         return first_names
 
-    def construct_speech_texts(self, conversations):
+    def spoken_telegrams(self, conversations):
         texts = []
 
         for conversation in conversations:
