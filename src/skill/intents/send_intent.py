@@ -52,8 +52,9 @@ class SendIntentHandler(AbstractRequestHandler):
                             slot_to_elicit = "message"
                             speech_text = i18n.MESSAGE.format(name)
                         else:
+                            speech_text = i18n.MAX_NO_CONTACT
                             handler_input.response_builder.speak(
-                                "To risky bro").set_should_end_session(True)
+                                speech_text).set_should_end_session(True)
                             return handler_input.response_builder.response
 
                 elicit_directive = ElicitSlotDirective(updated_intent, slot_to_elicit)
