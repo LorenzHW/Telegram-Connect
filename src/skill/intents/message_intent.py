@@ -13,10 +13,7 @@ class MessageIntentHandler(AbstractRequestHandler):
         return is_intent_name("MessageIntent")(handler_input)
 
     def handle(self, handler_input):
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
-
-        telegrams = self.telethon_service.get_conversations()
-        speech_text = i18n.NEW_TELEGRAMS + self.get_first_names(telegrams, i18n)
+        speech_text = self.get_telegram(handler_input)
         handler_input.response_builder.speak(speech_text).set_should_end_session(False)
         return handler_input.response_builder.response
 
