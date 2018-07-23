@@ -19,6 +19,7 @@ class YesIntentHandler(AbstractRequestHandler):
         return is_intent_name("CustomYesIntent")(handler_input)
 
     def handle(self, handler_input):
+        i18n = LanguageModel(handler_input.request_envelope.request.locale)
         sess_attrs = handler_input.attributes_manager.session_attributes
         previous_intent = sess_attrs.get("PREV_INTENT")
         user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
@@ -37,16 +38,18 @@ class YesIntentHandler(AbstractRequestHandler):
             return handler_input.response_builder.response
 
         # User answered Yes on question: "Do you want to reply?"
-        if (previous_intent == "CustomYesIntent" or previous_intent == "AMAZON.NoIntent") and \
-                sess_attrs.get("TELEGRAMS"):
+        if (previous_intent == "CustomYesIntent"
+            or previous_intent == "AMAZON.NoIntent"
+            or previous_intent == "MessageIntent") \
+                and sess_attrs.get("TELEGRAMS"):
 
             if slots.get("message").value:
                 contact = sess_attrs.get("CONTACTS")[sess_attrs.get("TELEGRAMS_COUNTER") - 1]
                 send_telegram(contact)
                 next_telegram = MessageIntentHandler().get_telegram(handler_input)
-                speech_text = "Telegram was sent to {}. ".format(contact) + next_telegram
+                speech_text = i18n.TELEGRAM_SENT.format(contact) + next_telegram
             else:
-                speech_text = "Ok, what is the message?"
+                speech_text = i18n.MESSAGE_2
                 updated_intent = Intent("CustomYesIntent", slots)
                 elicit_directive = ElicitSlotDirective(updated_intent, "message")
                 handler_input.response_builder.add_directive(elicit_directive)
@@ -59,7 +62,7 @@ class YesIntentHandler(AbstractRequestHandler):
             or previous_intent == "CustomYesIntent"
             or previous_intent == "AMAZON.NoIntent") \
                 and not sess_attrs.get("TELEGRAMS"):
-            speech_text = "I can help you to send a Telegram or check for new Telegrams. So, which do you need?"
+            speech_text = i18n.HELP_USER
             handler_input.response_builder.speak(speech_text).set_should_end_session(False)
             return handler_input.response_builder.response
 
@@ -77,23 +80,27 @@ class NoIntentHandler(AbstractRequestHandler):
         previous_intent = sess_attrs.get("PREV_INTENT")
         user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
 
-        # User answered Yes on question: "Welcome, do you want to hear your new Telegrams?"
+        # User answered No on question: "Welcome, do you want to hear your new Telegrams?"
         if previous_intent == "LaunchIntent" and user_is_authorized:
-            speech_text = i18n.get_random_ack() + ", I can help you to send a Telegram or check for new Telegrams. So, which do you need?"
+            speech_text = i18n.get_random_ack() + ", " + i18n.HELP_USER
             handler_input.response_builder.speak(speech_text).set_should_end_session(False)
+            return handler_input.response_builder.response
 
-        # User answered Yes on question: "Welcome, u r not authorized. Authorize now?"
+        # User answered No on question: "Welcome, u r not authorized. Authorize now?"
         if previous_intent == "LaunchIntent" and not user_is_authorized:
-            speech_text = i18n.get_random_ack() + ", Bye for now"
+            speech_text = i18n.get_random_ack() + ", " + i18n.BYE_FOR_NOW
             handler_input.response_builder.speak(speech_text).set_should_end_session(True)
             return handler_input.response_builder.response
 
         if previous_intent == "SendIntent":
             speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
             handler_input.response_builder.speak(speech_text).set_should_end_session(True)
+            return handler_input.response_builder.response
 
         # User answered No on the question if he wants to reply
-        if (previous_intent == "CustomYesIntent" or previous_intent == "AMAZON.NoIntent") and \
+        if (previous_intent == "CustomYesIntent"
+            or previous_intent == "AMAZON.NoIntent"
+            or previous_intent == "MessageIntent") and \
                 sess_attrs.get("TELEGRAMS"):
             speech_text = MessageIntentHandler().get_telegram(handler_input)
             handler_input.response_builder.speak(speech_text).set_should_end_session(False)
@@ -107,5 +114,3 @@ class NoIntentHandler(AbstractRequestHandler):
             speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
             handler_input.response_builder.speak(speech_text).set_should_end_session(True)
             return handler_input.response_builder.response
-
-        return handler_input.response_builder.response
