@@ -10,6 +10,7 @@ from src.skill.intents.interceptors import LoggingRequestInterceptor, CardRespon
 from src.skill.intents.message_intent import MessageIntentHandler
 from src.skill.intents.send_intent import SendIntentHandler
 from src.skill.intents.yes_no_intents import YesIntentHandler, NoIntentHandler
+from src.skill.services.telethon_service import TelethonService
 
 sb = SkillBuilder()
 
@@ -23,11 +24,17 @@ class LaunchRequestHandler(AbstractRequestHandler):
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
         sess_attrs = handler_input.attributes_manager.session_attributes
         user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
+        telethon_service = TelethonService()
 
         if user_is_authorized:
-            speech_text = "Cool, you r authorized"
+            user_has_telegrams = telethon_service.check_telegrams()
+            
+            if user_has_telegrams:
+                speech_text = i18n.USER_HAS_TELEGRAMS
+            else:
+                speech_text = i18n.WELCOME
         else:
-            speech_text = "Welcome to Daily Telegrams. You are not authorized. Do you want to authorize now?"
+            speech_text = i18n.NOT_AUTHORIZED
 
         handler_input.response_builder.speak(speech_text).set_should_end_session(False)
         return handler_input.response_builder.response
