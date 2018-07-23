@@ -23,6 +23,9 @@ class TelethonService(object):
         # return true if code matches backend telethon stuff
         return True
 
+    def check_telegrams(self):
+        return True
+
     def get_conversations(self):
         conversations = []
 
