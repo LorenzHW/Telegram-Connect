@@ -1,6 +1,7 @@
 from ask_sdk_core.dispatch_components import AbstractRequestInterceptor, AbstractResponseInterceptor
 from ask_sdk_model.ui import SimpleCard
 
+from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.utils.constants import Constants
 from src.skill.utils.utils import convert_speech_to_text
 
@@ -26,3 +27,18 @@ class PreviousIntentInterceptor(AbstractResponseInterceptor):
             sess_attrs["PREV_INTENT"] = "LaunchIntent"
         elif handler_input.request_envelope.request.object_type == "IntentRequest":
             sess_attrs["PREV_INTENT"] = handler_input.request_envelope.request.intent.name
+
+
+class AccountInterceptor(AbstractRequestInterceptor):
+    def process(self, handler_input):
+        sess_attrs = handler_input.attributes_manager.session_attributes
+        Constants.ACCESS_TOKEN = handler_input.request_envelope.session.user.access_token
+
+        if not sess_attrs.get("ACCOUNT"):
+            account = DailyTelegramsService().get_daily_telegrams_account()
+            print(account)
+            sess_attrs["ACCOUNT"] = {
+                "ID": account.id,
+                "PHONE_NUMBER": account.phone_number,
+                "AUTHORIZED": account.is_authorized
+            }
