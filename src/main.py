@@ -1,13 +1,12 @@
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.utils import is_request_type
-from ask_sdk_model.ui import SimpleCard
 
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.intents.general_intents import HelpIntentHandler, CancelOrStopIntentHandler, \
     FallbackIntentHandler, SessionEndedRequestHandler, CatchAllExceptionHandler
 from src.skill.intents.interceptors import LoggingRequestInterceptor, CardResponseInterceptor, \
-    PreviousIntentInterceptor
+    PreviousIntentInterceptor, AccountInterceptor
 from src.skill.intents.message_intent import MessageIntentHandler
 from src.skill.intents.send_intent import SendIntentHandler
 from src.skill.intents.yes_no_intents import YesIntentHandler, NoIntentHandler
@@ -22,12 +21,15 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
-        speech_text = i18n.WELCOME
-        speech_text = "Welcome to Daily Telegrams. You got new Telegrams. Do you want to hear them?"
+        sess_attrs = handler_input.attributes_manager.session_attributes
+        user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
 
-        handler_input.response_builder.speak(speech_text).set_card(
-            SimpleCard("Hello World", speech_text)).set_should_end_session(
-            False)
+        if user_is_authorized:
+            speech_text = "Cool, you r authorized"
+        else:
+            speech_text = "Welcome to Daily Telegrams. You are not authorized. Do you want to authorize now?"
+
+        handler_input.response_builder.speak(speech_text).set_should_end_session(False)
         return handler_input.response_builder.response
 
 
@@ -42,6 +44,7 @@ sb.add_request_handler(FallbackIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
 
 sb.add_global_request_interceptor(LoggingRequestInterceptor())
+sb.add_global_request_interceptor(AccountInterceptor())
 sb.add_global_response_interceptor(CardResponseInterceptor())
 sb.add_global_response_interceptor(PreviousIntentInterceptor())
 

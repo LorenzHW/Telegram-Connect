@@ -14,6 +14,15 @@ class TelethonService(object):
     def __init__(self):
         pass
 
+    def send_code_request(self):
+        # TODO: Gets telegram code
+        pass
+
+    def sign_user_in(self, code):
+        # TODO: Signs user in with code
+        # return true if code matches backend telethon stuff
+        return True
+
     def get_conversations(self):
         conversations = []
 
