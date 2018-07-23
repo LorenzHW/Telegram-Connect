@@ -69,7 +69,7 @@ def handle_authorization(handler_input):
     slots = handler_input.request_envelope.request.intent.slots
 
     if not account.get("PHONE_NUMBER"):
-        speech_text = "You have not added a telephone number. Visit the website mentioned in the skill description and add a telephone number then try again. Bye for now"
+        speech_text = i18n.NO_PHONE
     elif not slots.get("code").value:
         telethon_service.send_code_request()
 
@@ -77,17 +77,17 @@ def handle_authorization(handler_input):
         elicit_directive = ElicitSlotDirective(updated_intent, "code")
         handler_input.response_builder.add_directive(elicit_directive)
 
-        speech_text = "You received a code on your phone. <break time='200ms' /> What is the code?"
+        speech_text = i18n.WHAT_IS_CODE
         should_end = False
     else:
         ok = telethon_service.sign_user_in(slots.get("code").value)
 
         if ok:
             sess_attrs["ACCOUNT"]["AUTHORIZED"] = True
-            speech_text = "Done. You are now authorized. <break time='200ms'/> I can help you send a Telegram or check for new Telegrams. So, which do you need?"
+            speech_text = i18n.AUTHORIZED
             should_end = False
         else:
-            speech_text = "The code is wrong. Please try again. Bye for now"
+            speech_text = i18n.WRONG_CODE
 
     handler_input.response_builder.speak(speech_text).set_should_end_session(should_end)
     return handler_input
