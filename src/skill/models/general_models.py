@@ -1,7 +1,8 @@
 class DailyTelegramsAccount(object):
-    def __init__(self, id, phone_number):
+    def __init__(self, id, phone_number, authorized):
         self.id = id
         self.phone_number = phone_number
+        self.is_authorized = authorized
 
 
 class Contact(object):

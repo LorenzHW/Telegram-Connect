@@ -2,7 +2,7 @@ import requests
 
 from src.skill.models.general_models import DailyTelegramsAccount, Contact
 from src.skill.utils.constants import Constants
-from src.skill.utils.exceptions import BackendException
+from src.skill.utils.utils import BackendException
 
 
 class DailyTelegramsService(object):
@@ -39,7 +39,7 @@ class DailyTelegramsService(object):
             # Telephon API (or DynamoService?) expects an string. So lets cast it to a string.
             account_id = str(account_information[0]['id'])
             account_phone_number = account_information[0]['phone_number']
-            daily_telegrams_account = DailyTelegramsAccount(account_id, account_phone_number)
+            daily_telegrams_account = DailyTelegramsAccount(account_id, account_phone_number, False)
 
             return daily_telegrams_account
 
