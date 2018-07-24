@@ -5,8 +5,10 @@ class LanguageModel(GenericLanguageModel):
     def __init__(self, locale):
         super().__init__(locale)
         self.FIRST_NAME = None
+        self.FIRST_NAME_REPROMPT = None
         self.MESSAGE = None
         self.NO_CONTACT = None
+        self.NO_CONTACT_REPROMPT = None
         self.MAX_NO_CONTACT = None
 
         self.REPLY = None
@@ -26,6 +28,7 @@ class LanguageModel(GenericLanguageModel):
 
         self.NO_PHONE = None
         self.WHAT_IS_CODE = None
+        self.WHAT_IS_CODE_REPROMPT = None
         self.AUTHORIZED = None
         self.WRONG_CODE = None
 
@@ -37,8 +40,10 @@ class LanguageModel(GenericLanguageModel):
     def set_german_language_model(self):
         ### SendIntent ###
         self.FIRST_NAME = None
+        self.FIRST_NAME_REPROMPT = None
         self.MESSAGE = None
         self.NO_CONTACT = None
+        self.NO_CONTACT_REPROMPT = None
         self.MAX_NO_CONTACT = None
 
         ### MessageIntent ###
@@ -62,16 +67,19 @@ class LanguageModel(GenericLanguageModel):
 
         self.NO_PHONE = None
         self.WHAT_IS_CODE = None
-        self.AUTHORIZED = None
+        self.WHAT_IS_CODE_REPROMPT = None
         self.WRONG_CODE = None
+        self.AUTHORIZED = None
 
     def set_english_language_model(self):
         ### SendIntent ###
         self.FIRST_NAME = "{}, what is the first name of your contact?".format(
             self.get_random_ack())
-        self.MESSAGE = self.get_random_acceptance_ack() + ", what is the Telegram for {}?"
+        self.FIRST_NAME_REPROMPT = self.get_random_dont_understand() + ", what is the first name?"
+        self.MESSAGE = "What is the Telegram for {}?"
         self.NO_CONTACT = self.get_random_thinking() + ", I can't find any contact with that name. I found {}, {}, and {}. To whom should I send the Telegram?"
-        self.MAX_NO_CONTACT = "Sorry. I am still having trouble, so you may want to visit the website and try the speed dial feature. " + self.get_random_goodbye()
+        self.NO_CONTACT_REPROMPT = self.get_random_dont_understand() + ", I didn't catch that. I found {}, {}, and {}. To whom should I send the Telegram?"
+        self.MAX_NO_CONTACT = "Sorry. I am still having trouble understanding you, so you may want to visit the website and try the speed dial feature. " + self.get_random_goodbye()
 
         ### MessageIntent ###
         self.REPLY = "<break time='200ms'/> Do you want to reply?"
@@ -90,12 +98,13 @@ class LanguageModel(GenericLanguageModel):
             .format(self.skill_name)
 
         ### YesIntent ###
-        self.TELEGRAM_SENT = self.get_random_acceptance_ack() + ", a Telegram was sent to {}"
-        self.MESSAGE_2 = self.get_random_acceptance_ack() + ", what is the Telegram?"
+        self.TELEGRAM_SENT = self.get_random_done_ack() + ", a Telegram was sent to {}. <break time='200ms'/>"
+        self.MESSAGE_2 = "What is the Telegram?"
         self.HELP_USER = "I can help you to send a Telegram or check for new Telegrams. So, which do you need?"
         self.BYE_FOR_NOW = "Bye for now."
 
         self.NO_PHONE = "You have not added a telephone number. Visit the website mentioned in the skill description and add a telephone number then try again. Bye for now."
         self.WHAT_IS_CODE = "You received a code on your phone. <break time='200ms' /> What is the code?"
-        self.AUTHORIZED = self.get_random_acceptance_ack() + ". You are now authorized. <break time='200ms'/> I can help you send a Telegram or check for new Telegrams. So, which do you need?"
+        self.WHAT_IS_CODE_REPROMPT = "What is the code?"
         self.WRONG_CODE = "The code is wrong. Try requesting a new code by starting over. Bye for now."
+        self.AUTHORIZED = self.get_random_acceptance_ack() + ". You are now authorized. <break time='200ms'/> I can help you send a Telegram or check for new Telegrams. So, which do you need?"

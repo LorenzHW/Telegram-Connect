@@ -28,7 +28,8 @@ class YesIntentHandler(AbstractRequestHandler):
         # User answered Yes on question: "Welcome, do you want to hear your new Telegrams?"
         if previous_intent == "LaunchIntent" and user_is_authorized:
             speech_text = MessageIntentHandler().get_telegram(handler_input)
-            handler_input.response_builder.speak(speech_text).set_should_end_session(False)
+            handler_input.response_builder.speak(speech_text) \
+                .set_should_end_session(False).ask(i18n.FALLBACK)
             return handler_input.response_builder.response
 
         # User answered Yes on question: "Welcome, u r not authorized. Authorize now?"
@@ -48,13 +49,16 @@ class YesIntentHandler(AbstractRequestHandler):
                 send_telegram(contact)
                 next_telegram = MessageIntentHandler().get_telegram(handler_input)
                 speech_text = i18n.TELEGRAM_SENT.format(contact) + next_telegram
+                reprompt = i18n.FALLBACK
             else:
-                speech_text = i18n.MESSAGE_2
+                speech_text = i18n.get_random_acceptance_ack() + ", " + i18n.MESSAGE_2
+                reprompt = i18n.get_random_dont_understand() + ", " + i18n.MESSAGE_2
                 updated_intent = Intent("CustomYesIntent", slots)
                 elicit_directive = ElicitSlotDirective(updated_intent, "message")
                 handler_input.response_builder.add_directive(elicit_directive)
 
-            handler_input.response_builder.speak(speech_text).set_should_end_session(False)
+            handler_input.response_builder.speak(speech_text) \
+                .set_should_end_session(False).ask(reprompt)
             return handler_input.response_builder.response
 
         # User answered Yes on question: "Is there anything else I can help you with?"
@@ -63,7 +67,9 @@ class YesIntentHandler(AbstractRequestHandler):
             or previous_intent == "AMAZON.NoIntent") \
                 and not sess_attrs.get("TELEGRAMS"):
             speech_text = i18n.HELP_USER
-            handler_input.response_builder.speak(speech_text).set_should_end_session(False)
+            reprompt = i18n.FALLBACK
+            handler_input.response_builder.speak(speech_text) \
+                .set_should_end_session(False).ask(reprompt)
             return handler_input.response_builder.response
 
 
@@ -83,7 +89,8 @@ class NoIntentHandler(AbstractRequestHandler):
         # User answered No on question: "Welcome, do you want to hear your new Telegrams?"
         if previous_intent == "LaunchIntent" and user_is_authorized:
             speech_text = i18n.get_random_ack() + ", " + i18n.HELP_USER
-            handler_input.response_builder.speak(speech_text).set_should_end_session(False)
+            handler_input.response_builder.speak(speech_text) \
+                .set_should_end_session(False).ask(i18n.FALLBACK)
             return handler_input.response_builder.response
 
         # User answered No on question: "Welcome, u r not authorized. Authorize now?"
@@ -103,7 +110,8 @@ class NoIntentHandler(AbstractRequestHandler):
             or previous_intent == "MessageIntent") and \
                 sess_attrs.get("TELEGRAMS"):
             speech_text = MessageIntentHandler().get_telegram(handler_input)
-            handler_input.response_builder.speak(speech_text).set_should_end_session(False)
+            handler_input.response_builder.speak(speech_text) \
+                .set_should_end_session(False).ask(i18n.FALLBACK)
             return handler_input.response_builder.response
 
         # User answered No on question: "Is there anything else I can help you with?

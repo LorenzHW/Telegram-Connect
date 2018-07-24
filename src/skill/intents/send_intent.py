@@ -27,6 +27,7 @@ class SendIntentHandler(AbstractRequestHandler):
                 if slot.value is None:
                     slot_to_elicit = "first_name"
                     speech_text = i18n.FIRST_NAME
+                    reprompt = i18n.FIRST_NAME_REPROMPT
                 else:
                     if not sess_attrs.get("FIRST_NAMES"):
                         # TODO: REQUEST INTO BACKEND: GETS USERS
@@ -40,7 +41,7 @@ class SendIntentHandler(AbstractRequestHandler):
                             name_2 = contacts[1].first_name
                             name_3 = contacts[2].first_name
                             speech_text = i18n.NO_CONTACT.format(name_1, name_2, name_3)
-
+                            reprompt = i18n.NO_CONTACT_REPROMPT.format(name_1, name_2, name_3)
                             sess_attrs["FIRST_NAMES"] = [contact.first_name for contact in contacts]
 
                     else:
@@ -50,7 +51,10 @@ class SendIntentHandler(AbstractRequestHandler):
 
                         if name:
                             slot_to_elicit = "message"
-                            speech_text = i18n.MESSAGE.format(name)
+                            speech_text = i18n.get_random_acceptance_ack() + ", " \
+                                          + i18n.MESSAGE.format(name)
+                            reprompt = i18n.get_random_dont_understand() + ", " \
+                                       + i18n.MESSAGE.format(name)
                         else:
                             speech_text = i18n.MAX_NO_CONTACT
                             handler_input.response_builder.speak(
@@ -63,8 +67,10 @@ class SendIntentHandler(AbstractRequestHandler):
             if slot.name == "message" and slot.value:
                 send_telegram("NAME OF SEND TELEGRAM")
                 speech_text = i18n.get_random_anyting_else()
+                reprompt = i18n.FALLBACK
                 sess_attrs.clear()
 
-        handler_input.response_builder.speak(speech_text).set_should_end_session(False)
+        handler_input.response_builder.speak(speech_text) \
+            .set_should_end_session(False).ask(reprompt)
 
         return handler_input.response_builder.response

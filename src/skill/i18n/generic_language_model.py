@@ -14,6 +14,7 @@ class GenericLanguageModel(object):
         self.ACCEPTANCE_ACKS = None
         self.DONE_ACKS = None
         self.THINKING = None
+        self.DONT_UNDERSTAND = None
         self.WELCOME = None
         self.FALLBACK = None
         self.HELP = None
@@ -48,7 +49,8 @@ class GenericLanguageModel(object):
         # Required intents
         ##############################
         self.WELCOME = "Willkommen"
-        self.FALLBACK = "Sorry, was hast du gesagt?"
+        self.DONT_UNDERSTAND = ["Sorry", "Entschuldigung", "Pardon"]
+        self.FALLBACK = self.get_random_dont_understand() + ", was hast du gesagt?"
         self.HELP = "Help Intent"
 
         self.GOODBYES = ["adiós", "aloha", "arrivederci", "ciao", "auf Wiedersehen", "au revoir",
@@ -68,7 +70,7 @@ class GenericLanguageModel(object):
 
         self.ACKS = ["Okay", "Alright"]
         self.ACCEPTANCE_ACKS = ["Okay", "Sure", "Alright", "Got it", "You got it"]
-        self.DONE_ACKS = ["Okay", "Sure", "Alright", "Got it", "Done", "You got it"]
+        self.DONE_ACKS = ["Okay", "Alright", "Got it", "Done", "You got it"]
         self.THINKING = ["Umm", "Ahhm", "Hmmm"]
         self.ANYTHING_ELSE = ["Anything else?", "Will that be all?",
                               "Do you need anything else?", "Is there something else you need?"]
@@ -77,7 +79,8 @@ class GenericLanguageModel(object):
         # Required intents
         ##############################
         self.WELCOME = "Welcome"
-        self.FALLBACK = "Sorry, what did you say?"
+        self.DONT_UNDERSTAND = ["Sorry", "Excuse me", "Pardon"]
+        self.FALLBACK = self.get_random_dont_understand() + ", what did you say?"
         self.HELP = "Help Intent"
         self.GOODBYES = ["adiós", "aloha", "arrivederci", "ciao", "auf Wiedersehen", "au revoir",
                          "bon voyage", "shalom", "vale"]
@@ -100,3 +103,6 @@ class GenericLanguageModel(object):
     def get_random_anyting_else(self):
         random_anyting_else = random.choice(self.ANYTHING_ELSE)
         return self.get_random_done_ack() + ". " + random_anyting_else
+
+    def get_random_dont_understand(self):
+        return random.choice(self.DONT_UNDERSTAND)
