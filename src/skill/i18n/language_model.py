@@ -75,7 +75,7 @@ class LanguageModel(GenericLanguageModel):
         ### SendIntent ###
         self.FIRST_NAME = "{}, what is the first name of your contact?".format(
             self.get_random_ack())
-        self.FIRST_NAME_REPROMPT = self.get_random_dont_understand() + ", what is the first name?"
+        self.FIRST_NAME_REPROMPT = self.get_random_dont_understand() + ", what was the first name?"
         self.MESSAGE = "What is the Telegram for {}?"
         self.NO_CONTACT = self.get_random_thinking() + ", I can't find any contact with that name. I found {}, {}, and {}. To whom should I send the Telegram?"
         self.NO_CONTACT_REPROMPT = self.get_random_dont_understand() + ", I didn't catch that. I found {}, {}, and {}. To whom should I send the Telegram?"
@@ -108,3 +108,8 @@ class LanguageModel(GenericLanguageModel):
         self.WHAT_IS_CODE_REPROMPT = "Check your phone. What is the code?"
         self.WRONG_CODE = "The code is wrong. Try requesting a new code by starting over. Bye for now."
         self.AUTHORIZED = self.get_random_acceptance_ack() + ". You are now authorized. <break time='200ms'/> I can help you send a Telegram or check for new Telegrams. So, which do you need?"
+
+        ## SpeedDialIntent ##
+        self.SPEED_DIAL = "What is the number of your speed dial contact?"
+        self.SPEED_DIAL_REPROMPT = self.get_random_dont_understand() + ", what number?"
+        self.NO_SPEED_DIAL_CONTACT = self.get_random_thinking() + ", I can't find any speed dial contact with that number. Is there anything else I can help you with?"

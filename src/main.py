@@ -9,6 +9,7 @@ from src.skill.intents.interceptors import LoggingRequestInterceptor, CardRespon
     PreviousIntentInterceptor, AccountInterceptor
 from src.skill.intents.message_intent import MessageIntentHandler
 from src.skill.intents.send_intent import SendIntentHandler
+from src.skill.intents.speed_intent import SpeedIntentHandler
 from src.skill.intents.yes_no_intents import YesIntentHandler, NoIntentHandler
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.constants import Constants
@@ -51,6 +52,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
 sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(SendIntentHandler())
+sb.add_request_handler(SpeedIntentHandler())
 sb.add_request_handler(MessageIntentHandler())
 sb.add_request_handler(YesIntentHandler())
 sb.add_request_handler(NoIntentHandler())
