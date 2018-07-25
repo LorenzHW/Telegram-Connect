@@ -7,7 +7,6 @@ from src.skill.utils.utils import respond_to_http_error_code
 
 
 class HelpIntentHandler(AbstractRequestHandler):
-    # Handler for Help Intent
     def can_handle(self, handler_input):
         return is_intent_name("AMAZON.HelpIntent")(handler_input)
 
@@ -20,7 +19,6 @@ class HelpIntentHandler(AbstractRequestHandler):
 
 
 class CancelOrStopIntentHandler(AbstractRequestHandler):
-    # Single handler for Cancel and Stop Intent
     def can_handle(self, handler_input):
         return (is_intent_name("AMAZON.CancelIntent")(handler_input) or
                 is_intent_name("AMAZON.StopIntent")(handler_input))
@@ -34,9 +32,6 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
 
 
 class FallbackIntentHandler(AbstractRequestHandler):
-    # AMAZON.FallbackIntent is only available in en-US locale.
-    # This handler will not be triggered except in that locale,
-    # so it is safe to deploy on any locale
     def can_handle(self, handler_input):
         return is_intent_name("AMAZON.FallbackIntent")(handler_input)
 
@@ -50,7 +45,6 @@ class FallbackIntentHandler(AbstractRequestHandler):
 
 
 class SessionEndedRequestHandler(AbstractRequestHandler):
-    # Handler for Session End
     def can_handle(self, handler_input):
         return is_request_type("SessionEndedRequest")(handler_input)
 
@@ -59,8 +53,6 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
 
 
 class CatchBackendExceptionHandler(AbstractExceptionHandler):
-    # Catch all exception handler, log exception and
-    # respond with custom message
     def can_handle(self, handler_input, exception):
         sess_attrs = handler_input.attributes_manager.session_attributes
 
@@ -75,8 +67,6 @@ class CatchBackendExceptionHandler(AbstractExceptionHandler):
 
 
 class CatchAllExceptionHandler(AbstractExceptionHandler):
-    # Catch all exception handler, log exception and
-    # respond with custom message
     def can_handle(self, handler_input, exception):
         return True
 
