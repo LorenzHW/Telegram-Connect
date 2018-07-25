@@ -51,7 +51,12 @@ class GenericLanguageModel(object):
         self.WELCOME = "Willkommen"
         self.DONT_UNDERSTAND = ["Sorry", "Entschuldigung", "Pardon"]
         self.FALLBACK = self.get_random_dont_understand() + ", was hast du gesagt?"
-        self.HELP = "Help Intent"
+        self.HELP = "{} verbindet Alexa mit deinem Telegram Messenger. Du kannst ein Telegram zu " \
+                    "einer Person, Gruppe oder einem Bot schicken. Alternativ kannst du, " \
+                    "falls ich Probleme habe den Namen zu verstehen, ein 'Speedgram' verschicken. " \
+                    "Außerdem kannst du checken ob du neue Telegrame hast. Sage:  'Verschicke ein " \
+                    "Telegram.' oder 'Checke meine Telegramme.' oder 'Verschicke ein " \
+                    "Speedgram.'".format(self.skill_name)
 
         self.GOODBYES = ["adiós", "aloha", "arrivederci", "ciao", "auf Wiedersehen", "au revoir",
                          "bon voyage", "shalom", "vale"]
@@ -84,7 +89,12 @@ class GenericLanguageModel(object):
         self.WELCOME = "Welcome"
         self.DONT_UNDERSTAND = ["Sorry", "Excuse me", "Pardon"]
         self.FALLBACK = self.get_random_dont_understand() + ", what did you say?"
-        self.HELP = "Help Intent"
+        self.HELP = "{} connects Alexa with your Telegram Messenger. You can send a Telegram to a " \
+                    "person, group, or bot. Alternately, If I have trouble understanding a " \
+                    "complex name, you can use the speed dial feature to send a telegram. " \
+                    "Furthermore, you can also check for new telegrams. Say: 'Check my " \
+                    "telegrams.' or 'Send a telegram' or " \
+                    "'send a speedgram' ".format(self.skill_name)
         self.GOODBYES = ["adiós", "aloha", "arrivederci", "ciao", "auf Wiedersehen", "au revoir",
                          "bon voyage", "shalom", "vale"]
 

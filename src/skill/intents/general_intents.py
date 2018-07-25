@@ -1,7 +1,9 @@
 from ask_sdk_core.dispatch_components import AbstractExceptionHandler
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.utils import is_request_type, is_intent_name
-from ask_sdk_model.ui import SimpleCard
+
+from src.skill.i18n.language_model import LanguageModel
+from src.skill.utils.utils import respond_to_http_error_code
 
 
 class HelpIntentHandler(AbstractRequestHandler):
@@ -10,11 +12,10 @@ class HelpIntentHandler(AbstractRequestHandler):
         return is_intent_name("AMAZON.HelpIntent")(handler_input)
 
     def handle(self, handler_input):
-        speech_text = "You can say hello to me!"
+        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        speech_text = i18n.HELP
 
-        handler_input.response_builder.speak(speech_text).ask(
-            speech_text).set_card(SimpleCard(
-            "Hello World", speech_text))
+        handler_input.response_builder.speak(speech_text).set_should_end_session(False)
         return handler_input.response_builder.response
 
 
@@ -25,10 +26,10 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
                 is_intent_name("AMAZON.StopIntent")(handler_input))
 
     def handle(self, handler_input):
-        speech_text = "Goodbye!"
+        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        speech_text = i18n.get_random_goodbye()
 
-        handler_input.response_builder.speak(speech_text).set_card(
-            SimpleCard("Hello World", speech_text))
+        handler_input.response_builder.speak(speech_text).set_should_end_session(False)
         return handler_input.response_builder.response
 
 
@@ -55,6 +56,22 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         return handler_input.response_builder.response
+
+
+class CatchBackendExceptionHandler(AbstractExceptionHandler):
+    # Catch all exception handler, log exception and
+    # respond with custom message
+    def can_handle(self, handler_input, exception):
+        sess_attrs = handler_input.attributes_manager.session_attributes
+
+        if sess_attrs.get("HTTP_ERROR_CODE"):
+            return True
+
+    def handle(self, handler_input, exception):
+        sess_attrs = handler_input.attributes_manager.session_attributes
+
+        response = respond_to_http_error_code(handler_input, sess_attrs.get("HTTP_ERROR_CODE"))
+        return response
 
 
 class CatchAllExceptionHandler(AbstractExceptionHandler):

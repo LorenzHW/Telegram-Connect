@@ -4,7 +4,8 @@ from ask_sdk_core.utils import is_request_type
 
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.intents.general_intents import HelpIntentHandler, CancelOrStopIntentHandler, \
-    FallbackIntentHandler, SessionEndedRequestHandler, CatchAllExceptionHandler
+    FallbackIntentHandler, SessionEndedRequestHandler, CatchAllExceptionHandler, \
+    CatchBackendExceptionHandler
 from src.skill.intents.interceptors import LoggingRequestInterceptor, CardResponseInterceptor, \
     PreviousIntentInterceptor, AccountInterceptor
 from src.skill.intents.message_intent import MessageIntentHandler
@@ -66,6 +67,7 @@ sb.add_global_request_interceptor(AccountInterceptor())
 sb.add_global_response_interceptor(CardResponseInterceptor())
 sb.add_global_response_interceptor(PreviousIntentInterceptor())
 
+sb.add_exception_handler(CatchBackendExceptionHandler())
 sb.add_exception_handler(CatchAllExceptionHandler())
 
 handler = sb.lambda_handler()

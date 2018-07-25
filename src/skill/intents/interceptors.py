@@ -3,7 +3,7 @@ from ask_sdk_model.ui import SimpleCard, LinkAccountCard
 
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.utils.constants import Constants
-from src.skill.utils.utils import convert_speech_to_text
+from src.skill.utils.utils import convert_speech_to_text, BackendException
 
 
 class LoggingRequestInterceptor(AbstractRequestInterceptor):
@@ -40,9 +40,12 @@ class AccountInterceptor(AbstractRequestInterceptor):
         Constants.ACCESS_TOKEN = handler_input.request_envelope.session.user.access_token
 
         if not sess_attrs.get("ACCOUNT") and Constants.ACCESS_TOKEN:
-            account = DailyTelegramsService().get_daily_telegrams_account()
-            sess_attrs["ACCOUNT"] = {
-                "ID": account.id,
-                "PHONE_NUMBER": account.phone_number,
-                "AUTHORIZED": account.is_authorized
-            }
+            try:
+                account = DailyTelegramsService().get_daily_telegrams_account()
+                sess_attrs["ACCOUNT"] = {
+                    "ID": account.id,
+                    "PHONE_NUMBER": account.phone_number,
+                    "AUTHORIZED": account.is_authorized
+                }
+            except BackendException as http_error_code:
+                sess_attrs["HTTP_ERROR_CODE"] = http_error_code.args[0]
