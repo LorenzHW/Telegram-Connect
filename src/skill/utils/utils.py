@@ -66,7 +66,7 @@ def handle_authorization(handler_input):
     sess_attrs = handler_input.attributes_manager.session_attributes
     account = sess_attrs.get("ACCOUNT")
     slots = handler_input.request_envelope.request.intent.slots
-    reprompt = ""
+    reprompt = None
 
     if not account.get("PHONE_NUMBER"):
         speech_text = i18n.NO_PHONE
@@ -79,7 +79,7 @@ def handle_authorization(handler_input):
         handler_input.response_builder.add_directive(elicit_directive)
 
         speech_text = i18n.WHAT_IS_CODE
-        reprompt = i18n.get_random_dont_understand() + ", " + i18n.WHAT_IS_CODE
+        reprompt = i18n.WHAT_IS_CODE_REPROMPT
         should_end = False
     else:
         ok = telethon_service.sign_user_in(slots.get("code").value)
@@ -87,14 +87,15 @@ def handle_authorization(handler_input):
         if ok:
             sess_attrs["ACCOUNT"]["AUTHORIZED"] = True
             speech_text = i18n.AUTHORIZED
-            should_end = False
             reprompt = i18n.FALLBACK
         else:
             speech_text = i18n.WRONG_CODE
             should_end = True
 
     handler_input.response_builder.speak(speech_text) \
-        .set_should_end_session(should_end).ask(reprompt)
+        .set_should_end_session(should_end)
+    if reprompt:
+        handler_input.response_builder.ask(reprompt)
     return handler_input
 
 

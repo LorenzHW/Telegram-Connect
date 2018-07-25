@@ -90,7 +90,7 @@ class LanguageModel(GenericLanguageModel):
         self.PERSONAL_CHAT_INTRO = "{} wrote: <break time='200ms'/>"
 
         ### LaunchIntent ###
-        self.NOT_AUTHORIZED = "Welcome to {}. {} let's you connect your Telegram Messenger with Alexa. Now, you are currently not authorized." \
+        self.NOT_AUTHORIZED = "Welcome to {}. {} let's you connect your Telegram Messenger with Alexa. Now, you are currently not authorized. Do you want to start the authorization process?" \
             .format(self.skill_name, self.skill_name)
         self.USER_HAS_TELEGRAMS = "Welcome to {}. You got new telegrams. Do you want to hear them?" \
             .format(self.skill_name)
@@ -105,6 +105,6 @@ class LanguageModel(GenericLanguageModel):
 
         self.NO_PHONE = "You have not added a telephone number. Visit the website mentioned in the skill description and add a telephone number then try again. Bye for now."
         self.WHAT_IS_CODE = "You received a code on your phone. <break time='200ms' /> What is the code?"
-        self.WHAT_IS_CODE_REPROMPT = "What is the code?"
+        self.WHAT_IS_CODE_REPROMPT = "Check your phone. What is the code?"
         self.WRONG_CODE = "The code is wrong. Try requesting a new code by starting over. Bye for now."
         self.AUTHORIZED = self.get_random_acceptance_ack() + ". You are now authorized. <break time='200ms'/> I can help you send a Telegram or check for new Telegrams. So, which do you need?"

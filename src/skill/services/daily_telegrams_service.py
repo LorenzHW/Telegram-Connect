@@ -39,7 +39,7 @@ class DailyTelegramsService(object):
             # Telephon API (or DynamoService?) expects an string. So lets cast it to a string.
             account_id = str(account_information[0]['id'])
             account_phone_number = account_information[0]['phone_number']
-            daily_telegrams_account = DailyTelegramsAccount(account_id, account_phone_number, True)
+            daily_telegrams_account = DailyTelegramsAccount(account_id, account_phone_number, False)
 
             return daily_telegrams_account
 
