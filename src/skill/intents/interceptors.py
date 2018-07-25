@@ -1,5 +1,5 @@
 from ask_sdk_core.dispatch_components import AbstractRequestInterceptor, AbstractResponseInterceptor
-from ask_sdk_model.ui import SimpleCard
+from ask_sdk_model.ui import SimpleCard, LinkAccountCard
 
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.utils.constants import Constants
@@ -13,10 +13,15 @@ class LoggingRequestInterceptor(AbstractRequestInterceptor):
 
 class CardResponseInterceptor(AbstractResponseInterceptor):
     def process(self, handler_input, response):
-        response.card = SimpleCard(
-            title=Constants.SKILL_NAME,
-            content=convert_speech_to_text(response.output_speech.ssml)
-        )
+        sess_attrs = handler_input.attributes_manager.session_attributes
+
+        if sess_attrs.get("LINK_ACCOUNT_CARD"):
+            response.card = LinkAccountCard()
+        else:
+            response.card = SimpleCard(
+                title=Constants.SKILL_NAME,
+                content=convert_speech_to_text(response.output_speech.ssml)
+            )
 
 
 class PreviousIntentInterceptor(AbstractResponseInterceptor):
@@ -34,9 +39,8 @@ class AccountInterceptor(AbstractRequestInterceptor):
         sess_attrs = handler_input.attributes_manager.session_attributes
         Constants.ACCESS_TOKEN = handler_input.request_envelope.session.user.access_token
 
-        if not sess_attrs.get("ACCOUNT"):
+        if not sess_attrs.get("ACCOUNT") and Constants.ACCESS_TOKEN:
             account = DailyTelegramsService().get_daily_telegrams_account()
-            print(account)
             sess_attrs["ACCOUNT"] = {
                 "ID": account.id,
                 "PHONE_NUMBER": account.phone_number,

@@ -61,10 +61,13 @@ class GenericLanguageModel(object):
         self.BACKEND_EXCEPTION = "This is an error that shouldn't happen. I am sorry."
         self.SERVER_ERROR = "Due to updates the service is currently not available." \
                             " Try again later."
-        self.ACCOUNT_LINKING_REQUIRED = "You must have a {} account to use this skill." \
-                                        " Before you can use this skill go to the Alexa app to link your Amazon account" \
-                                        " with your {} Account.".format(self.skill_name,
-                                                                        self.skill_name)
+        self.ACCOUNT_LINKING_REQUIRED = "Welcome to {}. {} let's you connect Alexa with your Telegram Messenger. " \
+                                        "You must have a {} account to use this skill." \
+                                        " Go to the Alexa app to link " \
+                                        "your Amazon account with your {} Account. Visit the website" \
+                                        " mentioned in the skill description. " \
+                                        "Bye for now.".format(self.skill_name, self.skill_name,
+                                                              self.skill_name, self.skill_name)
 
         self.WRONG_INTENT = "I didn't quite catch that. I can't help you here."
 

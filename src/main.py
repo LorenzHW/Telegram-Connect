@@ -11,6 +11,7 @@ from src.skill.intents.message_intent import MessageIntentHandler
 from src.skill.intents.send_intent import SendIntentHandler
 from src.skill.intents.yes_no_intents import YesIntentHandler, NoIntentHandler
 from src.skill.services.telethon_service import TelethonService
+from src.skill.utils.constants import Constants
 
 sb = SkillBuilder()
 
@@ -23,6 +24,12 @@ class LaunchRequestHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
         sess_attrs = handler_input.attributes_manager.session_attributes
+
+        if not Constants.ACCESS_TOKEN:
+            speech_text = i18n.ACCOUNT_LINKING_REQUIRED
+            handler_input.response_builder.speak(speech_text).set_should_end_session(True)
+            sess_attrs["LINK_ACCOUNT_CARD"] = True
+            return handler_input.response_builder.response
 
         user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
         telethon_service = TelethonService()
