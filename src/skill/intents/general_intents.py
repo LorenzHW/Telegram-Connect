@@ -27,7 +27,7 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
         speech_text = i18n.get_random_goodbye()
 
-        handler_input.response_builder.speak(speech_text).set_should_end_session(False)
+        handler_input.response_builder.speak(speech_text).set_should_end_session(True)
         return handler_input.response_builder.response
 
 
@@ -36,10 +36,10 @@ class FallbackIntentHandler(AbstractRequestHandler):
         return is_intent_name("AMAZON.FallbackIntent")(handler_input)
 
     def handle(self, handler_input):
-        speech_text = (
-            "The Hello World skill can't help you with that.  "
-            "You can say hello!!")
-        reprompt = "You can say hello!!"
+        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        speech_text = i18n.FALLBACK_INTENT
+        reprompt = i18n.FALLBACK_INTENT_REPROMPT
+
         handler_input.response_builder.speak(speech_text).ask(reprompt)
         return handler_input.response_builder.response
 

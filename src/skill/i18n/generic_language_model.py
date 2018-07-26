@@ -17,6 +17,8 @@ class GenericLanguageModel(object):
         self.DONT_UNDERSTAND = None
         self.WELCOME = None
         self.FALLBACK = None
+        self.FALLBACK_INTENT = None
+        self.FALLBACK_INTENT_REPROMPT = None
         self.HELP = None
         self.GOODBYES = None
 
@@ -51,6 +53,14 @@ class GenericLanguageModel(object):
         self.WELCOME = "Willkommen"
         self.DONT_UNDERSTAND = ["Sorry", "Entschuldigung", "Pardon"]
         self.FALLBACK = self.get_random_dont_understand() + ", was hast du gesagt?"
+        self.FALLBACK_INTENT = "{} kann dir dabei nicht helfen. Du kannst entweder ein Telegram " \
+                               "verschicken oder checken ob es neue gibt. Also, was brauchst " \
+                               "du?".format(self.skill_name)
+        self.FALLBACK_INTENT_REPROMPT = self.get_random_thinking() + ", ich habe das nicht " \
+                                                                     "verstanden. Sage entweder: " \
+                                                                     "'Versende ein Telegram' " \
+                                                                     "oder 'Checke meine " \
+                                                                     "Telegramme' "
         self.HELP = "{} verbindet Alexa mit deinem Telegram Messenger. Du kannst ein Telegram zu " \
                     "einer Person, Gruppe oder einem Bot schicken. Alternativ kannst du, " \
                     "falls ich Probleme habe den Namen zu verstehen, ein 'Speedgram' verschicken. " \
@@ -89,6 +99,13 @@ class GenericLanguageModel(object):
         self.WELCOME = "Welcome"
         self.DONT_UNDERSTAND = ["Sorry", "Excuse me", "Pardon"]
         self.FALLBACK = self.get_random_dont_understand() + ", what did you say?"
+        self.FALLBACK_INTENT = "{} can't help you here. You can either send a Telegram or check " \
+                               "for new ones. So, which do you need?".format(self.skill_name)
+        self.FALLBACK_INTENT_REPROMPT = self.get_random_thinking() + ", I am still having trouble " \
+                                                                     "understanding you. You can " \
+                                                                     "either say: 'Send a " \
+                                                                     "telegram' or 'Check my " \
+                                                                     "Telegrams' "
         self.HELP = "{} connects Alexa with your Telegram Messenger. You can send a Telegram to a " \
                     "person, group, or bot. Alternately, If I have trouble understanding a " \
                     "complex name, you can use the speed dial feature to send a telegram. " \
