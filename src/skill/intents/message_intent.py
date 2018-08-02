@@ -24,7 +24,7 @@ class MessageIntentHandler(AbstractRequestHandler):
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
 
         if not sess_attrs.get("TELEGRAMS"):
-            conversations = self.telethon_service.get_conversations()
+            conversations = self.telethon_service.get_conversations(i18n)
             first_names = self.get_first_names(conversations, i18n)
             contacts = [telegram.sender for telegram in conversations]
             spoken_telegrams = self.spoken_telegrams(conversations, i18n)

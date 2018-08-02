@@ -16,6 +16,7 @@ class LanguageModel(GenericLanguageModel):
         self.NO_MORE_TELEGRAMS = None
         self.AND = None
         self.GROUP_INTRO = None
+        self.GROUP_MESSAGE_INTRO = None
         self.PERSONAL_CHAT_INTRO = None
 
         self.NOT_AUTHORIZED = None
@@ -52,6 +53,7 @@ class LanguageModel(GenericLanguageModel):
         self.NO_MORE_TELEGRAMS = None
         self.AND = None
         self.GROUP_INTRO = None
+        self.GROUP_MESSAGE_INTRO = None
         self.PERSONAL_CHAT_INTRO = None
 
         ### LaunchIntent ###
@@ -87,6 +89,7 @@ class LanguageModel(GenericLanguageModel):
         self.NO_MORE_TELEGRAMS = "There are no more Telegrams. Is there anything else I can help you with?"
         self.AND = ", and "
         self.GROUP_INTRO = "In {}: <break time='200ms'/>"
+        self.GROUP_MESSAGE_INTRO = "{} wrote: <break time='100ms'/>"
         self.PERSONAL_CHAT_INTRO = "{} wrote: <break time='200ms'/>"
 
         ### LaunchIntent ###

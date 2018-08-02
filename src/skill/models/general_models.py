@@ -6,10 +6,11 @@ class DailyTelegramsAccount(object):
 
 
 class Contact(object):
-    def __init__(self, first_name, speed_dial_number=None, last_name=None):
+    def __init__(self, first_name, speed_dial_number=None, last_name=None, telegram_id=None):
         self.first_name = first_name
         self.speed_dial_number = speed_dial_number
         self.last_name = last_name
+        self.telegram_id = telegram_id
 
 
 class Conversation(object):

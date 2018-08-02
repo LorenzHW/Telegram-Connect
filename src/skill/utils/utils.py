@@ -72,7 +72,8 @@ def handle_authorization(handler_input):
         speech_text = i18n.NO_PHONE
         should_end = True
     elif not slots.get("code").value:
-        telethon_service.send_code_request()
+        phone_code_hash = telethon_service.send_code_request()
+        sess_attrs["PHONE_CODE_HASH"] = phone_code_hash
 
         updated_intent = Intent("CustomYesIntent", slots)
         elicit_directive = ElicitSlotDirective(updated_intent, "code")
@@ -82,7 +83,8 @@ def handle_authorization(handler_input):
         reprompt = i18n.WHAT_IS_CODE_REPROMPT
         should_end = False
     else:
-        ok = telethon_service.sign_user_in(slots.get("code").value)
+        phone_code_hash = sess_attrs.get("PHONE_CODE_HASH")
+        ok = telethon_service.sign_user_in(slots.get("code").value, phone_code_hash)
 
         if ok:
             sess_attrs["ACCOUNT"]["AUTHORIZED"] = True
