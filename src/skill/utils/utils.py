@@ -8,6 +8,7 @@ from six import PY3
 ############## PARSER ##############
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
+from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 
 
 def convert_speech_to_text(ssml_speech):
@@ -72,7 +73,11 @@ def handle_authorization(handler_input):
         speech_text = i18n.NO_PHONE
         should_end = True
     elif not slots.get("code").value:
-        phone_code_hash = telethon_service.send_code_request()
+        try:
+            phone_code_hash = telethon_service.send_code_request()
+        except TelethonException as error:
+            return handle_telethon_error_response(error, handler_input)
+
         sess_attrs["PHONE_CODE_HASH"] = phone_code_hash
 
         updated_intent = Intent("CustomYesIntent", slots)
@@ -99,26 +104,3 @@ def handle_authorization(handler_input):
     if reprompt:
         handler_input.response_builder.ask(reprompt)
     return handler_input
-
-
-def respond_to_http_error_code(handler_input, http_error_code):
-    i18n = LanguageModel(handler_input.request_envelope.request.locale)
-    sess_attrs = handler_input.attributes_manager.session_attributes
-
-    if http_error_code == 401:
-        # Unauthorized: Happens when user enables alexa skill with valid account
-        # then deletes account on my webserver and uses skill again
-        speech_text = i18n.ACCOUNT_LINKING_REQUIRED
-        sess_attrs["LINK_ACCOUNT_CARD"] = True
-    elif 500 <= http_error_code < 600:
-        speech_text = i18n.SERVER_ERROR
-    else:
-        speech_text = i18n.BACKEND_EXCEPTION
-
-    handler_input.response_builder.speak(speech_text).set_should_end_session(True)
-    return handler_input.response_builder.response
-
-
-class BackendException(Exception):
-    def __init__(self, message):
-        super(BackendException, self).__init__(message)

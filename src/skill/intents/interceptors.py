@@ -3,7 +3,8 @@ from ask_sdk_model.ui import SimpleCard, LinkAccountCard
 
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.utils.constants import Constants
-from src.skill.utils.utils import convert_speech_to_text, BackendException
+from src.skill.utils.exceptions import BackendException
+from src.skill.utils.utils import convert_speech_to_text
 
 
 class LoggingRequestInterceptor(AbstractRequestInterceptor):

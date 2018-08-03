@@ -3,7 +3,7 @@ from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.utils import is_request_type, is_intent_name
 
 from src.skill.i18n.language_model import LanguageModel
-from src.skill.utils.utils import respond_to_http_error_code
+from src.skill.utils.exceptions import respond_to_http_error_code
 
 
 class HelpIntentHandler(AbstractRequestHandler):
