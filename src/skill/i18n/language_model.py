@@ -33,6 +33,15 @@ class LanguageModel(GenericLanguageModel):
         self.AUTHORIZED = None
         self.WRONG_CODE = None
 
+        self.SPEED_DIAL = None
+        self.SPEED_DIAL_REPROMPT = None
+        self.NO_SPEED_DIAL_CONTACT = None
+
+        self.INVALID_PHONE = None
+        self.CODE_EXPIRED = None
+        self.TWO_STEPS_VERIFICATION_ERROR = None
+        self.FLOODWAIT_ERROR = None
+
         if locale == "de-DE":
             self.set_german_language_model()
         else:
@@ -72,6 +81,17 @@ class LanguageModel(GenericLanguageModel):
         self.WHAT_IS_CODE_REPROMPT = None
         self.WRONG_CODE = None
         self.AUTHORIZED = None
+
+        ## SpeedDialIntent ##
+        self.SPEED_DIAL = None
+        self.SPEED_DIAL_REPROMPT = None
+        self.NO_SPEED_DIAL_CONTACT = None
+
+        ## Errors ##
+        self.INVALID_PHONE = None
+        self.CODE_EXPIRED = None
+        self.TWO_STEPS_VERIFICATION_ERROR = None
+        self.FLOODWAIT_ERROR = None
 
     def set_english_language_model(self):
         ### SendIntent ###
@@ -116,3 +136,9 @@ class LanguageModel(GenericLanguageModel):
         self.SPEED_DIAL = "What is the number of your speed dial contact?"
         self.SPEED_DIAL_REPROMPT = self.get_random_dont_understand() + ", what number?"
         self.NO_SPEED_DIAL_CONTACT = self.get_random_thinking() + ", I can't find any speed dial contact with that number. Is there anything else I can help you with?"
+
+        ## Errors ##
+        self.INVALID_PHONE = "There is no Telegram account associated with that phone number. Create a Telegram Account first, before you can use that skill. Bye for now."
+        self.CODE_EXPIRED = "The code already expired. Try it again. Bye for now."
+        self.TWO_STEPS_VERIFICATION_ERROR = "Two step verification is not supported. Please deactivate two step verficication in Telegram to use this skill. Bye for now."
+        self.FLOODWAIT_ERROR = "The skill is unavailable due to server maintenance. You can use this skill in {}"

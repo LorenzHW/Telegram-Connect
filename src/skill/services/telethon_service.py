@@ -2,7 +2,7 @@ import requests
 
 from src.skill.models.general_models import Contact, Conversation
 from src.skill.utils.constants import Constants
-from src.skill.utils.utils import BackendException
+from src.skill.utils.exceptions import BackendException, TelethonException
 
 
 class TelethonService(object):
@@ -28,9 +28,19 @@ class TelethonService(object):
             raise BackendException(r)
         else:
             response = r.json()
-            phone_code_hash = str(response['phone_code_hash'])
 
-            return phone_code_hash
+            if response.get("exception") and response.get("seconds"):
+                # We got FloodWaitError --> User needs to wait for x seconds to use
+                # Telegram API again.
+                seconds = response.get("seconds")
+                name = response.get("exception")
+                raise TelethonException(response.get("message"), seconds=seconds, name=name)
+            elif response.get("exception"):
+                name = response.get("exception")
+                raise TelethonException(response.get("message"), name=name)
+            else:
+                phone_code_hash = str(response.get(['phone_code_hash']))
+                return phone_code_hash
 
     def sign_user_in(self, code, phone_code_hash):
         r = self.execute_request(self.telethon_sign_in_url.format(code, phone_code_hash))
@@ -40,8 +50,16 @@ class TelethonService(object):
             raise BackendException(r)
         else:
             response = r.json()
-            # TODO: Some error handling in backend
-            return True
+
+            if response.get("exception") and response.get("seconds"):
+                seconds = response.get("seconds")
+                name = response.get("exception")
+                raise TelethonException(response.get("message"), seconds=seconds, name=name)
+            elif response.get("exception"):
+                name = response.get("exception")
+                raise TelethonException(response.get("message"), name=name)
+            else:
+                return True
 
     def check_telegrams(self):
         return True
@@ -68,20 +86,20 @@ class TelethonService(object):
 
             return conversations
 
-        conversations = []
-
-        conversations.append(Conversation("Tom", ["Hey man how is it going? <break time='100ms'/>",
-                                                  "I am chillin here <break time='100ms'/>",
-                                                  "This is the last message <break time='350ms'/>"]))  # longer break here
-        conversations.append(
-            Conversation("Tennis and Golf",
-                         [
-                             "Rainer wrote: Rafa is awesome <break time='100ms'/> He is literally the greated player on sand that ever existed <break time='200ms'/>",
-                             "Thomas wrote: Definitely true <break time='350ms'/>"], True))
-        conversations.append(Conversation("Sophia", ["Yo dude <break time='350ms'/>"]))
-        conversations.append(Conversation("Some Bot", ["Yo dude <break time='350ms'/>"]))
-
-        return conversations
+        # conversations = []
+        #
+        # conversations.append(Conversation("Tom", ["Hey man how is it going? <break time='100ms'/>",
+        #                                           "I am chillin here <break time='100ms'/>",
+        #                                           "This is the last message <break time='350ms'/>"]))  # longer break here
+        # conversations.append(
+        #     Conversation("Tennis and Golf",
+        #                  [
+        #                      "Rainer wrote: Rafa is awesome <break time='100ms'/> He is literally the greated player on sand that ever existed <break time='200ms'/>",
+        #                      "Thomas wrote: Definitely true <break time='350ms'/>"], True))
+        # conversations.append(Conversation("Sophia", ["Yo dude <break time='350ms'/>"]))
+        # conversations.append(Conversation("Some Bot", ["Yo dude <break time='350ms'/>"]))
+        #
+        # return conversations
 
     def get_potential_contacts(self, first_name):
         r = self.execute_request(self.telethon_contacts_url.format(first_name))

@@ -20,11 +20,33 @@ def respond_to_http_error_code(handler_input, http_error_code):
 
 
 def handle_telethon_error_response(error, handler_input):
-    # speech_text = error.get("name")
+    i18n = LanguageModel(handler_input.request_envelope.request.locale)
+    error_name = error.name
 
-    handler_input.response_builder.speak("some telethon error") \
+    if error_name == "SessionPasswordNeededError":
+        speech_text = i18n.TWO_STEPS_VERIFICATION_ERROR
+    elif error_name == "FloodWaitError":
+        h, m = calculate_hours_and_minutes_from_seconds(error.seconds)
+        speech_text = i18n.FLOODWAIT_ERROR.format(h, m)
+    elif error_name == "PhoneNumberUnoccupiedError":
+        speech_text = i18n.INVALID_PHONE
+    elif error_name == "PhoneNumberInvalidError":
+        speech_text = i18n.INVALID_PHONE
+    elif error_name == "PhoneCodeExpiredError":
+        speech_text = i18n.CODE_EXPIRED
+    elif error_name == "AuthKeyUnregisteredError":
+        speech_text = i18n.SERVER_ERROR
+
+    handler_input.response_builder.speak(speech_text) \
         .set_should_end_session(True)
     return handler_input
+
+
+def calculate_hours_and_minutes_from_seconds(seconds):
+    m, s = divmod(seconds, 60)
+    h, m = divmod(m, 60)
+
+    return h, m
 
 
 class BackendException(Exception):
@@ -34,6 +56,6 @@ class BackendException(Exception):
 
 class TelethonException(Exception):
     def __init__(self, message, **kwargs):
+        super(TelethonException, self).__init__(message)
         self.seconds = kwargs.get("seconds")
         self.name = kwargs.get("name")
-        super(TelethonException, self).__init__(message)
