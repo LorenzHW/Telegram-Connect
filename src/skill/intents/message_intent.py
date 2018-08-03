@@ -10,7 +10,9 @@ class MessageIntentHandler(AbstractRequestHandler):
         self.telethon_service = TelethonService()
 
     def can_handle(self, handler_input):
-        return is_intent_name("MessageIntent")(handler_input)
+        sess_attrs = handler_input.attributes_manager.session_attributes
+        user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
+        return is_intent_name("MessageIntent")(handler_input) and user_is_authorized
 
     def handle(self, handler_input):
         i18n = LanguageModel(handler_input.request_envelope.request.locale)

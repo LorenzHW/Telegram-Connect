@@ -13,7 +13,9 @@ class SendIntentHandler(AbstractRequestHandler):
         self.telethon_service = TelethonService()
 
     def can_handle(self, handler_input):
-        return is_intent_name("SendIntent")(handler_input)
+        sess_attrs = handler_input.attributes_manager.session_attributes
+        user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
+        return is_intent_name("SendIntent")(handler_input) and user_is_authorized
 
     def handle(self, handler_input):
         slots = handler_input.request_envelope.request.intent.slots
