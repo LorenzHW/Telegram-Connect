@@ -1,7 +1,7 @@
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
-from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.utils import is_request_type
 
+from src.ask_sdk_custom.ask_sdk_core_custom.skill_builder_custom import SkillBuilderCustom
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.intents.general_intents import HelpIntentHandler, CancelOrStopIntentHandler, \
     FallbackIntentHandler, SessionEndedRequestHandler, CatchAllExceptionHandler, \
@@ -15,7 +15,7 @@ from src.skill.intents.yes_no_intents import YesIntentHandler, NoIntentHandler
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.constants import Constants
 
-sb = SkillBuilder()
+sb = SkillBuilderCustom()
 
 
 class LaunchRequestHandler(AbstractRequestHandler):
@@ -51,7 +51,23 @@ class LaunchRequestHandler(AbstractRequestHandler):
         return handler_input.response_builder.response
 
 
+class CanFulfillIntentRequestHandler(AbstractRequestHandler):
+    # Handler for Skill Launch
+    def can_handle(self, handler_input):
+        return is_request_type("CanFulfillIntentRequest")(handler_input)
+
+    def handle(self, handler_input):
+        print("HEEEEEEEEEEEEERE")
+        print("HEEEEEEEEEEEEERE")
+        print("HEEEEEEEEEEEEERE")
+        speech_text = "Yo"
+        handler_input.response_builder.speak(speech_text) \
+            .set_should_end_session(False)
+        return handler_input.response_builder.response
+
+
 sb.add_request_handler(LaunchRequestHandler())
+sb.add_request_handler(CanFulfillIntentRequestHandler())
 sb.add_request_handler(SendIntentHandler())
 sb.add_request_handler(SpeedIntentHandler())
 sb.add_request_handler(MessageIntentHandler())
