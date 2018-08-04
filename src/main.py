@@ -2,6 +2,10 @@ from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.utils import is_request_type
 
 from src.ask_sdk_custom.ask_sdk_core_custom.skill_builder_custom import SkillBuilderCustom
+from src.ask_sdk_custom.ask_sdk_model_custom.can_fulfill_intent_custom import CanFulfillIntentCustom
+from src.ask_sdk_custom.ask_sdk_model_custom.can_fulfill_response_custom import \
+    CanFulfillResponseCustom
+from src.ask_sdk_custom.ask_sdk_model_custom.can_fulfill_slot_custom import CanFulfillSlotCustom
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.intents.general_intents import HelpIntentHandler, CancelOrStopIntentHandler, \
     FallbackIntentHandler, SessionEndedRequestHandler, CatchAllExceptionHandler, \
@@ -57,13 +61,20 @@ class CanFulfillIntentRequestHandler(AbstractRequestHandler):
         return is_request_type("CanFulfillIntentRequest")(handler_input)
 
     def handle(self, handler_input):
-        print("HEEEEEEEEEEEEERE")
-        print("HEEEEEEEEEEEEERE")
-        print("HEEEEEEEEEEEEERE")
-        speech_text = "Yo"
-        handler_input.response_builder.speak(speech_text) \
-            .set_should_end_session(False)
-        return handler_input.response_builder.response
+        name = handler_input.request_envelope.request.intent.get("name")
+
+        if name == "SendIntent":
+            can_fulfill_first_name_slot = CanFulfillSlotCustom("YES")
+            can_fulfill_message_slot = CanFulfillSlotCustom()
+
+            slots = {"first_name": can_fulfill_first_name_slot, "message": can_fulfill_message_slot}
+            can_fulfill_intent = CanFulfillIntentCustom("MAYBE", slots)
+            response = CanFulfillResponseCustom(can_fulfill_intent)
+        else:
+            # TODO: Do for other intents!
+            pass
+
+        return response
 
 
 sb.add_request_handler(LaunchRequestHandler())

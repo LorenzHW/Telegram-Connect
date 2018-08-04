@@ -14,15 +14,16 @@ class LoggingRequestInterceptor(AbstractRequestInterceptor):
 
 class CardResponseInterceptor(AbstractResponseInterceptor):
     def process(self, handler_input, response):
-        sess_attrs = handler_input.attributes_manager.session_attributes
+        if handler_input.request_envelope.request.object_type != "CanFulfillIntentRequest":
+            sess_attrs = handler_input.attributes_manager.session_attributes
 
-        if sess_attrs.get("LINK_ACCOUNT_CARD"):
-            response.card = LinkAccountCard()
-        else:
-            response.card = SimpleCard(
-                title=Constants.SKILL_NAME,
-                content=convert_speech_to_text(response.output_speech.ssml)
-            )
+            if sess_attrs.get("LINK_ACCOUNT_CARD"):
+                response.card = LinkAccountCard()
+            else:
+                response.card = SimpleCard(
+                    title=Constants.SKILL_NAME,
+                    content=convert_speech_to_text(response.output_speech.ssml)
+                )
 
 
 class PreviousIntentInterceptor(AbstractResponseInterceptor):
