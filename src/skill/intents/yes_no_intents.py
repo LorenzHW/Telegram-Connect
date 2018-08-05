@@ -46,7 +46,7 @@ class YesIntentHandler(AbstractRequestHandler):
 
             if slots.get("message").value:
                 contact = sess_attrs.get("CONTACTS")[sess_attrs.get("TELEGRAMS_COUNTER") - 1]
-                send_telegram(contact)
+                send_telegram(contact, slots.get("message").value)
                 next_telegram = MessageIntentHandler().get_telegram(handler_input)
                 speech_text = i18n.TELEGRAM_SENT.format(contact) + next_telegram
                 reprompt = i18n.FALLBACK
