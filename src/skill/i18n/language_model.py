@@ -141,4 +141,4 @@ class LanguageModel(GenericLanguageModel):
         self.INVALID_PHONE = "There is no Telegram account associated with that phone number. Create a Telegram Account first, before you can use that skill. Bye for now."
         self.CODE_EXPIRED = "The code already expired. Try it again. Bye for now."
         self.TWO_STEPS_VERIFICATION_ERROR = "Two step verification is not supported. Please deactivate two step verficication in Telegram to use this skill. Bye for now."
-        self.FLOODWAIT_ERROR = "The skill is unavailable due to server maintenance. You can use this skill in {}"
+        self.FLOODWAIT_ERROR = "The skill is unavailable due to server maintenance. You can use this skill in {} hours and {} minutes."

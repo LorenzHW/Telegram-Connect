@@ -95,6 +95,7 @@ def handle_authorization(handler_input):
             sess_attrs["ACCOUNT"]["AUTHORIZED"] = True
             speech_text = i18n.AUTHORIZED
             reprompt = i18n.FALLBACK
+            should_end = False
         else:
             speech_text = i18n.WRONG_CODE
             should_end = True
