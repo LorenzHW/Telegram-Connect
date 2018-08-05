@@ -54,10 +54,13 @@ class MessageIntentHandler(AbstractRequestHandler):
         first_names = []
 
         # Don't loop over last, because we add an 'and' for the voice output
-        for telegram in conversations[:-1]:
-            first_names.append(telegram.sender)
-        first_names = ", ".join(first_names)
-        first_names += i18n.AND + conversations[-1].sender + ". <break time='200ms'/>"
+        if len(conversations) > 1:
+            for telegram in conversations[:-1]:
+                first_names.append(telegram.sender)
+            first_names = ", ".join(first_names)
+            first_names += i18n.AND + conversations[-1].sender + ". <break time='200ms'/>"
+        else:
+            first_names = conversations[0].sender + ". <break time='200ms'/>"
 
         # Constructs a string like: "Tom, Paul, and Julia"
         return first_names
