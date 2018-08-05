@@ -40,7 +40,7 @@ class GenericLanguageModel(object):
         self.WRONG_INTENT = "Sorry das habe ich jetzt nicht nachvollziehen können. Ich kann dir " \
                             "hier nicht weiter helfen. "
 
-        self.ACKS = ["Okay", "In Ordnung", "Alles klar"]
+        self.ACKS = ["Okay", "In Ordnung", "Alles klar", "Okey Dokey"]
         self.ACCEPTANCE_ACKS = ["Okay", "In Ordnung", "Alles klar"]
         self.DONE_ACKS = ["Okay", "In Ordnung", "Alles klar", "Geschafft"]
         self.THINKING = ["Umm", "Ahhm", "Hmmm"]
@@ -87,7 +87,7 @@ class GenericLanguageModel(object):
 
         self.WRONG_INTENT = "I didn't quite catch that. I can't help you here."
 
-        self.ACKS = ["Okay", "Alright"]
+        self.ACKS = ["Okay", "Alright", "Okey Dokey"]
         self.ACCEPTANCE_ACKS = ["Okay", "Sure", "Alright", "Got it", "You got it"]
         self.DONE_ACKS = ["Okay", "Alright", "Got it", "Done", "You got it"]
         self.THINKING = ["Umm", "Ahhm", "Hmmm"]
