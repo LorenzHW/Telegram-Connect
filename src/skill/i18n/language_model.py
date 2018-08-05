@@ -7,8 +7,11 @@ class LanguageModel(GenericLanguageModel):
         self.FIRST_NAME = None
         self.FIRST_NAME_REPROMPT = None
         self.MESSAGE = None
+        self.MESSAGE_REPROMPT = None
         self.NO_CONTACT = None
+        self.NO_CONTACT_2 = None
         self.NO_CONTACT_REPROMPT = None
+        self.NO_CONTACT_REPROMPT_2 = None
         self.MAX_NO_CONTACT = None
 
         self.REPLY = None
@@ -52,8 +55,11 @@ class LanguageModel(GenericLanguageModel):
         self.FIRST_NAME = None
         self.FIRST_NAME_REPROMPT = None
         self.MESSAGE = None
+        self.MESSAGE_REPROMPT = None
         self.NO_CONTACT = None
+        self.NO_CONTACT_2 = None
         self.NO_CONTACT_REPROMPT = None
+        self.NO_CONTACT_REPROMPT_2 = None
         self.MAX_NO_CONTACT = None
 
         ### MessageIntent ###
@@ -99,8 +105,11 @@ class LanguageModel(GenericLanguageModel):
             self.get_random_ack())
         self.FIRST_NAME_REPROMPT = self.get_random_dont_understand() + ", what was the first name?"
         self.MESSAGE = "What is the Telegram for {}?"
+        self.MESSAGE_REPROMPT = self.get_random_dont_understand() + ", what is the Telegram for {}?"
         self.NO_CONTACT = self.get_random_thinking() + ", I can't find any contact with that name. I found {}, {}, and {}. To whom should I send the Telegram?"
+        self.NO_CONTACT_2 = self.get_random_thinking() + ", I can't find any contact with that name. I found {}, and {}. To whom should I send the Telegram?"
         self.NO_CONTACT_REPROMPT = self.get_random_dont_understand() + ", I didn't catch that. I found {}, {}, and {}. To whom should I send the Telegram?"
+        self.NO_CONTACT_REPROMPT_2 = self.get_random_dont_understand() + ", I didn't catch that. I found {}, and {}. To whom should I send the Telegram?"
         self.MAX_NO_CONTACT = "Sorry. I am still having trouble understanding you, so you may want to visit the website and try the speed dial feature. " + self.get_random_goodbye()
 
         ### MessageIntent ###
@@ -141,4 +150,4 @@ class LanguageModel(GenericLanguageModel):
         self.INVALID_PHONE = "There is no Telegram account associated with that phone number. Create a Telegram Account first, before you can use that skill. Bye for now."
         self.CODE_EXPIRED = "The code already expired. Try it again. Bye for now."
         self.TWO_STEPS_VERIFICATION_ERROR = "Two step verification is not supported. Please deactivate two step verficication in Telegram to use this skill. Bye for now."
-        self.FLOODWAIT_ERROR = "The skill is unavailable due to server maintenance. You can use this skill in {} hours and {} minutes."
+        self.FLOODWAIT_ERROR = "The skill is unavailable due to server maintenance. You can use this skill in {} hours and {} minutes. Bye for now."
