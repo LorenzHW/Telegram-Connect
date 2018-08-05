@@ -89,7 +89,10 @@ def handle_authorization(handler_input):
         should_end = False
     else:
         phone_code_hash = sess_attrs.get("PHONE_CODE_HASH")
-        ok = telethon_service.sign_user_in(slots.get("code").value, phone_code_hash)
+        try:
+            ok = telethon_service.sign_user_in(slots.get("code").value, phone_code_hash)
+        except TelethonException as error:
+            return handle_telethon_error_response(error, handler_input)
 
         if ok:
             sess_attrs["ACCOUNT"]["AUTHORIZED"] = True
