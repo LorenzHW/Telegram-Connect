@@ -44,7 +44,8 @@ class GenericLanguageModel(object):
         self.ACCEPTANCE_ACKS = ["Okay", "In Ordnung", "Alles klar"]
         self.DONE_ACKS = ["Okay", "In Ordnung", "Alles klar", "Geschafft"]
         self.THINKING = ["Umm", "Ahhm", "Hmmm"]
-        self.ANYTHING_ELSE = ["Gibt es sonst noch was?", "Ist das alles?",
+        self.ANYTHING_ELSE = ["Gibt es sonst noch was?",
+                              "Gibt es noch etwas wobei ich dir helfen kann?"
                               "Brauchst du noch etwas?", "Noch etwas?"]
 
         ##############################
@@ -90,7 +91,7 @@ class GenericLanguageModel(object):
         self.ACCEPTANCE_ACKS = ["Okay", "Sure", "Alright", "Got it", "You got it"]
         self.DONE_ACKS = ["Okay", "Alright", "Got it", "Done", "You got it"]
         self.THINKING = ["Umm", "Ahhm", "Hmmm"]
-        self.ANYTHING_ELSE = ["Anything else?", "Will that be all?",
+        self.ANYTHING_ELSE = ["Anything else?", "Is there something else I can help you with?",
                               "Do you need anything else?", "Is there something else you need?"]
 
         ##############################
