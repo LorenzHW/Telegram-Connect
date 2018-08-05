@@ -32,26 +32,37 @@ class SendIntentHandler(AbstractRequestHandler):
                     reprompt = i18n.FIRST_NAME_REPROMPT
                 else:
                     if not sess_attrs.get("FIRST_NAMES"):
-                        # TODO: REQUEST INTO BACKEND: GETS USERS
                         contacts = self.telethon_service.get_potential_contacts(slot.value)
                         if len(contacts) == 1:
                             slot_to_elicit = "message"
+                            sess_attrs["TELETHON_ENTITY_ID"] = contacts[0].telegram_id
                             speech_text = i18n.MESSAGE.format(contacts[0].first_name)
+                            reprompt = i18n.MESSAGE_REPROMPT.format(contacts[0].first_name)
                         else:
                             slot_to_elicit = "first_name"
-                            name_1 = contacts[0].first_name
-                            name_2 = contacts[1].first_name
-                            name_3 = contacts[2].first_name
-                            speech_text = i18n.NO_CONTACT.format(name_1, name_2, name_3)
-                            reprompt = i18n.NO_CONTACT_REPROMPT.format(name_1, name_2, name_3)
-                            sess_attrs["FIRST_NAMES"] = [contact.first_name for contact in contacts]
+                            if len(contacts) == 3:
+                                name_1 = contacts[0].first_name
+                                name_2 = contacts[1].first_name
+                                name_3 = contacts[2].first_name
+                                speech_text = i18n.NO_CONTACT.format(name_1, name_2, name_3)
+                                reprompt = i18n.NO_CONTACT_REPROMPT.format(name_1, name_2, name_3)
+                            else:
+                                name_1 = contacts[0].first_name
+                                name_2 = contacts[1].first_name
+                                speech_text = i18n.NO_CONTACT_2.format(name_1, name_2)
+                                reprompt = i18n.NO_CONTACT_REPROMPT_2.format(name_1, name_2)
 
+                            sess_attrs["FIRST_NAMES"] = [contact.first_name for contact in contacts]
+                            sess_attrs["TELETHON_IDS"] = [contact.telegram_id for contact in
+                                                          contacts]
                     else:
                         # Multiple contacts were found. Alexa provided three choices.
+                        # Now we check what user chose
                         first_names = sess_attrs["FIRST_NAMES"]
-                        name = get_most_likely_name(first_names, slot.value)
+                        name, index = get_most_likely_name(first_names, slot.value)
 
                         if name:
+                            sess_attrs["TELETHON_ENTITY_ID"] = sess_attrs.get("TELETHON_IDS")[index]
                             slot_to_elicit = "message"
                             speech_text = i18n.get_random_acceptance_ack() + ", " \
                                           + i18n.MESSAGE.format(name)
@@ -67,7 +78,7 @@ class SendIntentHandler(AbstractRequestHandler):
                 handler_input.response_builder.add_directive(elicit_directive)
 
             if slot.name == "message" and slot.value:
-                send_telegram("NAME OF SEND TELEGRAM")
+                send_telegram(sess_attrs["TELETHON_ENTITY_ID"], slot.value)
                 speech_text = i18n.get_random_anyting_else()
                 reprompt = i18n.FALLBACK
                 sess_attrs.clear()
