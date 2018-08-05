@@ -38,13 +38,15 @@ def get_most_likely_name(first_names, slot_value):
     prev_percentage = 0
     s = StringComparer()
     contact = None
+    list_index = None
 
     for index, name in enumerate(first_names):
         percentage = s.similar(name, slot_value)
         if percentage > 0.7 and percentage > prev_percentage:
             prev_percentage = percentage
             contact = first_names[index]
-    return contact
+            list_index = index
+    return contact, list_index
 
 
 class StringComparer():
@@ -55,10 +57,9 @@ class StringComparer():
         return SequenceMatcher(None, a, b).ratio()
 
 
-def send_telegram(first_name):
-    print("SEND_TELEGRAM CONTACT")
-    print(first_name)
-    pass
+def send_telegram(telegram_api_id, message):
+    telethon_service = TelethonService()
+    telethon_service.send_telegram(telegram_api_id, message)
 
 
 def handle_authorization(handler_input):
