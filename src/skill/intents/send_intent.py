@@ -2,11 +2,11 @@ from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.utils import is_intent_name
 from ask_sdk_model import Intent
 from ask_sdk_model.dialog import ElicitSlotDirective
+from ask_sdk_model.slu.entityresolution import StatusCode
 
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
-from src.skill.utils.utils import get_most_likely_name
 
 
 class SendIntentHandler(AbstractRequestHandler):
@@ -44,7 +44,7 @@ class SendIntentHandler(AbstractRequestHandler):
                             speech_text = i18n.MESSAGE.format(contacts[0].first_name)
                             reprompt = i18n.MESSAGE_REPROMPT.format(contacts[0].first_name)
                         else:
-                            slot_to_elicit = "first_name"
+                            slot_to_elicit = "a_b_or_c"
                             if len(contacts) == 3:
                                 name_1 = contacts[0].first_name
                                 name_2 = contacts[1].first_name
@@ -63,10 +63,18 @@ class SendIntentHandler(AbstractRequestHandler):
                     else:
                         # Multiple contacts were found. Alexa provided three choices.
                         # Now we check what user chose
-                        first_names = sess_attrs["FIRST_NAMES"]
-                        name, index = get_most_likely_name(first_names, slot.value)
-
-                        if name:
+                        # first_names = sess_attrs["FIRST_NAMES"]
+                        # name, index = get_most_likely_name(first_names, slot.value)
+                        a_b_or_c = slots.get("a_b_or_c")
+                        slot_resolution = a_b_or_c.resolutions.resolutions_per_authority[0]
+                        if slot_resolution.status.code is StatusCode.ER_SUCCESS_MATCH:
+                            if slot_resolution.values[0].value.name == "A":
+                                index = 0
+                            elif slot_resolution.values[0].value.name == "B":
+                                index = 1
+                            else:
+                                index = 2
+                            name = sess_attrs["FIRST_NAMES"][index]
                             sess_attrs["TELETHON_ENTITY_ID"] = sess_attrs.get("TELETHON_IDS")[index]
                             slot_to_elicit = "message"
                             speech_text = i18n.get_random_acceptance_ack() + ", " \
@@ -85,7 +93,7 @@ class SendIntentHandler(AbstractRequestHandler):
             if slot.name == "message" and slot.value:
                 try:
                     entity_id = sess_attrs.get("TELETHON_ENTITY_ID")
-                    self.telethon_service.send_telegram(entity_id, slot.value)
+                    # self.telethon_service.send_telegram(entity_id, slot.value)
                 except TelethonException as error:
                     return handle_telethon_error_response(error, handler_input)
 

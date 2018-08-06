@@ -108,11 +108,11 @@ class LanguageModel(GenericLanguageModel):
         self.FIRST_NAME_REPROMPT = self.get_random_dont_understand() + ", what was the first name?"
         self.MESSAGE = "What is the Telegram for {}?"
         self.MESSAGE_REPROMPT = self.get_random_dont_understand() + ", what is the Telegram for {}?"
-        self.NO_CONTACT = self.get_random_thinking() + ", I can't find any contact with that name. I found {}, {}, and {}. To whom should I send the Telegram?"
-        self.NO_CONTACT_2 = self.get_random_thinking() + ", I can't find any contact with that name. I found {}, and {}. To whom should I send the Telegram?"
-        self.NO_CONTACT_REPROMPT = self.get_random_dont_understand() + ", I didn't catch that. I found {}, {}, and {}. To whom should I send the Telegram?"
-        self.NO_CONTACT_REPROMPT_2 = self.get_random_dont_understand() + ", I didn't catch that. I found {}, and {}. To whom should I send the Telegram?"
-        self.MAX_NO_CONTACT = "Sorry. I am still having trouble understanding you, so you may want to visit the website and try the speed dial feature. " + self.get_random_goodbye()
+        self.NO_CONTACT = self.get_random_thinking() + ", I can't find any contact with that name. I found: <break time='100ms'/> A <break time='150ms'/> {}, <break time='100ms'/> B <break time='150ms'/> {}, and <break time='100ms'/> C <break time='150ms'/> {}. To whom should I send the Telegram?"
+        self.NO_CONTACT_2 = self.get_random_thinking() + ", I can't find any contact with that name. I found <break time='100ms'/> A <break time='150ms'/> {}, and <break time='100ms'/> B <break time='150ms'/> {}. To whom should I send the Telegram?"
+        self.NO_CONTACT_REPROMPT = self.get_random_dont_understand() + ", I didn't catch that. I found: <break time='100ms'/> A <break time='150ms'/> {}, <break time='100ms'/> B <break time='150ms'/> {}, and <break time='100ms'/> C <break time='150ms'/> {}. To whom should I send the Telegram?"
+        self.NO_CONTACT_REPROMPT_2 = self.get_random_dont_understand() + ", I didn't catch that. I found: <break time='100ms'/> A <break time='150ms'/> {}, and <break time='100ms'/>  <break time='150ms'/> {}. To whom should I send the Telegram?"
+        self.MAX_NO_CONTACT = "Sorry. I am still having trouble understanding you. Please say: <break time='100ms'/> A <break time='150ms'/> <break time='100ms'/> B <break time='150ms'/> or <break time='100ms'/> C <break time='150ms'/>. Otherwise you can try out the speed dial feature. Check the skill description for more information. " + self.get_random_goodbye()
 
         ### MessageIntent ###
         self.REPLY = "<break time='200ms'/> Do you want to reply?"
