@@ -1,6 +1,6 @@
 import requests
 
-from src.skill.models.general_models import DailyTelegramsAccount, Contact
+from src.skill.models.general_models import DailyTelegramsAccount
 from src.skill.utils.constants import Constants
 from src.skill.utils.exceptions import BackendException
 
@@ -16,7 +16,7 @@ class DailyTelegramsService(object):
         pass
 
     def get_contacts(self):
-        r = self.execute_request(self.contacts_url)
+        r = self._execute_request(self.contacts_url)
         if isinstance(r, int):
             raise BackendException(r)
 
@@ -28,7 +28,7 @@ class DailyTelegramsService(object):
         this list contains only the authorized user.
         :return: DailyTelegramsAccount
         """
-        r = self.execute_request(self.account_url)
+        r = self._execute_request(self.account_url)
 
         if isinstance(r, int):
             # we got some http error status code
@@ -44,16 +44,15 @@ class DailyTelegramsService(object):
 
             return daily_telegrams_account
 
-    def get_contact_for_speed_dial_number(self, speed_dial_number):
+    def get_firstname_for_speed_dial_number(self, speed_dial_number):
         contacts = self.get_contacts()
 
         for contact_info in contacts:
             if contact_info['speed_dial_number'] == int(speed_dial_number):
                 first_name = contact_info['first_name']
-                last_name = contact_info['last_name']
-                return Contact(first_name, speed_dial_number, last_name)
+                return first_name
 
-    def create_authorization_header(self):
+    def _create_authorization_header(self):
         """
         Authorization header constructed as in docs:
         https://django-oauth-toolkit.readthedocs.io/en/latest/rest-framework/getting_started.html#step-5-testing-restricted-access
@@ -64,8 +63,8 @@ class DailyTelegramsService(object):
 
         return headers
 
-    def execute_request(self, url):
-        headers = self.create_authorization_header()
+    def _execute_request(self, url):
+        headers = self._create_authorization_header()
 
         r = requests.get(url, headers=headers)
 
