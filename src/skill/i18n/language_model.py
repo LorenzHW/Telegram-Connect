@@ -39,6 +39,7 @@ class LanguageModel(GenericLanguageModel):
         self.SPEED_DIAL = None
         self.SPEED_DIAL_REPROMPT = None
         self.NO_SPEED_DIAL_CONTACT = None
+        self.MULTIPLE_TELEGRAM_CONTACTS_FOR_SPEED_DIAL = None
 
         self.INVALID_PHONE = None
         self.CODE_EXPIRED = None
@@ -92,6 +93,7 @@ class LanguageModel(GenericLanguageModel):
         self.SPEED_DIAL = None
         self.SPEED_DIAL_REPROMPT = None
         self.NO_SPEED_DIAL_CONTACT = None
+        self.MULTIPLE_TELEGRAM_CONTACTS_FOR_SPEED_DIAL = None
 
         ## Errors ##
         self.INVALID_PHONE = None
@@ -145,6 +147,7 @@ class LanguageModel(GenericLanguageModel):
         self.SPEED_DIAL = "What is the number of your speed dial contact?"
         self.SPEED_DIAL_REPROMPT = self.get_random_dont_understand() + ", what number?"
         self.NO_SPEED_DIAL_CONTACT = self.get_random_thinking() + ", I can't find any speed dial contact with that number. Is there anything else I can help you with?"
+        self.MULTIPLE_TELEGRAM_CONTACTS_FOR_SPEED_DIAL = self.get_random_thinking() + ", I found multiple contacts with that first name. Please check that the first name of your Telegram contact matches exactly the first name of your speed dial contact. Bye for now."
 
         ## Errors ##
         self.INVALID_PHONE = "There is no Telegram account associated with that phone number. Create a Telegram Account first, before you can use that skill. Bye for now."
