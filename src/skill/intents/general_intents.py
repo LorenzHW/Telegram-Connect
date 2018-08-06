@@ -76,9 +76,10 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
     def handle(self, handler_input, exception):
         print("Encountered following exception: {}".format(exception))
         sess_attrs = handler_input.attributes_manager.session_attributes
+        i18n = LanguageModel(handler_input.request_envelope.request.locale)
 
-        speech = "Sorry, there was some problem. Please try again!!"
-        handler_input.response_builder.speak(speech).ask(speech)
+        speech = i18n.FRONTEND_ERROR
+        handler_input.response_builder.speak(speech).set_should_end_session(True)
         sess_attrs.clear()
 
         return handler_input.response_builder.response

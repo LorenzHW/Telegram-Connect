@@ -5,8 +5,8 @@ class GenericLanguageModel(object):
     def __init__(self, locale):
         self.skill_name = "Daily Telegrams"
 
-        self.ERROR = None
         self.BACKEND_EXCEPTION = None
+        self.FRONTEND_ERROR = None
         self.SERVER_ERROR = None
         self.ACCOUNT_LINKING_REQUIRED = None
         self.WRONG_INTENT = None
@@ -28,8 +28,8 @@ class GenericLanguageModel(object):
             self.set_generic_phrases_english()
 
     def set_generic_phrases_german(self):
-        self.ERROR = "Fehler"
         self.BACKEND_EXCEPTION = "Das ist ein Fehler, der nicht passieren dürfte. Tut mir leid."
+        self.FRONTEND_ERROR = self.get_random_thinking() + ", es ist ein Fehler aufgetreten. Versuche es später noch einmal. " + self.get_random_goodbye()
         self.SERVER_ERROR = "Aufgrund von Server Updates ist dieser Skill momentan nicht " \
                             "verfügbar. Versuche es später erneut "
         self.ACCOUNT_LINKING_REQUIRED = "Du benötigst einen {} Account um diesen Skill " \
@@ -73,8 +73,8 @@ class GenericLanguageModel(object):
                          "bon voyage", "shalom", "vale"]
 
     def set_generic_phrases_english(self):
-        self.ERROR = "Error"
         self.BACKEND_EXCEPTION = "This is an error that shouldn't happen. I am sorry."
+        self.FRONTEND_ERROR = self.get_random_thinking() + ", an unexpected error happened. Try again later." + self.get_random_goodbye()
         self.SERVER_ERROR = "Due to updates the service is currently not available." \
                             " Try again later."
         self.ACCOUNT_LINKING_REQUIRED = "Welcome to {}. {} let's you connect Alexa with your Telegram Messenger. " \
