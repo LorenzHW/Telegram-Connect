@@ -18,6 +18,7 @@ from src.skill.intents.speed_intent import SpeedIntentHandler
 from src.skill.intents.yes_no_intents import YesIntentHandler, NoIntentHandler
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.constants import Constants
+from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 
 sb = SkillBuilderCustom()
 
@@ -41,7 +42,10 @@ class LaunchRequestHandler(AbstractRequestHandler):
         telethon_service = TelethonService()
 
         if user_is_authorized:
-            user_has_telegrams = telethon_service.check_telegrams()
+            try:
+                user_has_telegrams = telethon_service.check_telegrams()
+            except TelethonException as error:
+                return handle_telethon_error_response(error, handler_input)
 
             if user_has_telegrams:
                 speech_text = i18n.USER_HAS_TELEGRAMS

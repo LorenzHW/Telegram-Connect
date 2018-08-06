@@ -6,7 +6,7 @@ from ask_sdk_model.dialog import ElicitSlotDirective
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.utils import send_telegram
+from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 
 
 class SpeedIntentHandler(AbstractRequestHandler):
@@ -22,6 +22,7 @@ class SpeedIntentHandler(AbstractRequestHandler):
         sess_attrs = handler_input.attributes_manager.session_attributes
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
         daily_telegrams_service = DailyTelegramsService()
+        telethon_service = TelethonService()
 
         for slot_name in slots:
             slot = slots[slot_name]
@@ -32,12 +33,27 @@ class SpeedIntentHandler(AbstractRequestHandler):
                     reprompt = i18n.SPEED_DIAL_REPROMPT
                 else:
                     slot_to_elicit = "message"
-                    contact = daily_telegrams_service.get_contact_for_speed_dial_number(slot.value)
-                    if contact:
+                    first_name = daily_telegrams_service.get_firstname_for_speed_dial_number(
+                        slot.value)
+                    if first_name:
+                        try:
+                            contacts = telethon_service.get_potential_contacts(first_name)
+                        except TelethonException as error:
+                            return handle_telethon_error_response(error, handler_input)
+
+                        if len(contacts) > 1:
+                            speech_text = i18n.MULTIPLE_TELEGRAM_CONTACTS_FOR_SPEED_DIAL
+                            handler_input.response_builder.speak(speech_text) \
+                                .set_should_end_session(True)
+                            return handler_input.response_builder.response
+
                         speech_text = i18n.get_random_acceptance_ack() + ", " \
-                                      + i18n.MESSAGE.format(contact.first_name)
+                                      + i18n.MESSAGE.format(contacts[0].first_name)
                         reprompt = i18n.get_random_dont_understand() + ", " \
-                                   + i18n.MESSAGE.format(contact.first_name)
+                                   + i18n.MESSAGE.format(contacts[0].first_name)
+
+                        sess_attrs["FIRST_NAMES"] = [contacts[0].first_name]
+                        sess_attrs["TELETHON_ENTITY_ID"] = contacts[0].telegram_id
                     else:
                         speech_text = i18n.NO_SPEED_DIAL_CONTACT
                         reprompt = i18n.FALLBACK
@@ -49,7 +65,12 @@ class SpeedIntentHandler(AbstractRequestHandler):
                 handler_input.response_builder.add_directive(elicit_directive)
 
             if slot.name == "message" and slot.value:
-                send_telegram("NAME OF SEND TELEGRAM")
+                try:
+                    entity_id = sess_attrs.get("TELETHON_ENTITY_ID")
+                    self.telethon_service.send_telegram(entity_id, slot.value)
+                except TelethonException as error:
+                    return handle_telethon_error_response(error, handler_input)
+
                 speech_text = i18n.get_random_anyting_else()
                 reprompt = i18n.FALLBACK
                 sess_attrs.clear()

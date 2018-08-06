@@ -5,7 +5,8 @@ from ask_sdk_model.dialog import ElicitSlotDirective
 
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.utils import get_most_likely_name, send_telegram
+from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
+from src.skill.utils.utils import get_most_likely_name
 
 
 class SendIntentHandler(AbstractRequestHandler):
@@ -32,7 +33,11 @@ class SendIntentHandler(AbstractRequestHandler):
                     reprompt = i18n.FIRST_NAME_REPROMPT
                 else:
                     if not sess_attrs.get("FIRST_NAMES"):
-                        contacts = self.telethon_service.get_potential_contacts(slot.value)
+                        try:
+                            contacts = self.telethon_service.get_potential_contacts(slot.value)
+                        except TelethonException as error:
+                            return handle_telethon_error_response(error, handler_input)
+
                         if len(contacts) == 1:
                             slot_to_elicit = "message"
                             sess_attrs["TELETHON_ENTITY_ID"] = contacts[0].telegram_id
@@ -78,7 +83,12 @@ class SendIntentHandler(AbstractRequestHandler):
                 handler_input.response_builder.add_directive(elicit_directive)
 
             if slot.name == "message" and slot.value:
-                send_telegram(sess_attrs["TELETHON_ENTITY_ID"], slot.value)
+                try:
+                    entity_id = sess_attrs.get("TELETHON_ENTITY_ID")
+                    self.telethon_service.send_telegram(entity_id, slot.value)
+                except TelethonException as error:
+                    return handle_telethon_error_response(error, handler_input)
+
                 speech_text = i18n.get_random_anyting_else()
                 reprompt = i18n.FALLBACK
                 sess_attrs.clear()

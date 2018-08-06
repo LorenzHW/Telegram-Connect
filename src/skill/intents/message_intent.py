@@ -3,6 +3,7 @@ from ask_sdk_core.utils import is_intent_name
 
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
+from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 
 
 class MessageIntentHandler(AbstractRequestHandler):
@@ -26,7 +27,11 @@ class MessageIntentHandler(AbstractRequestHandler):
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
 
         if not sess_attrs.get("TELEGRAMS"):
-            conversations = self.telethon_service.get_conversations(i18n)
+            try:
+                conversations = self.telethon_service.get_conversations(i18n)
+            except TelethonException as error:
+                return handle_telethon_error_response(error, handler_input)
+
             first_names = self.get_first_names(conversations, i18n)
             contacts = [telegram.sender for telegram in conversations]
             spoken_telegrams = self.spoken_telegrams(conversations, i18n)

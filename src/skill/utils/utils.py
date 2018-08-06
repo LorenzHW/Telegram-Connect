@@ -57,11 +57,6 @@ class StringComparer():
         return SequenceMatcher(None, a, b).ratio()
 
 
-def send_telegram(telegram_api_id, message):
-    telethon_service = TelethonService()
-    telethon_service.send_telegram(telegram_api_id, message)
-
-
 def handle_authorization(handler_input):
     i18n = LanguageModel(handler_input.request_envelope.request.locale)
     telethon_service = TelethonService()
