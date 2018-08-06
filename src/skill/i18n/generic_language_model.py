@@ -28,6 +28,17 @@ class GenericLanguageModel(object):
             self.set_generic_phrases_english()
 
     def set_generic_phrases_german(self):
+        self.ACKS = ["Okay", "In Ordnung", "Alles klar", "Okey Dokey"]
+        self.ACCEPTANCE_ACKS = ["Okay", "In Ordnung", "Alles klar"]
+        self.DONE_ACKS = ["Okay", "In Ordnung", "Alles klar", "Geschafft"]
+        self.THINKING = ["Umm", "Ahhm", "Hmmm"]
+        self.ANYTHING_ELSE = ["Gibt es sonst noch was?",
+                              "Gibt es noch etwas wobei ich dir helfen kann?"
+                              "Brauchst du noch etwas?", "Noch etwas?"]
+        self.GOODBYES = ["adiós", "aloha", "arrivederci", "ciao", "auf Wiedersehen", "au revoir",
+                         "bon voyage", "shalom", "vale"]
+        self.DONT_UNDERSTAND = ["Sorry", "Entschuldigung", "Pardon"]
+
         self.BACKEND_EXCEPTION = "Das ist ein Fehler, der nicht passieren dürfte. Tut mir leid."
         self.FRONTEND_ERROR = self.get_random_thinking() + ", es ist ein Fehler aufgetreten. Versuche es später noch einmal. " + self.get_random_goodbye()
         self.SERVER_ERROR = "Aufgrund von Server Updates ist dieser Skill momentan nicht " \
@@ -40,19 +51,10 @@ class GenericLanguageModel(object):
         self.WRONG_INTENT = "Sorry das habe ich jetzt nicht nachvollziehen können. Ich kann dir " \
                             "hier nicht weiter helfen. "
 
-        self.ACKS = ["Okay", "In Ordnung", "Alles klar", "Okey Dokey"]
-        self.ACCEPTANCE_ACKS = ["Okay", "In Ordnung", "Alles klar"]
-        self.DONE_ACKS = ["Okay", "In Ordnung", "Alles klar", "Geschafft"]
-        self.THINKING = ["Umm", "Ahhm", "Hmmm"]
-        self.ANYTHING_ELSE = ["Gibt es sonst noch was?",
-                              "Gibt es noch etwas wobei ich dir helfen kann?"
-                              "Brauchst du noch etwas?", "Noch etwas?"]
-
         ##############################
         # Required intents
         ##############################
         self.WELCOME = "Willkommen"
-        self.DONT_UNDERSTAND = ["Sorry", "Entschuldigung", "Pardon"]
         self.FALLBACK = self.get_random_dont_understand() + ", was hast du gesagt?"
         self.FALLBACK_INTENT = "{} kann dir dabei nicht helfen. Du kannst entweder ein Telegram " \
                                "verschicken oder checken ob es neue gibt. Also, was brauchst " \
@@ -69,12 +71,19 @@ class GenericLanguageModel(object):
                     "Telegram.' oder 'Checke meine Telegramme.' oder 'Verschicke ein " \
                     "Speedgram.'".format(self.skill_name)
 
+    def set_generic_phrases_english(self):
+        self.ACKS = ["Okay", "Alright", "Okey Dokey"]
+        self.ACCEPTANCE_ACKS = ["Okay", "Sure", "Alright", "Got it", "You got it"]
+        self.DONE_ACKS = ["Okay", "Alright", "Got it", "Done", "You got it"]
+        self.THINKING = ["Umm", "Ahhm", "Hmmm"]
+        self.ANYTHING_ELSE = ["Anything else?", "Is there something else I can help you with?",
+                              "Do you need anything else?", "Is there something else you need?"]
+        self.DONT_UNDERSTAND = ["Sorry", "Excuse me", "Pardon"]
         self.GOODBYES = ["adiós", "aloha", "arrivederci", "ciao", "auf Wiedersehen", "au revoir",
                          "bon voyage", "shalom", "vale"]
 
-    def set_generic_phrases_english(self):
         self.BACKEND_EXCEPTION = "This is an error that shouldn't happen. I am sorry."
-        self.FRONTEND_ERROR = self.get_random_thinking() + ", an unexpected error happened. Try again later." + self.get_random_goodbye()
+        self.FRONTEND_ERROR = self.get_random_thinking() + ", an unexpected error happened. Try again later. " + self.get_random_goodbye()
         self.SERVER_ERROR = "Due to updates the service is currently not available." \
                             " Try again later."
         self.ACCOUNT_LINKING_REQUIRED = "Welcome to {}. {} let's you connect Alexa with your Telegram Messenger. " \
@@ -87,18 +96,10 @@ class GenericLanguageModel(object):
 
         self.WRONG_INTENT = "I didn't quite catch that. I can't help you here."
 
-        self.ACKS = ["Okay", "Alright", "Okey Dokey"]
-        self.ACCEPTANCE_ACKS = ["Okay", "Sure", "Alright", "Got it", "You got it"]
-        self.DONE_ACKS = ["Okay", "Alright", "Got it", "Done", "You got it"]
-        self.THINKING = ["Umm", "Ahhm", "Hmmm"]
-        self.ANYTHING_ELSE = ["Anything else?", "Is there something else I can help you with?",
-                              "Do you need anything else?", "Is there something else you need?"]
-
         ##############################
         # Required intents
         ##############################
         self.WELCOME = "Welcome"
-        self.DONT_UNDERSTAND = ["Sorry", "Excuse me", "Pardon"]
         self.FALLBACK = self.get_random_dont_understand() + ", what did you say?"
         self.FALLBACK_INTENT = "{} can't help you here. You can either send a Telegram or check " \
                                "for new ones. So, which do you need?".format(self.skill_name)
@@ -113,8 +114,6 @@ class GenericLanguageModel(object):
                     "Furthermore, you can also check for new telegrams. Say: 'Check my " \
                     "telegrams.' or 'Send a telegram' or " \
                     "'send a speedgram' ".format(self.skill_name)
-        self.GOODBYES = ["adiós", "aloha", "arrivederci", "ciao", "auf Wiedersehen", "au revoir",
-                         "bon voyage", "shalom", "vale"]
 
     def get_random_ack(self):
         return random.choice(self.ACKS)
