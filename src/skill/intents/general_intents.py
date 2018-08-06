@@ -78,6 +78,9 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         sess_attrs = handler_input.attributes_manager.session_attributes
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
 
+        # Technically also backend exceptions will be logged here. E.G.: if problem when
+        # sending a telegram. I don't catch all Backend exceptions, only on account
+        # interceptor
         speech = i18n.FRONTEND_ERROR
         handler_input.response_builder.speak(speech).set_should_end_session(True)
         sess_attrs.clear()
