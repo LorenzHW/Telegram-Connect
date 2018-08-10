@@ -154,3 +154,4 @@ class LanguageModel(GenericLanguageModel):
         self.CODE_EXPIRED = "The code already expired. Try it again. Bye for now."
         self.TWO_STEPS_VERIFICATION_ERROR = "Two step verification is not supported. Please deactivate two step verficication in Telegram to use this skill. Bye for now."
         self.FLOODWAIT_ERROR = "The skill is unavailable due to server maintenance. You can use this skill in {} hours and {} minutes. Bye for now."
+        self.CHAT_ADMIN_REQUIRED_ERROR = "You don't have the privilege to send a Telegram."

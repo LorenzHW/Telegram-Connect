@@ -36,6 +36,8 @@ def handle_telethon_error_response(error, handler_input):
         speech_text = i18n.CODE_EXPIRED
     elif error_name == "AuthKeyUnregisteredError":
         speech_text = i18n.SERVER_ERROR
+    elif error_name == "ChatAdminRequiredError":
+        speech_text = i18n.CHAT_ADMIN_REQUIRED_ERROR
 
     handler_input.response_builder.speak(speech_text) \
         .set_should_end_session(True)
