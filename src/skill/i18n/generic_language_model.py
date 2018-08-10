@@ -134,5 +134,8 @@ class GenericLanguageModel(object):
         random_anyting_else = random.choice(self.ANYTHING_ELSE)
         return self.get_random_done_ack() + ". " + random_anyting_else
 
+    def get_random_anyting_else_without_ack(self):
+        return random.choice(self.ANYTHING_ELSE)
+
     def get_random_dont_understand(self):
         return random.choice(self.DONT_UNDERSTAND)

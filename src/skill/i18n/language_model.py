@@ -17,6 +17,7 @@ class LanguageModel(GenericLanguageModel):
         self.REPLY = None
         self.NEW_TELEGRAMS = None
         self.NO_MORE_TELEGRAMS = None
+        self.NO_TELEGRAMS = None
         self.AND = None
         self.GROUP_INTRO = None
         self.GROUP_MESSAGE_INTRO = None
@@ -69,6 +70,7 @@ class LanguageModel(GenericLanguageModel):
         self.REPLY = None
         self.NEW_TELEGRAMS = None
         self.NO_MORE_TELEGRAMS = None
+        self.NO_TELEGRAMS = None
         self.AND = None
         self.GROUP_INTRO = None
         self.GROUP_MESSAGE_INTRO = None
@@ -122,6 +124,7 @@ class LanguageModel(GenericLanguageModel):
         self.REPLY = "<break time='200ms'/> Do you want to reply?"
         self.NEW_TELEGRAMS = "You got new Telegrams from: "
         self.NO_MORE_TELEGRAMS = "There are no more Telegrams. Is there anything else I can help you with?"
+        self.NO_TELEGRAMS = "You got no new telegrams. " + self.get_random_anyting_else_without_ack()
         self.AND = ", and "
         self.GROUP_INTRO = "In {}: <break time='200ms'/>"
         self.GROUP_MESSAGE_INTRO = "{} wrote: <break time='100ms'/>"

@@ -69,6 +69,7 @@ class YesIntentHandler(AbstractRequestHandler):
 
         # User answered Yes on question: "Is there anything else I can help you with?"
         if (previous_intent == "SendIntent"
+            or previous_intent == "MessageIntent"
             or previous_intent == "SpeedIntent"
             or previous_intent == "CustomYesIntent"
             or previous_intent == "AMAZON.NoIntent") \
@@ -110,11 +111,6 @@ class NoIntentHandler(AbstractRequestHandler):
             handler_input.response_builder.speak(speech_text).set_should_end_session(True)
             return handler_input.response_builder.response
 
-        if previous_intent == "SendIntent" or previous_intent == "SpeedIntent":
-            speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
-            handler_input.response_builder.speak(speech_text).set_should_end_session(True)
-            return handler_input.response_builder.response
-
         # User answered No on the question if he wants to reply
         if (previous_intent == "CustomYesIntent"
             or previous_intent == "AMAZON.NoIntent"
@@ -127,10 +123,16 @@ class NoIntentHandler(AbstractRequestHandler):
 
         # User answered No on question: "Is there anything else I can help you with?
         if (previous_intent == "SendIntent"
+            or previous_intent == "MessageIntent"
             or previous_intent == "SpeedIntent"
             or previous_intent == "CustomYesIntent"
             or previous_intent == "AMAZON.NoIntent") \
                 and not sess_attrs.get("TELEGRAMS"):
+            speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
+            handler_input.response_builder.speak(speech_text).set_should_end_session(True)
+            return handler_input.response_builder.response
+
+        if previous_intent == "SendIntent" or previous_intent == "SpeedIntent" or previous_intent == "MessageIntent":
             speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
             handler_input.response_builder.speak(speech_text).set_should_end_session(True)
             return handler_input.response_builder.response

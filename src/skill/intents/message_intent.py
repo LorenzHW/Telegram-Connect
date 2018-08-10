@@ -32,6 +32,10 @@ class MessageIntentHandler(AbstractRequestHandler):
             except TelethonException as error:
                 return handle_telethon_error_response(error, handler_input)
 
+            if len(conversations) == 0:
+                speech_text = i18n.NO_TELEGRAMS
+                return speech_text
+
             first_names = self.get_first_names(conversations, i18n)
             contacts = [telegram.sender for telegram in conversations]
             entity_ids = [telegram.entity_id for telegram in conversations]
