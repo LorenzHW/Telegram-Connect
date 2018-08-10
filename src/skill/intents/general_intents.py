@@ -78,10 +78,21 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         sess_attrs = handler_input.attributes_manager.session_attributes
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
 
-        # Technically also backend exceptions will be logged here. E.G.: if problem when
-        # sending a telegram. I don't catch all Backend exceptions, only on account
-        # interceptor
-        speech = i18n.FRONTEND_ERROR
+        if "Couldn't find handler that can handle the request" in "{}".format(exception):
+            detour_exception = True
+        else:
+            detour_exception = False
+
+        if detour_exception and sess_attrs.get("ACCOUNT").get("AUTHORIZED"):
+            speech = i18n.DETOUR_EXCEPTION
+        elif detour_exception and not sess_attrs.get("ACCOUNT").get("AUTHORIZED"):
+            speech = i18n.NOT_AUTHORIZED_DETOUR
+        else:
+            # Technically also backend exceptions will be logged here. E.G.: if problem when
+            # sending a telegram. I don't catch all Backend exceptions, only on account
+            # interceptor
+            speech = i18n.FRONTEND_ERROR
+
         handler_input.response_builder.speak(speech).set_should_end_session(True)
         sess_attrs.clear()
 

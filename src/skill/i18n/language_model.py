@@ -48,6 +48,7 @@ class LanguageModel(GenericLanguageModel):
         self.TWO_STEPS_VERIFICATION_ERROR = None
         self.FLOODWAIT_ERROR = None
         self.CHAT_ADMIN_REQUIRED_ERROR = None
+        self.NOT_AUTHORIZED_DETOUR = None
 
         if locale == "de-DE":
             self.set_german_language_model()
@@ -106,6 +107,7 @@ class LanguageModel(GenericLanguageModel):
         self.TWO_STEPS_VERIFICATION_ERROR = None
         self.FLOODWAIT_ERROR = None
         self.CHAT_ADMIN_REQUIRED_ERROR = None
+        self.NOT_AUTHORIZED_DETOUR = None
 
     def set_english_language_model(self):
         ### SendIntent ###
@@ -163,3 +165,5 @@ class LanguageModel(GenericLanguageModel):
         self.TWO_STEPS_VERIFICATION_ERROR = "Two step verification is not supported. Please deactivate two step verficication in Telegram to use this skill. Bye for now."
         self.FLOODWAIT_ERROR = "The skill is unavailable due to server maintenance. You can use this skill in {} hours and {} minutes. Bye for now."
         self.CHAT_ADMIN_REQUIRED_ERROR = "You don't have the privilege to send a Telegram."
+        self.NOT_AUTHORIZED_DETOUR = "You are currently not authorized. Please authorize first if you want to use all features of this skill. To start the authorization process say: 'Alexa, start {}'. Bye for now".format(
+            self.skill_name)
