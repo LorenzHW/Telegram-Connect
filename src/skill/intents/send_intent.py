@@ -93,7 +93,7 @@ class SendIntentHandler(AbstractRequestHandler):
             if slot.name == "message" and slot.value:
                 try:
                     entity_id = sess_attrs.get("TELETHON_ENTITY_ID")
-                    # self.telethon_service.send_telegram(entity_id, slot.value)
+                    self.telethon_service.send_telegram(entity_id, slot.value)
                 except TelethonException as error:
                     return handle_telethon_error_response(error, handler_input)
 

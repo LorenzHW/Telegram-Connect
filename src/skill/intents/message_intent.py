@@ -34,11 +34,13 @@ class MessageIntentHandler(AbstractRequestHandler):
 
             first_names = self.get_first_names(conversations, i18n)
             contacts = [telegram.sender for telegram in conversations]
+            entity_ids = [telegram.entity_id for telegram in conversations]
             spoken_telegrams = self.spoken_telegrams(conversations, i18n)
 
             sess_attrs["TELEGRAMS"] = spoken_telegrams
             sess_attrs["TELEGRAMS_COUNTER"] = 0
             sess_attrs["CONTACTS"] = contacts
+            sess_attrs["ENTITY_IDS"] = entity_ids
 
             speech_text = i18n.NEW_TELEGRAMS + first_names
             speech_text = speech_text + spoken_telegrams[sess_attrs["TELEGRAMS_COUNTER"]]

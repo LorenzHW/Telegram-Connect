@@ -7,7 +7,7 @@ from src.skill.i18n.language_model import LanguageModel
 from src.skill.intents.message_intent import MessageIntentHandler
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.utils import send_telegram, handle_authorization
+from src.skill.utils.utils import handle_authorization
 
 
 class YesIntentHandler(AbstractRequestHandler):
@@ -46,7 +46,9 @@ class YesIntentHandler(AbstractRequestHandler):
 
             if slots.get("message").value:
                 contact = sess_attrs.get("CONTACTS")[sess_attrs.get("TELEGRAMS_COUNTER") - 1]
-                send_telegram(contact, slots.get("message").value)
+                entity_id = sess_attrs.get("ENTITY_IDS")[sess_attrs.get("TELEGRAMS_COUNTER") - 1]
+                self.telethon_service.send_telegram(entity_id, slots.get("message").value)
+
                 next_telegram = MessageIntentHandler().get_telegram(handler_input)
                 speech_text = i18n.TELEGRAM_SENT.format(contact) + next_telegram
                 reprompt = i18n.FALLBACK

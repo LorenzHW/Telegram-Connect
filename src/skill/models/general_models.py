@@ -14,7 +14,8 @@ class Contact(object):
 
 
 class Conversation(object):
-    def __init__(self, sender, telegrams, is_group=False):
+    def __init__(self, sender, telegrams, is_group, entity_id):
         self.sender = sender
         self.telegrams = telegrams
         self.is_group = is_group
+        self.entity_id = entity_id
