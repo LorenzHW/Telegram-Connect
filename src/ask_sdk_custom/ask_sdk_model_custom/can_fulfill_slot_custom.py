@@ -16,5 +16,5 @@ class CanFulfillSlotCustom(object):
     }
 
     def __init__(self, can_understand=None, can_fulfill=None):
-        self.can_understand = can_understand
-        self.can_fulfill = can_fulfill
+        self.can_understand = can_understand  # YES, NO, or MAYBE
+        self.can_fulfill = can_fulfill  # YES, NO (entity resolution)

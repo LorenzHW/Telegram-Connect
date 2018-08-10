@@ -74,9 +74,27 @@ class CanFulfillIntentRequestHandler(AbstractRequestHandler):
             slots = {"first_name": can_fulfill_first_name_slot, "message": can_fulfill_message_slot}
             can_fulfill_intent = CanFulfillIntentCustom("MAYBE", slots)
             response = CanFulfillResponseCustom(can_fulfill_intent)
+        elif name == "MessageIntent":
+            can_fulfill_intent = CanFulfillIntentCustom("MAYBE")
+            response = CanFulfillResponseCustom(can_fulfill_intent)
+        elif name == "CustomYesIntent":
+            can_fulfill_message_slot = CanFulfillSlotCustom()
+            can_fulfill_code_slot = CanFulfillSlotCustom()
+
+            slots = {"message": can_fulfill_message_slot, "code": can_fulfill_code_slot}
+            can_fulfill_intent = CanFulfillIntentCustom("NO", slots)
+            response = CanFulfillResponseCustom(can_fulfill_intent)
+        elif name == "SpeedIntent":
+            can_fulfill_speed_dial_number_slot = CanFulfillSlotCustom("YES")
+            can_fulfill_message_slot = CanFulfillSlotCustom()
+
+            slots = {"speed_dial_number": can_fulfill_speed_dial_number_slot,
+                     "message": can_fulfill_message_slot}
+            can_fulfill_intent = CanFulfillIntentCustom("MAYBE", slots)
+            response = CanFulfillResponseCustom(can_fulfill_intent)
         else:
-            # TODO: Do for other intents!
-            pass
+            can_fulfill_intent = CanFulfillIntentCustom("NO")
+            response = CanFulfillResponseCustom(can_fulfill_intent)
 
         return response
 

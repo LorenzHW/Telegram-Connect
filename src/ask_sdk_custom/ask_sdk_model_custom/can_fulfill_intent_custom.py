@@ -16,5 +16,5 @@ class CanFulfillIntentCustom(object):
     }
 
     def __init__(self, can_fulfill=None, slots=None):
-        self.can_fulfill = can_fulfill
+        self.can_fulfill = can_fulfill # YES, NO, or MAYBE
         self.slots = slots
