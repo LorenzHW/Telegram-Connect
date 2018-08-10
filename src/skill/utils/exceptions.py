@@ -34,6 +34,8 @@ def handle_telethon_error_response(error, handler_input):
         speech_text = i18n.INVALID_PHONE
     elif error_name == "PhoneCodeExpiredError":
         speech_text = i18n.CODE_EXPIRED
+    elif error_name == "PhoneCodeInvalidError":
+        speech_text = i18n.CODE_INVALID
     elif error_name == "AuthKeyUnregisteredError":
         speech_text = i18n.SERVER_ERROR
     elif error_name == "ChatAdminRequiredError":

@@ -43,8 +43,10 @@ class LanguageModel(GenericLanguageModel):
 
         self.INVALID_PHONE = None
         self.CODE_EXPIRED = None
+        self.CODE_INVALID = None
         self.TWO_STEPS_VERIFICATION_ERROR = None
         self.FLOODWAIT_ERROR = None
+        self.CHAT_ADMIN_REQUIRED_ERROR = None
 
         if locale == "de-DE":
             self.set_german_language_model()
@@ -98,8 +100,10 @@ class LanguageModel(GenericLanguageModel):
         ## Errors ##
         self.INVALID_PHONE = None
         self.CODE_EXPIRED = None
+        self.CODE_INVALID = None
         self.TWO_STEPS_VERIFICATION_ERROR = None
         self.FLOODWAIT_ERROR = None
+        self.CHAT_ADMIN_REQUIRED_ERROR = None
 
     def set_english_language_model(self):
         ### SendIntent ###
@@ -152,6 +156,7 @@ class LanguageModel(GenericLanguageModel):
         ## Errors ##
         self.INVALID_PHONE = "There is no Telegram account associated with that phone number. Create a Telegram Account first, before you can use that skill. Bye for now."
         self.CODE_EXPIRED = "The code already expired. Try it again. Bye for now."
+        self.CODE_INVALID = "The code is invalid. Bye for now."
         self.TWO_STEPS_VERIFICATION_ERROR = "Two step verification is not supported. Please deactivate two step verficication in Telegram to use this skill. Bye for now."
         self.FLOODWAIT_ERROR = "The skill is unavailable due to server maintenance. You can use this skill in {} hours and {} minutes. Bye for now."
         self.CHAT_ADMIN_REQUIRED_ERROR = "You don't have the privilege to send a Telegram."
