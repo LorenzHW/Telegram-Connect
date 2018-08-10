@@ -53,7 +53,7 @@ class SpeedIntentHandler(AbstractRequestHandler):
                                    + i18n.MESSAGE.format(contacts[0].first_name)
 
                         sess_attrs["FIRST_NAMES"] = [contacts[0].first_name]
-                        sess_attrs["TELETHON_ENTITY_ID"] = contacts[0].telegram_id
+                        sess_attrs["TELETHON_ENTITY_ID"] = contacts[0].entity_id
                     else:
                         speech_text = i18n.NO_SPEED_DIAL_CONTACT
                         reprompt = i18n.FALLBACK

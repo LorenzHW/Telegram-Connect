@@ -16,7 +16,11 @@ class YesIntentHandler(AbstractRequestHandler):
         self.daily_telegrams_service = DailyTelegramsService()
 
     def can_handle(self, handler_input):
-        return is_intent_name("CustomYesIntent")(handler_input)
+        sess_attrs = handler_input.attributes_manager.session_attributes
+        # If Alexa is user listening for message slot on SendIntent it happens that she hears
+        # 'yes' and therefore executes this intent handler. We don't want that.
+        return is_intent_name("CustomYesIntent")(handler_input) and not sess_attrs.get(
+            "TELETHON_ENTITY_ID")
 
     def handle(self, handler_input):
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
@@ -81,7 +85,11 @@ class NoIntentHandler(AbstractRequestHandler):
         self.telethon_service = TelethonService()
 
     def can_handle(self, handler_input):
-        return is_intent_name("AMAZON.NoIntent")(handler_input)
+        sess_attrs = handler_input.attributes_manager.session_attributes
+        # If Alexa is user listening for message slot on SendIntent it happens that she hears
+        # 'yes' and therefore executes this intent handler. We don't want that.
+        return is_intent_name("AMAZON.NoIntent")(handler_input) and not sess_attrs.get(
+            "TELETHON_ENTITY_ID")
 
     def handle(self, handler_input):
         i18n = LanguageModel(handler_input.request_envelope.request.locale)

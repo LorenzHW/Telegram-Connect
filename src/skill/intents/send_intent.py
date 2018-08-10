@@ -40,7 +40,7 @@ class SendIntentHandler(AbstractRequestHandler):
 
                         if len(contacts) == 1:
                             slot_to_elicit = "message"
-                            sess_attrs["TELETHON_ENTITY_ID"] = contacts[0].telegram_id
+                            sess_attrs["TELETHON_ENTITY_ID"] = contacts[0].entity_id
                             speech_text = i18n.MESSAGE.format(contacts[0].first_name)
                             reprompt = i18n.MESSAGE_REPROMPT.format(contacts[0].first_name)
                         else:
@@ -58,7 +58,7 @@ class SendIntentHandler(AbstractRequestHandler):
                                 reprompt = i18n.NO_CONTACT_REPROMPT_2.format(name_1, name_2)
 
                             sess_attrs["FIRST_NAMES"] = [contact.first_name for contact in contacts]
-                            sess_attrs["TELETHON_IDS"] = [contact.telegram_id for contact in
+                            sess_attrs["TELETHON_IDS"] = [contact.entity_id for contact in
                                                           contacts]
                     else:
                         # Multiple contacts were found. Alexa provided three choices.
