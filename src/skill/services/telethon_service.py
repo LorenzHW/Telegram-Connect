@@ -74,15 +74,21 @@ class TelethonService(object):
                     group_telegrams = []
                     for telegram_container in dialog.get("telegrams"):
                         sender = telegram_container[1]
-                        telegram = telegram_container[0] if telegram_container[0] else ''
+                        telegram = telegram_container[0] + i18n.BREAK_150 \
+                            if telegram_container[0] else i18n.MEDIA_FILE + i18n.BREAK_150
+
                         formatted_telegrams = i18n.GROUP_MESSAGE_INTRO.format(sender) + telegram
                         group_telegrams.append(formatted_telegrams)
 
-                    conv = Conversation(dialog.get("name"), group_telegrams, True)
+                    conv = Conversation(dialog.get("name"), group_telegrams, True,
+                                        dialog.get("entity_id"))
                 else:
                     conv = Conversation(dialog.get("name"),
-                                        [telegram_container[0]
-                                         for telegram_container in dialog.get("telegrams")])
+                                        [telegram_container[0] + i18n.BREAK_150 if
+                                         telegram_container[0]
+                                         else i18n.MEDIA_FILE + i18n.BREAK_150
+                                         for telegram_container in dialog.get("telegrams")],
+                                        False, dialog.get("entity_id"))
                 conversations.append(conv)
 
             return conversations
@@ -99,7 +105,7 @@ class TelethonService(object):
 
             potential_contacts = []
             for info in contacts_info:
-                contact = Contact(info.get("name"), telegram_id=info.get("id"))
+                contact = Contact(info.get("name"), entity_id=info.get("id"))
                 potential_contacts.append(contact)
 
             return potential_contacts

@@ -3,7 +3,7 @@ import random
 
 class GenericLanguageModel(object):
     def __init__(self, locale):
-        self.skill_name = "Daily Telegrams"
+        self.skill_name = "My Telegrams"
 
         self.BACKEND_EXCEPTION = None
         self.FRONTEND_ERROR = None
@@ -23,6 +23,9 @@ class GenericLanguageModel(object):
         self.GOODBYES = None
         self.ANYTHING_ELSE = None
         self.DETOUR_EXCEPTION = None
+
+        self.BREAK_150 = "<break time='150ms'/>"
+        self.BREAK_200 = "<break time='200ms'/>"
 
         if locale == "de-DE":
             self.set_generic_phrases_german()

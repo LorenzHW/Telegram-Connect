@@ -22,6 +22,7 @@ class LanguageModel(GenericLanguageModel):
         self.GROUP_INTRO = None
         self.GROUP_MESSAGE_INTRO = None
         self.PERSONAL_CHAT_INTRO = None
+        self.MEDIA_FILE = None
 
         self.NOT_AUTHORIZED = None
         self.USER_HAS_TELEGRAMS = None
@@ -76,6 +77,7 @@ class LanguageModel(GenericLanguageModel):
         self.GROUP_INTRO = None
         self.GROUP_MESSAGE_INTRO = None
         self.PERSONAL_CHAT_INTRO = None
+        self.MEDIA_FILE = None
 
         ### LaunchIntent ###
         self.NOT_AUTHORIZED = None
@@ -131,6 +133,7 @@ class LanguageModel(GenericLanguageModel):
         self.GROUP_INTRO = "In {}: <break time='200ms'/>"
         self.GROUP_MESSAGE_INTRO = "{} wrote: <break time='100ms'/>"
         self.PERSONAL_CHAT_INTRO = "{} wrote: <break time='200ms'/>"
+        self.MEDIA_FILE = "Media file"
 
         ### LaunchIntent ###
         self.NOT_AUTHORIZED = "Welcome to {}. {} let's you connect your Telegram Messenger with Alexa. Now, you are currently not authorized. Do you want to start the authorization process?" \
