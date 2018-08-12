@@ -2,7 +2,6 @@ from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.utils import is_intent_name
 from ask_sdk_model import Intent
 from ask_sdk_model.dialog import ElicitSlotDirective
-from ask_sdk_model.slu.entityresolution import StatusCode
 
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
@@ -66,26 +65,26 @@ class SendIntentHandler(AbstractRequestHandler):
                         # first_names = sess_attrs["FIRST_NAMES"]
                         # name, index = get_most_likely_name(first_names, slot.value)
                         a_b_or_c = slots.get("a_b_or_c")
-                        slot_resolution = a_b_or_c.resolutions.resolutions_per_authority[0]
-                        if slot_resolution.status.code is StatusCode.ER_SUCCESS_MATCH:
-                            if slot_resolution.values[0].value.name == "A":
-                                index = 0
-                            elif slot_resolution.values[0].value.name == "B":
-                                index = 1
-                            else:
-                                index = 2
-                            name = sess_attrs["FIRST_NAMES"][index]
-                            sess_attrs["TELETHON_ENTITY_ID"] = sess_attrs.get("TELETHON_IDS")[index]
-                            slot_to_elicit = "message"
-                            speech_text = i18n.get_random_acceptance_ack() + ", " \
-                                          + i18n.MESSAGE.format(name)
-                            reprompt = i18n.get_random_dont_understand() + ", " \
-                                       + i18n.MESSAGE.format(name)
+
+                        if a_b_or_c.value == "1":
+                            index = 0
+                        elif a_b_or_c.value == "2":
+                            index = 1
+                        elif a_b_or_c.value == "3" and len(sess_attrs.get("FIRST_NAMES")) == 3:
+                            index = 2
                         else:
                             speech_text = i18n.MAX_NO_CONTACT
                             handler_input.response_builder.speak(
                                 speech_text).set_should_end_session(True)
                             return handler_input.response_builder.response
+
+                        name = sess_attrs["FIRST_NAMES"][index]
+                        sess_attrs["TELETHON_ENTITY_ID"] = sess_attrs.get("TELETHON_IDS")[index]
+                        slot_to_elicit = "message"
+                        speech_text = i18n.get_random_acceptance_ack() + ", " \
+                                      + i18n.MESSAGE.format(name)
+                        reprompt = i18n.get_random_dont_understand() + ", " \
+                                   + i18n.MESSAGE.format(name)
 
                 elicit_directive = ElicitSlotDirective(updated_intent, slot_to_elicit)
                 handler_input.response_builder.add_directive(elicit_directive)
