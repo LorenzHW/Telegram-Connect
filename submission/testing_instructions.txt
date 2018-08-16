@@ -1,0 +1,62 @@
+---------------- PREREQUISITE ----------------
+!!!!!!!!!!!!!!! PLEASE: IF YOU ARE ASKED TO CHANGE THE PASSWORD INCREMENT THE INTEGER AT THE END !!!!!!!!!!!!!!!
+E.G.: NEXT PASSWORD FOR stretchout.australia@gmail.com WOULD BE stretchaustralia2
+
+You can use following E-Mail address for account linking (only GOOGLE will work):
+If you want to test FB login, create your own account.
+
+stretchout.australia@gmail.com
+GOOGLE PW: stretchaustralia1
+
+
+
+----------------------------------------------
+This skill enables you to send and listen to messages with the Telegram Messenger (https://telegram.org/).
+After the authorization process (see description) the user is "logged in" with the account that is used on his phone.
+
+The offical Telegram API is used (https://core.telegram.org/#telegram-api). However, the API is very complex to understand. This is the reason why Telethon (https://github.com/LonamiWebs/Telethon) is used. This library allows to interact with the Telegram API on a more abstract level.
+
+The receiver of the message will see the phone number that was used during the authorization process.
+
+0. Execute Account Linking:
+    Use account from above or newly created account
+1. Go to TextNow (https://www.textnow.com/login) and login:
+    User: alexatesting
+    Password: testforamazon
+2. Download Telegram Desktop (https://desktop.telegram.org/) and login.
+    Phone number: +19062121566
+    Code: Check TextNow for a text message from Telegram with a 5 digit code.
+3. Execute the authorization process:
+    1.: Go to: bit.ly/my-telegrams and login. Enter your telephone number (+19062121566).
+    2.: USER: "Alexa, start My Telegrams"
+        ALEXA: "Welcome... Do you want to start the authorization process now?"
+        USER: "Yes"
+    3.: Check Telegram for code. Say code to Alexa.
+    Note: watch out: You should authorize yourself within the first 4 codes that you get in Telegram
+    otherwise you will be blocked for 24 hours by Telegram
+
+-----------------------------------------------------------------------
+Test the skill:
+1. Test: Sending a Telegram
+    "Alexa, ask My Telegrams to send a Telegram."
+    "Alexa, ask My Telegrams to send a telegram to Lorenz."
+
+2. Test: Listening to Messages:
+    "Alexa, ask My Telegrams to check my Telegrams."
+
+3. Test: Speed Dial Feature
+    Go to: bit.ly/my-telegrams and login.
+    Create a speed dial contact.
+    First Name: Lorenz
+    Number: 25
+    "Alexa, ask My Telegrams to make a speed dial"
+    "Alexa, ask My Telegrams to make a speed dial to 25"
+
+You can also check following youtube video:
+bit.ly/my-telegrams-video
+
+
+#################### DEVPOST ##################
+stretchout.canada@gmail.com (both work)
+FACEBOOK PW: stretchcanada
+GOOGLE PW: stretchcanada1
