@@ -1,0 +1,64 @@
+#####################
+# Short description
+#####################
+Mit diesem Skill kannst du Nachrichten mit dem Telegram Messenger senden und empfangen.
+
+#####################
+# Full Skill description
+#####################
+
+############# UPDATE 23.5.2018 ####################
+*Der Skill nutzt Kontoverknüpfung
+*Autorisierung optimiert
+*Senden von Telegrammen optimiert
+*Speed dial feature
+*Progressive Web App support
+
+
+Mit Daily Telegrams kannst du Nachrichten von deinem Telegram Messenger (https://telegram.org/) abhören und verschicken.
+
+Wie es funktioniert:
+- Autorisiere dich (siehe unten).
+- Versende Nachrichten und höre neue ab.
+- Daily Telegrams wird mit deinem Telegram Account verbunden. Wenn du eine Nachricht sendest, dann sieht der Empfänger die Nummer mit der du dich autorisiert hast.
+
+Bevor du loslegen kannst, musst du dich autorisieren:
+1.: Gehe auf: www.bit.ly/daily-telegrams und logge dich ein. Gib deine Telefonnummer ein.
+2.: "Alexa, starte Daily Telegrams"
+3.: "Autorisiere mich"
+4.: Checke Telegram. Du hast einen Code erhalten. Sage den zu Alexa.
+
+Nachdem du dich autorisiert hast kannst du Nachrichten versenden und abhören:
+Zuerst:
+- Alexa, starte Daily Telegrams.
+Dann:
+- Habe ich neue Telegramme?
+- Checke meine Telegramme.
+- Sende ein Telegramm an Lorenz.
+- Verschicke ein Telegramm.
+
+Oder:
+- Alexa, starte Daily Telegrams und checke meine Telegramme.
+- Alexa, starte Daily Telegrams und sende ein Telegramm.
+
+Beim Senden einer Nachricht verwende den Vornamen von deinem Kontakt. Ist zum Beispiel ein "Thomas Muster" in deiner Kontaktliste, verwende "Thomas".
+
+
+Speed Dial:
+Wenn du Kontakte hast, die Alexa nicht versteht, kannst du für diese Kontakte eine Speed Dial Nummer hinzufügen
+1.: Gehe auf: www.bit.ly/daily-telegrams und logge dich ein.
+2.: Füge einen Speed Dial Contact hinzu (Ordne eine Nummer einem Kontakt zu)
+3.: "Alexa, starte Daily Telegrams und versende ein Telegram an 25"
+
+Notes:
+*Two step Verification wird nicht unterstützt. Die oben genannten Links funktionieren nicht für Internet Explorer. Verwende einen anderen Browser.
+*Progressive Web Apps (PWA): Lassen dich eine Homepage wie eine App verwenden. Wenn du auf www.bit.ly/daily-telegrams gehst, wirst du gefragt ob du die App zu deinen Homescreen hinzufügen magst (funktioniert nur für Chrome).
+
+#####################
+# Example phrases
+#####################
+Alexa, starte Daily Telegrams
+Checke meine Telegramme
+Verschicke ein Telegramm
+
+Telegramm, telegram, messenger, whatsapp, telexa, threema, signal, nachrichten, sms, daily, telegrams, versenden, bekommen, news, updates, freunde, familie, verbindung, sofort, messaging, android, iphone, russland, cloud, instagram

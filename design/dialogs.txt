@@ -10,7 +10,7 @@ A: Welcome to Daily Telegrams. I can help you to send a Telegram or check for ne
 U: Send a Telegram /// Check my Telegrams
 
 U: Start Daily Telegrams
-A: Welcome to Daily Telegrams. You got new messages. Do you want to hear them?
+A: Welcome to Daily Telegrams. You got new telegrams. Do you want to hear them?
 U: Yes
 
 
