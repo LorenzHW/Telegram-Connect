@@ -2,6 +2,14 @@ from src.skill.i18n.generic_language_model import GenericLanguageModel
 
 
 class LanguageModel(GenericLanguageModel):
+    """
+    Language model with phrases used for My-Telegrams. Inherits from GenericLanguageModel
+    to get other phrases as well.
+    
+    Arguments:
+        GenericLanguageModel {src.skill.i18n.generic_language_model.GenericLanguageModel} -- Model for typical phrases
+    """
+
     def __init__(self, locale):
         super().__init__(locale)
         self.FIRST_NAME = None
@@ -57,6 +65,9 @@ class LanguageModel(GenericLanguageModel):
             self.set_english_language_model()
 
     def set_german_language_model(self):
+        """
+        German phrases.
+        """
         ### SendIntent ###
         self.FIRST_NAME = None
         self.FIRST_NAME_REPROMPT = None
@@ -112,6 +123,10 @@ class LanguageModel(GenericLanguageModel):
         self.NOT_AUTHORIZED_DETOUR = None
 
     def set_english_language_model(self):
+        """
+        English phrases.
+        """
+
         ### SendIntent ###
         self.FIRST_NAME = "{}, what is the first name of your contact?".format(
             self.get_random_ack())

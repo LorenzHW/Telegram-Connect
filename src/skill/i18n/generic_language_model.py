@@ -2,6 +2,12 @@ import random
 
 
 class GenericLanguageModel(object):
+    """
+    Language model that can be used for every skill. Is actually abstract and
+    does not get initiated. Has different get_random_ methods so that Alexa
+    does not seem monotonic.
+    """
+
     def __init__(self, locale):
         self.skill_name = "My Telegrams"
 
@@ -33,6 +39,9 @@ class GenericLanguageModel(object):
             self.set_generic_phrases_english()
 
     def set_generic_phrases_german(self):
+        """
+        German phrases
+        """
         self.ACKS = ["Okay", "In Ordnung", "Alles klar", "Okey Dokey"]
         self.ACCEPTANCE_ACKS = ["Okay", "In Ordnung", "Alles klar"]
         self.DONE_ACKS = ["Okay", "In Ordnung", "Alles klar", "Geschafft"]
@@ -78,6 +87,9 @@ class GenericLanguageModel(object):
                     "Speedgram.'".format(self.skill_name)
 
     def set_generic_phrases_english(self):
+        """
+        English phrases
+        """
         self.ACKS = ["Okay", "Alright", "Okey Dokey"]
         self.ACCEPTANCE_ACKS = ["Okay", "Sure", "Alright", "Got it", "You got it"]
         self.DONE_ACKS = ["Okay", "Alright", "Got it", "Done", "You got it"]
