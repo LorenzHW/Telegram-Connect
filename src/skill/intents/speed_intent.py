@@ -11,12 +11,27 @@ from src.skill.utils.exceptions import TelethonException, handle_telethon_error_
 
 class SpeedIntentHandler(AbstractRequestHandler):
     def __init__(self):
+        """
+        Initializes service object for communication with backend.
+        """
         self.telethon_service = TelethonService()
 
     def can_handle(self, handler_input):
         return is_intent_name("SpeedIntent")(handler_input)
 
     def handle(self, handler_input):
+        """
+        Handler for SpeedIntent. User says: 'Alexa, send a Speedgram to 25'.
+        The handler fetches the correct contact for the number. Aftewards user is asked for
+        the message he wants to send. Then the telegram will be send. If multiple or no contacts are foun
+        session will stop.
+
+        Arguments:
+            handler_input {ask_sdk_core.handler_input.HandlerInput} -- Provided by Amazon's SDK.
+        
+        Returns:
+            [ask_sdk_model.response.Response] -- Response object
+        """
         slots = handler_input.request_envelope.request.intent.slots
         updated_intent = Intent("SpeedIntent", slots)
         sess_attrs = handler_input.attributes_manager.session_attributes
@@ -32,6 +47,7 @@ class SpeedIntentHandler(AbstractRequestHandler):
                     speech_text = i18n.SPEED_DIAL
                     reprompt = i18n.SPEED_DIAL_REPROMPT
                 else:
+                    #TODO: Try to refactor. Too long
                     slot_to_elicit = "message"
                     first_name = daily_telegrams_service.get_firstname_for_speed_dial_number(
                         slot.value)
@@ -47,6 +63,7 @@ class SpeedIntentHandler(AbstractRequestHandler):
                                 .set_should_end_session(True)
                             return handler_input.response_builder.response
 
+                        #TODO: Refactor that. Also used in SendIntent
                         speech_text = i18n.get_random_acceptance_ack() + ", " \
                                       + i18n.MESSAGE.format(contacts[0].first_name)
                         reprompt = i18n.get_random_dont_understand() + ", " \
@@ -65,12 +82,14 @@ class SpeedIntentHandler(AbstractRequestHandler):
                 handler_input.response_builder.add_directive(elicit_directive)
 
             if slot.name == "message" and slot.value:
+                #TODO: Refactor that. Same code in SendIntent
                 try:
                     entity_id = sess_attrs.get("TELETHON_ENTITY_ID")
                     self.telethon_service.send_telegram(entity_id, slot.value)
                 except TelethonException as error:
                     return handle_telethon_error_response(error, handler_input)
 
+                # TODO: Put that into try catch, make method and export to utils
                 speech_text = i18n.get_random_anyting_else()
                 reprompt = i18n.FALLBACK
                 sess_attrs.clear()

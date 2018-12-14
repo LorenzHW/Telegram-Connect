@@ -8,11 +8,24 @@ from src.skill.utils.utils import convert_speech_to_text
 
 
 class LoggingRequestInterceptor(AbstractRequestInterceptor):
+    """
+    Logs every request.
+    
+    Arguments:
+        AbstractRequestInterceptor {ask_sdk_runtime.dispatch_components.request_components.AbstractRequestInterceptor} -- Provided by Amazon's SDK.
+    """
     def process(self, handler_input):
         print("Request received: {}".format(handler_input.request_envelope.request))
 
 
 class CardResponseInterceptor(AbstractResponseInterceptor):
+    """
+    Interceptor for setting the correct card inside the Alexa app.
+
+    Arguments:
+        AbstractResponseInterceptor {[type]} -- [description]
+    """
+
     def process(self, handler_input, response):
         if handler_input.request_envelope.request.object_type != "CanFulfillIntentRequest":
             sess_attrs = handler_input.attributes_manager.session_attributes
@@ -27,6 +40,13 @@ class CardResponseInterceptor(AbstractResponseInterceptor):
 
 
 class PreviousIntentInterceptor(AbstractResponseInterceptor):
+    """
+    Logs the previous intent in session attributes.
+
+    Arguments:
+        AbstractResponseInterceptor {[type]} -- [description]
+    """
+
     def process(self, handler_input, response):
         sess_attrs = handler_input.attributes_manager.session_attributes
 
@@ -37,6 +57,13 @@ class PreviousIntentInterceptor(AbstractResponseInterceptor):
 
 
 class AccountInterceptor(AbstractRequestInterceptor):
+    """
+    Interceptor for getting information about the created account from the backend.
+    
+    Arguments:
+        AbstractRequestInterceptor {[type]} -- [description]
+    """
+
     def process(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
         Constants.ACCESS_TOKEN = handler_input.request_envelope.session.user.access_token

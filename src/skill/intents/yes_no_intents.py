@@ -17,12 +17,22 @@ class YesIntentHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
-        # If Alexa is user listening for message slot on SendIntent it happens that she hears
-        # 'yes' and therefore executes this intent handler. We don't want that.
+        # If Alexa is listening for the message slot on SendIntent it happens that she hears
+        # 'yes' and therefore executes this intent handler. We don't want that. That is
+        # the case if the TELETHON_ENTITIY_ID is set.
         return is_intent_name("CustomYesIntent")(handler_input) and not sess_attrs.get(
             "TELETHON_ENTITY_ID")
 
     def handle(self, handler_input):
+        """
+        Intent if user answers with 'Yes'. Depending on the current state of the user different
+        actions will be executed.
+        
+        Arguments:
+            handler_input {ask_sdk_core.handler_input.HandlerInput} -- Provided by Amazon's SDK.
+        Returns:
+            [ask_sdk_model.response.Response] -- Response object
+        """
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
         sess_attrs = handler_input.attributes_manager.session_attributes
         previous_intent = sess_attrs.get("PREV_INTENT")
@@ -86,9 +96,20 @@ class NoIntentHandler(AbstractRequestHandler):
         self.telethon_service = TelethonService()
 
     def can_handle(self, handler_input):
+        """
+        Intent if user answers with 'No'. Depending on the current state of the user different
+        actions will be executed.
+        
+        Arguments:
+            handler_input {ask_sdk_core.handler_input.HandlerInput} -- Provided by Amazon's SDK.
+        Returns:
+            [ask_sdk_model.response.Response] -- Response object
+        """
+
         sess_attrs = handler_input.attributes_manager.session_attributes
-        # If Alexa is user listening for message slot on SendIntent it happens that she hears
-        # 'yes' and therefore executes this intent handler. We don't want that.
+        # If Alexa is listening for the message slot on SendIntent it happens that she hears
+        # 'No' and therefore executes this intent handler. We don't want that. That is
+        # the case if the TELETHON_ENTITIY_ID is set.
         return is_intent_name("AMAZON.NoIntent")(handler_input) and not sess_attrs.get(
             "TELETHON_ENTITY_ID")
 

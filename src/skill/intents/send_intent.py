@@ -18,6 +18,19 @@ class SendIntentHandler(AbstractRequestHandler):
         return is_intent_name("SendIntent")(handler_input) and user_is_authorized
 
     def handle(self, handler_input):
+        """
+        Handler for SendIntent. User says: 'Alexa, send a Telegram'.
+        Gets the first name of the contact and then the message the user wants to send. Provides choices if
+        backend delivers multiple contacts for the first name. User chooses contact by saying '1', '2' or '3'.
+        If the appropiate contact is found, Alexa asks for the message. Then the message is sent.
+        
+        Arguments:
+            handler_input {ask_sdk_core.handler_input.HandlerInput} -- Provided by Amazon's SDK.
+        
+        Returns:
+            [ask_sdk_model.response.Response] -- Response object
+        """
+
         slots = handler_input.request_envelope.request.intent.slots
         updated_intent = Intent("SendIntent", slots)
         sess_attrs = handler_input.attributes_manager.session_attributes
@@ -44,6 +57,7 @@ class SendIntentHandler(AbstractRequestHandler):
                             reprompt = i18n.MESSAGE_REPROMPT.format(contacts[0].first_name)
                         else:
                             slot_to_elicit = "a_b_or_c"
+                            #TODO: Refactor that. Make a method like: provide_choice()
                             if len(contacts) == 3:
                                 name_1 = contacts[0].first_name
                                 name_2 = contacts[1].first_name
@@ -62,8 +76,9 @@ class SendIntentHandler(AbstractRequestHandler):
                     else:
                         # Multiple contacts were found. Alexa provided three choices.
                         # Now we check what user chose
-                        # first_names = sess_attrs["FIRST_NAMES"]
-                        # name, index = get_most_likely_name(first_names, slot.value)
+                        # TODO: Refactor that. Make something like: 
+                        # TODO: name = sess_attrs["FIRST_NAMES"][int(a_b_or_c) - 1]
+                        # TODO: Also put it into a method like: get_users_choice()
                         a_b_or_c = slots.get("a_b_or_c")
 
                         if a_b_or_c.value == "1":
@@ -90,6 +105,7 @@ class SendIntentHandler(AbstractRequestHandler):
                 handler_input.response_builder.add_directive(elicit_directive)
 
             if slot.name == "message" and slot.value:
+                #TODO: Refactor that make method: send_telegram
                 try:
                     entity_id = sess_attrs.get("TELETHON_ENTITY_ID")
                     self.telethon_service.send_telegram(entity_id, slot.value)
