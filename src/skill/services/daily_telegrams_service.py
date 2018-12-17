@@ -7,7 +7,8 @@ from src.skill.utils.exceptions import BackendException
 
 class DailyTelegramsService(object):
     """
-    Communicates with my server.
+    Communicates with the backend. This service is used to get information that is stored
+    in my database and does not relate to Telegrams API.
     """
     contacts_url = 'https://www.lorenzhofmannw.com/telexa/api/contacts/'
     account_url = 'https://www.lorenzhofmannw.com/telexa/api/accounts/'
@@ -16,6 +17,17 @@ class DailyTelegramsService(object):
         pass
 
     def get_contacts(self):
+        """
+        Gets all speed dial contacts the user has created.
+        TODO: private method?
+        
+        Raises:
+            BackendException -- [description]
+        
+        Returns:
+            [type] -- [description]
+        """
+
         r = self._execute_request(self.contacts_url)
         if isinstance(r, int):
             raise BackendException(r)
@@ -24,10 +36,19 @@ class DailyTelegramsService(object):
 
     def get_daily_telegrams_account(self):
         """
-        We make here an call to a ListMixin. That is why we retrieve a list of users. However,
-        this list contains only the authorized user.
-        :return: DailyTelegramsAccount
+        Gets info about the daily telegrams account from the backend. Due to account linking
+        no further information is necessary for the backend. Backend logic handles which account
+        to retrieve. Access Token is sent to backend. Hence, backend knows which account to get.
+
+        Raises:
+            BackendException -- [description]
+        
+        Returns:
+            [src.skill.models.general_models.DailyTelegramsAccount] -- Account with info from the backend.
         """
+
+        # We make here an call to a ListMixin. That is why we retrieve a list of users. However,
+        # this list contains only the logged in user (due to account linking).
         r = self._execute_request(self.account_url)
 
         if isinstance(r, int):
@@ -45,6 +66,16 @@ class DailyTelegramsService(object):
             return daily_telegrams_account
 
     def get_firstname_for_speed_dial_number(self, speed_dial_number):
+        """
+        Compares the speed dial number from the user to the actual contacts that
+        the user created.
+        
+        Arguments:
+            speed_dial_number {String} -- The number the user said to Alexa
+        
+        Returns:
+            [String] -- First name of the speed dial contact
+        """
         contacts = self.get_contacts()
 
         for contact_info in contacts:
@@ -54,16 +85,28 @@ class DailyTelegramsService(object):
 
     def _create_authorization_header(self):
         """
-        Authorization header constructed as in docs:
-        https://django-oauth-toolkit.readthedocs.io/en/latest/rest-framework/getting_started.html#step-5-testing-restricted-access
-        :return: Dictionary with the header.
+        Sets headers in HTTP request
         """
+
+        # Authorization header constructed as in docs:
+        # https://django-oauth-toolkit.readthedocs.io/en/latest/rest-framework/getting_started.html#step-5-testing-restricted-access
         auth_string = "Bearer " + Constants.ACCESS_TOKEN
         headers = {'Authorization': auth_string}
 
         return headers
 
     def _execute_request(self, url):
+        #TODO: Refactor. Create abstract Service with methods _create_authorization_header
+        #TODO: and _exceute_request. Same code in other service.
+        """
+        Executes HTTP requests
+
+        Arguments:
+            url {String} -- URLS to my backend
+        
+        Returns:
+            [type] -- [description]
+        """
         headers = self._create_authorization_header()
 
         r = requests.get(url, headers=headers)

@@ -21,6 +21,16 @@ class TelethonService(object):
         pass
 
     def send_code_request(self):
+        """
+        Requests code for authorization.
+
+        Raises:
+            BackendException -- [description]
+        
+        Returns:
+            [Strong] -- Hash code that is later used for authorization.
+        """
+
         r = self._execute_request(self.telethon_code_request_url)
 
         if isinstance(r, int):
@@ -34,6 +44,19 @@ class TelethonService(object):
             return phone_code_hash
 
     def sign_user_in(self, code, phone_code_hash):
+        """
+        After user says retrieved code to Alexa this method get executed.
+        
+        Arguments:
+            code {String} -- Code user said to Alexa
+            phone_code_hash {String} -- Hash code from Telegram API.
+        
+        Raises:
+            BackendException -- [description]
+        
+        Returns:
+            [type] -- [description]
+        """
         r = self._execute_request(self.telethon_sign_in_url.format(code, phone_code_hash))
 
         if isinstance(r, int):
@@ -46,6 +69,16 @@ class TelethonService(object):
             return True
 
     def check_telegrams(self):
+        """
+        Used for the launch intent to let user know if he has new telegrams.
+        No read acknowledgments are sent to Telegram APIs.
+        
+        Raises:
+            BackendException -- [description]
+        
+        Returns:
+            [Boolean] -- True if user has new telegrams.
+        """
         r = self._execute_request(self.telethon_message_url.format("False"))
         if isinstance(r, int):
             # we got some http error status code
@@ -59,6 +92,20 @@ class TelethonService(object):
                 return False
 
     def get_conversations(self, i18n):
+        """
+        Returns a list of all unread conversations. Extracts the chat name, the telegrams,
+        whether the chat is a group, and Telegram's entity id from the information from the
+        backend. Breaks are inserted between telegrams so Alexa sounds more natural.
+        
+        Arguments:
+            i18n {src.skill.i18n.language_model.LanguageModel} -- Class with all the spoken strings.
+        
+        Raises:
+            BackendException -- [description]
+        
+        Returns:
+            [List] -- List of src.skill.models.general_models.Conversation.
+        """
         r = self._execute_request(self.telethon_message_url.format("True"))
 
         if isinstance(r, int):
@@ -70,6 +117,7 @@ class TelethonService(object):
 
             conversations = []
             for dialog in telegram_dialogs:
+                # TODO: Refactor. Make method: construct_group_telegrams
                 if dialog.get("is_group"):
                     group_telegrams = []
                     for telegram_container in dialog.get("telegrams"):
@@ -83,6 +131,7 @@ class TelethonService(object):
                     conv = Conversation(dialog.get("name"), group_telegrams, True,
                                         dialog.get("entity_id"))
                 else:
+                    # TODO: Refactor. pull list comprehension out of constructor
                     conv = Conversation(dialog.get("name"),
                                         [telegram_container[0] + i18n.BREAK_150 if
                                          telegram_container[0]
@@ -94,6 +143,20 @@ class TelethonService(object):
             return conversations
 
     def get_potential_contacts(self, first_name):
+        """
+        Returns the contacts from the backend that most likely match first_name.
+        Comparison is done in backend.
+
+        
+        Arguments:
+            first_name {String} -- A name the user said to Alexa.
+        
+        Raises:
+            BackendException -- [description]
+        
+        Returns:
+            [List] -- List of src.skill.models.general_models.Contacts
+        """
         r = self._execute_request(self.telethon_contacts_url.format(first_name))
 
         if isinstance(r, int):
@@ -111,6 +174,17 @@ class TelethonService(object):
             return potential_contacts
 
     def send_telegram(self, telethon_entity_id, message):
+        """
+        Sends a telegram to a user.
+        
+        Arguments:
+            telethon_entity_id {String} -- Telegrams API entity id. Used to identify users.
+            message {String} -- Message the user wants to send.
+        
+        Raises:
+            BackendException -- [description]
+        """
+
         r = self._execute_request(
             self.telethon_send_telegram_url.format(telethon_entity_id, message))
 
@@ -135,6 +209,7 @@ class TelethonService(object):
                 raise TelethonException(response.get("message"), name=name)
 
     def _create_authorization_header(self):
+        # TODO: Refactor that. See daily telegrams_service.py
         """
         Authorization header constructed as in docs:
         https://django-oauth-toolkit.readthedocs.io/en/latest/rest-framework/getting_started.html#step-5-testing-restricted-access
@@ -146,6 +221,7 @@ class TelethonService(object):
         return headers
 
     def _execute_request(self, url):
+        # TODO: Refactor that. See daily telegrams_service.py
         headers = self._create_authorization_header()
 
         r = requests.get(url, headers=headers)
