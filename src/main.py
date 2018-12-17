@@ -24,11 +24,28 @@ sb = SkillBuilderCustom()
 
 
 class LaunchRequestHandler(AbstractRequestHandler):
-    # Handler for Skill Launch
+    """
+    Handler for skill launch
+
+    Arguments:
+        AbstractRequestHandler {[type]} -- [description]
+    """
     def can_handle(self, handler_input):
         return is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
+        """
+        Three cases:
+        1. User did not link account --> provide user with necessary information
+        2. User linked account but is not authorized --> ask if he wants to authorize
+        3. User linked account and is authorized --> check for new telegrams.
+
+        Arguments:
+            handler_input {ask_sdk_core.handler_input.HandlerInput} -- Provided by Amazon's SDK.
+
+        Returns:
+            [ask_sdk_model.response.Response] -- Response object
+        """
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
         sess_attrs = handler_input.attributes_manager.session_attributes
 
@@ -60,7 +77,13 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
 
 class CanFulfillIntentRequestHandler(AbstractRequestHandler):
-    # Handler for Skill Launch
+    """
+    For name free interaction with the skill. See:
+    https://developer.amazon.com/docs/custom-skills/understand-name-free-interaction-for-custom-skills.html
+
+    Arguments:
+        AbstractRequestHandler {[type]} -- [description]
+    """
     def can_handle(self, handler_input):
         return is_request_type("CanFulfillIntentRequest")(handler_input)
 
