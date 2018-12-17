@@ -1,18 +1,25 @@
-from difflib import SequenceMatcher
 from html.parser import HTMLParser
 
 from ask_sdk_model import Intent
 from ask_sdk_model.dialog import ElicitSlotDirective
 from six import PY3
 
-############## PARSER ##############
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 
 
+############## PARSER ##############
 def convert_speech_to_text(ssml_speech):
-    # convert ssml speech to text, by removing html tags
+    """
+    Converts ssml speech to text, by removing html tags
+    
+    Arguments:
+        ssml_speech {String} -- Spoken text with ssml tags.
+    
+    Returns:
+        [String] -- Spoken text without ssml tags.
+    """
     s = SSMLStripper()
     s.feed(ssml_speech)
     return s.get_data()
@@ -33,31 +40,23 @@ class SSMLStripper(HTMLParser):
         return ''.join(self.full_str_list)
 
 
-############## CONTACT SEARCH / COMPARER ##############
-def get_most_likely_name(first_names, slot_value):
-    prev_percentage = 0
-    s = StringComparer()
-    contact = None
-    list_index = None
-
-    for index, name in enumerate(first_names):
-        percentage = s.similar(name, slot_value)
-        if percentage > 0.7 and percentage > prev_percentage:
-            prev_percentage = percentage
-            contact = first_names[index]
-            list_index = index
-    return contact, list_index
-
-
-class StringComparer():
-    def similar(self, a, b):
-        # Lets make uppercase here, for better ratios
-        a = a.upper()
-        b = b.upper()
-        return SequenceMatcher(None, a, b).ratio()
-
-
 def handle_authorization(handler_input):
+    """
+    Handles the authorization process:
+    1. User entered telephone number on my server
+    2. User starts Alexa skill and receives code
+    3. User says retrieved code to Alexa
+    4. User gets signed in and is now authorized.
+
+    Phone code hash is used for Telegram API, because seperate instances 
+    of Telethon request code and sign user in.
+    
+    Arguments:
+        handler_input {ask_sdk_core.handler_input.HandlerInput} -- Provided by Amazon's SDK.
+
+    Returns:
+        handler_input {ask_sdk_core.handler_input.HandlerInput} -- Provided by Amazon's SDK.
+    """
     i18n = LanguageModel(handler_input.request_envelope.request.locale)
     telethon_service = TelethonService()
     sess_attrs = handler_input.attributes_manager.session_attributes
