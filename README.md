@@ -1,2 +1,2 @@
 # My Telegrams
-Source code for bit.ly/my-telegrams-skill
+Source code for www.bit.ly/my-telegrams-skill
