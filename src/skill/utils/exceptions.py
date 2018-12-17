@@ -2,6 +2,17 @@ from src.skill.i18n.language_model import LanguageModel
 
 
 def respond_to_http_error_code(handler_input, http_error_code):
+    """
+    Builds the appropiate response for the user to hear based on the HTTP error code
+    we retrive from the backend.
+    
+    Arguments:
+        handler_input {ask_sdk_core.handler_input.HandlerInput} -- Provided by Amazon's SDK.
+        http_error_code {Integer} -- Error code from the backend.
+    
+    Returns:
+        [ask_sdk_model.response.Response] -- Response object
+    """
     i18n = LanguageModel(handler_input.request_envelope.request.locale)
     sess_attrs = handler_input.attributes_manager.session_attributes
 
@@ -20,6 +31,17 @@ def respond_to_http_error_code(handler_input, http_error_code):
 
 
 def handle_telethon_error_response(error, handler_input):
+    """
+    Give appropiate response to user based Telegram's error information.
+    
+    Arguments:
+        error {String} -- Error name from Telethon wrapper (see GitHub repo of Telethon)
+        handler_input {ask_sdk_core.handler_input.HandlerInput} -- Provided by Amazon's SDK.
+
+    Returns:
+        handler_input {ask_sdk_core.handler_input.HandlerInput} -- Provided by Amazon's SDK.
+    """
+
     i18n = LanguageModel(handler_input.request_envelope.request.locale)
     error_name = error.name
 
@@ -47,6 +69,16 @@ def handle_telethon_error_response(error, handler_input):
 
 
 def calculate_hours_and_minutes_from_seconds(seconds):
+    """
+    Helper method.
+    TODO: should be in utils.py
+    
+    Arguments:
+        seconds {Int} -- Number of seconds
+    
+    Returns:
+        [Tuple] -- Tuple with hours and minutes.
+    """
     m, s = divmod(seconds, 60)
     h, m = divmod(m, 60)
 
@@ -54,11 +86,24 @@ def calculate_hours_and_minutes_from_seconds(seconds):
 
 
 class BackendException(Exception):
+    """
+    Raised if backend returns HTTP error code.
+    
+    Arguments:
+        Exception {[type]} -- [description]
+    """
     def __init__(self, message):
         super(BackendException, self).__init__(message)
 
 
 class TelethonException(Exception):
+    """
+    Raised if Telegram's API returns an error.
+    
+    Arguments:
+        Exception {[type]} -- [description]
+    """
+    
     def __init__(self, message, **kwargs):
         super(TelethonException, self).__init__(message)
         self.seconds = kwargs.get("seconds")
