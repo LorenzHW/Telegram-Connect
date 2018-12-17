@@ -5,6 +5,10 @@ if typing.TYPE_CHECKING:
 
 
 class CanFulfillSlotCustom(object):
+    """
+    # TODO: this will probably be deprecated.  I used the beta version of the SDK. The next time
+    # TODO: I touch the code, this should be available in the SDK. Used for CanFulFill
+    """
     deserialized_types = {
         'can_understand': 'str',
         'can_fulfill': 'str',

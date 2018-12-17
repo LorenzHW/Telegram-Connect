@@ -8,6 +8,10 @@ if typing.TYPE_CHECKING:
 
 
 class CanFulfillIntentRequestCustom(RequestCustom):
+    """
+    # TODO: this will probably be deprecated.  I used the beta version of the SDK. The next time
+    # TODO: I touch the code, this should be available in the SDK. Used for CanFulFill
+    """
     def __init__(self, request_id=None, timestamp=None, locale=None):
         # type: (Optional[str], Optional[datetime], Optional[str]) -> None
         """An IntentRequest is an object that represents a request made to a skill based on what the user wants to do.

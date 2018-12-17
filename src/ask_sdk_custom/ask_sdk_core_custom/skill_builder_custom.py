@@ -13,6 +13,10 @@ if typing.TYPE_CHECKING:
 
 
 class SkillBuilderCustom(SkillBuilder):
+    """
+    # TODO: this will probably be deprecated.  I used the beta version of the SDK. The next time
+    # TODO: I touch the code, this should be available in the SDK. Used for CanFulFill
+    """
     def __init__(self):
         super().__init__()
 

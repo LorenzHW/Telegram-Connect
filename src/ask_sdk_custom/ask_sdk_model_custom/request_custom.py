@@ -8,6 +8,10 @@ if typing.TYPE_CHECKING:
 
 
 class RequestCustom(Request):
+    """
+    # TODO: this will probably be deprecated.  I used the beta version of the SDK. The next time
+    # TODO: I touch the code, this should be available in the SDK. Used for CanFulFill
+    """
     discriminator_value_class_map = {
         'AudioPlayer.PlaybackStopped': 'ask_sdk_model.interfaces.audioplayer.playback_stopped_request.PlaybackStoppedRequest',
         'AudioPlayer.PlaybackFinished': 'ask_sdk_model.interfaces.audioplayer.playback_finished_request.PlaybackFinishedRequest',
