@@ -1,0 +1,3 @@
+./hooks/pre_deploy_hook.sh My_Telegrams true all
+
+source My_Telegrams/.venv/skill_env/bin/activate

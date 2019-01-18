@@ -1,0 +1,45 @@
+{
+  "deploy_settings": {
+    "default": {
+      "skill_id": "amzn1.ask.skill.c171fbe5-e5b6-47f0-88ea-d0cc10a9d0f0",
+      "was_cloned": false,
+      "merge": {},
+      "resources": {
+        "manifest": {
+          "eTag": "c9a76d13a39173cc43a85a68c9366157"
+        },
+        "interactionModel": {
+          "en-US": {
+            "eTag": "c749fb67270d70916ba6b7a518348bcc"
+          },
+          "en-CA": {
+            "eTag": "06637858208d609d45f68d5d15e1cb00"
+          },
+          "en-IN": {
+            "eTag": "06637858208d609d45f68d5d15e1cb00"
+          },
+          "en-AU": {
+            "eTag": "06637858208d609d45f68d5d15e1cb00"
+          },
+          "en-GB": {
+            "eTag": "06637858208d609d45f68d5d15e1cb00"
+          }
+        },
+        "lambda": [
+          {
+            "alexaUsage": [
+              "custom/default"
+            ],
+            "arn": "arn:aws:lambda:us-east-1:410662029421:function:myTelegrams:DEV",
+            "awsRegion": "us-east-1",
+            "codeUri": "lambda/us-east-1_myTelegrams",
+            "functionName": "myTelegrams",
+            "handler": "lambda_function.lambda_handler",
+            "revisionId": "0023e7ea-9714-4993-8bda-4a41fd735154",
+            "runtime": "python3.7"
+          }
+        ]
+      }
+    }
+  }
+}
