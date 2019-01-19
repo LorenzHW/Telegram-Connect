@@ -9,6 +9,8 @@ from src.skill.intents.general_intents import HelpIntentHandler, CancelOrStopInt
 from src.skill.intents.interceptors import LoggingRequestInterceptor, CardResponseInterceptor, \
     PreviousIntentInterceptor, AccountInterceptor
 from src.skill.intents.message_intent import MessageIntentHandler
+from src.skill.intents.settings_intent import SettingsIntentHandler
+from src.skill.intents.authorization_intent import AuthorizationIntentHandler
 from src.skill.intents.send_intent import SendIntentHandler
 from src.skill.intents.speed_intent import SpeedIntentHandler
 from src.skill.intents.yes_no_intents import YesIntentHandler, NoIntentHandler
@@ -59,6 +61,8 @@ sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(SendIntentHandler())
 sb.add_request_handler(SpeedIntentHandler())
 sb.add_request_handler(MessageIntentHandler())
+sb.add_request_handler(SettingsIntentHandler())
+sb.add_request_handler(AuthorizationIntentHandler()) 
 sb.add_request_handler(YesIntentHandler())
 sb.add_request_handler(NoIntentHandler())
 sb.add_request_handler(HelpIntentHandler())
