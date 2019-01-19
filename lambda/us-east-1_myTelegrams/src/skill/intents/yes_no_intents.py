@@ -73,11 +73,18 @@ class YesIntentHandler(AbstractRequestHandler):
             or previous_intent == "SpeedIntent"
             or previous_intent == "CustomYesIntent"
             or previous_intent == "AMAZON.NoIntent") \
-                and not sess_attrs.get("TELEGRAMS"):
+                and not sess_attrs.get("TELEGRAMS") and not sess_attrs.get("FIRST_NAMES"):
             speech_text = i18n.HELP_USER
             reprompt = i18n.FALLBACK
             handler_input.response_builder.speak(speech_text) \
                 .set_should_end_session(False).ask(reprompt)
+            return handler_input.response_builder.response
+
+        # User answered with not a number when Alexa is suggesting contacts in SendIntent
+        if (previous_intent == "SendIntent" and sess_attrs.get("FIRST_NAMES")):
+            speech_text = i18n.MAX_NO_CONTACT
+            handler_input.response_builder.speak(speech_text) \
+                .set_should_end_session(True)
             return handler_input.response_builder.response
 
 
@@ -127,7 +134,7 @@ class NoIntentHandler(AbstractRequestHandler):
             or previous_intent == "SpeedIntent"
             or previous_intent == "CustomYesIntent"
             or previous_intent == "AMAZON.NoIntent") \
-                and not sess_attrs.get("TELEGRAMS"):
+                and not sess_attrs.get("TELEGRAMS") and not sess_attrs.get('FIRST_NAMES'):
             speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
             handler_input.response_builder.speak(speech_text).set_should_end_session(True)
             return handler_input.response_builder.response
