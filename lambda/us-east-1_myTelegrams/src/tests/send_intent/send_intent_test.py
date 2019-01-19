@@ -56,7 +56,7 @@ class AlexaParticleTests(unittest.TestCase):
 
 if __name__ == "__main__":
     suite = unittest.TestSuite()
-    # suite.addTest(AlexaParticleTests("test_send_request"))
-    # suite.addTest(AlexaParticleTests("test_send_request_multiple_contacts_and_one_shot_intent"))
+    suite.addTest(AlexaParticleTests("test_send_request"))
+    suite.addTest(AlexaParticleTests("test_send_request_multiple_contacts_and_one_shot_intent"))
     runner = unittest.TextTestRunner()
     runner.run(suite)
