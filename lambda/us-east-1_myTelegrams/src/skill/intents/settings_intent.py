@@ -4,7 +4,8 @@ from ask_sdk_model.dialog import ElicitSlotDirective, DelegateDirective
 from ask_sdk_model import Intent
 
 from src.skill.i18n.language_model import LanguageModel
-
+from src.skill.services.daily_telegrams_service import DailyTelegramsService
+from src.skill.models.general_models import Settings
 
 class SettingsIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
@@ -16,6 +17,13 @@ class SettingsIntentHandler(AbstractRequestHandler):
         sess_attrs = handler_input.attributes_manager.session_attributes
         i18n = LanguageModel(handler_input.request_envelope.request.locale)
         current_intent = handler_input.request_envelope.request.intent
+        settings_id = sess_attrs.get('ACCOUNT').get('SETTINGS_ID')
+        daily_telegram_service = DailyTelegramsService()
+
+        if settings_id is None:
+            settings_id = daily_telegram_service.create_settings()
+            sess_attrs['ACCOUNT']['SETTINGS_ID'] = settings_id
+
 
         for slot_name, current_slot in current_intent.slots.items():
             if slot_name == 'enable_non_verbose_mode':
@@ -27,10 +35,20 @@ class SettingsIntentHandler(AbstractRequestHandler):
                     handler_input.response_builder.add_directive(
                         elicit_directive)
                 else:
+                    # If another configuration will be added I have to move the logic here
+                    if current_slot.value == 'enable':
+                        non_verbose_mode = True
+                    else:
+                        non_verbose_mode = False
                     speech_text = i18n.NON_VERBOSE_CHOICE.format(
                         current_slot.value)
+
                     speech_text += ' ' + i18n.LEAVING_SETTINGS_MODE
                     speech_text += ' ' + i18n.get_random_anyting_else_without_ack()
+                    settings = Settings(settings_id, non_verbose_mode)
+                    daily_telegram_service.update_settings(settings)
+
+
 
         handler_input.response_builder \
             .speak(speech_text).set_should_end_session(False).ask(i18n.FALLBACK)

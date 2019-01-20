@@ -48,7 +48,8 @@ class AccountInterceptor(AbstractRequestInterceptor):
                 sess_attrs["ACCOUNT"] = {
                     "ID": account.id,
                     "PHONE_NUMBER": account.phone_number,
-                    "AUTHORIZED": account.is_authorized
+                    "AUTHORIZED": account.is_authorized,
+                    "SETTINGS_ID": account.settings_id
                 }
             except BackendException as http_error_code:
                 sess_attrs["HTTP_ERROR_CODE"] = http_error_code.args[0]
