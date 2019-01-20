@@ -1,62 +1,55 @@
 import unittest
 
 from src.tests.send_intent.send_requests import *
-from src.tests.secret import VALID_TOKEN
+from src.tests.tokens import VALID_TOKEN
 from src.skill.i18n.language_model import LanguageModel
 from lambda_function import sb
 
 
-
 class AlexaParticleTests(unittest.TestCase):
-    def test_send_request(self):
+
+    def start_send_intent(self):
         i18n = LanguageModel('en-US')
         handler = sb.lambda_handler()
 
-        send_request_1["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
-        send_request_1["session"]["user"]["accessToken"] = VALID_TOKEN
-        event = handler(send_request_1, None)
+        # User says: "Send a telegram"
+        start_send_intent["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
+        start_send_intent["session"]["user"]["accessToken"] = VALID_TOKEN
+        event = handler(start_send_intent, None)
         ssml = event.get('response').get('outputSpeech').get('ssml')
-        # Remove random acknowledgment, a bit sloppy but ok..
-        # Longest random ack is: 'Okey Dokey' with 10 chars
-        # <speak> with 7 chars --> 17
-        test_case = '<speak>{}</speak>'.format(i18n.FIRST_NAME)[17:]
-        self.assertTrue(test_case in ssml)
-        
-        send_request_2["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
-        send_request_2["session"]["user"]["accessToken"] = VALID_TOKEN
-        event = handler(send_request_2, None)
-        ssml = event.get('response').get('outputSpeech').get('ssml')
-        self.assertEqual(ssml, '<speak>{}</speak>'.format(i18n.MESSAGE.format('Lorenz')))
+        self.assertTrue(ssml[-47:-8] in i18n.FIRST_NAME)
 
-        send_request_3["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
-        send_request_3["session"]["user"]["accessToken"] = VALID_TOKEN
-        event = handler(send_request_3, None)
+    def ask_for_message(self):
+        i18n = LanguageModel('en-US')
+        handler = sb.lambda_handler()
+
+        # User answered with a first name of the contact
+        ask_for_message["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
+        ask_for_message["session"]["user"]["accessToken"] = VALID_TOKEN
+        event = handler(ask_for_message, None)
+        ssml = event.get('response').get('outputSpeech').get('ssml')
+        self.assertEqual(
+            ssml, '<speak>{}</speak>'.format(i18n.MESSAGE.format('Lorenz')))
+
+    def send_telegram(self):
+        i18n = LanguageModel('en-US')
+        handler = sb.lambda_handler()
+
+        send_telegram["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
+        send_telegram["session"]["user"]["accessToken"] = VALID_TOKEN
+        event = handler(send_telegram, None)
         ssml = event.get('response').get('outputSpeech').get('ssml')
         test_case = ssml.split('.')[1][1:-8]
         self.assertTrue(test_case in i18n.ANYTHING_ELSE)
 
-    def test_send_request_multiple_contacts_and_one_shot_intent(self):
-        i18n = LanguageModel('en-US')
-        handler = sb.lambda_handler()
-
-        send_request_4["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
-        send_request_4["session"]["user"]["accessToken"] = VALID_TOKEN
-        event = handler(send_request_4, None)
-        ssml = event.get('response').get('outputSpeech').get('ssml')
-        test_case = ssml[-43:-8]
-        self.assertTrue(test_case in i18n.NO_CONTACT)
-
-        send_request_5["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
-        send_request_5["session"]["user"]["accessToken"] = VALID_TOKEN
-        event = handler(send_request_5, None)
-        ssml = event.get('response').get('outputSpeech').get('ssml')
-        test_case = ssml[-40:-8]
-        self.assertTrue(test_case in i18n.MESSAGE.format('Lorenz'))
-        
 
 if __name__ == "__main__":
     suite = unittest.TestSuite()
-    suite.addTest(AlexaParticleTests("test_send_request"))
-    suite.addTest(AlexaParticleTests("test_send_request_multiple_contacts_and_one_shot_intent"))
+    suite.addTest(AlexaParticleTests("start_send_intent"))
+    suite.addTest(AlexaParticleTests("ask_for_message"))
+    suite.addTest(AlexaParticleTests("send_telegram"))
     runner = unittest.TextTestRunner()
     runner.run(suite)
+
+    # TODO: Add test: One-shot start_send_intent
+    # TODO: Add test: User gets choices of first names --> User answers correct / incorrect
