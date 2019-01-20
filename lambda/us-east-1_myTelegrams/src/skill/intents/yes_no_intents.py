@@ -39,6 +39,9 @@ class YesIntentHandler(AbstractRequestHandler):
         if (previous_intent == "SendIntent"
             or previous_intent == "MessageIntent"
             or previous_intent == "SpeedIntent"
+            or previous_intent == "ReplyIntent"
+            or previous_intent == "SettingsIntent"
+            or previous_intent == "AuthorizationIntent"
             or previous_intent == "AMAZON.YesIntent"
             or previous_intent == "AMAZON.NoIntent") \
                 and not sess_attrs.get("TELEGRAMS") and not sess_attrs.get("FIRST_NAMES"):
@@ -47,6 +50,7 @@ class YesIntentHandler(AbstractRequestHandler):
             handler_input.response_builder.speak(speech_text) \
                 .set_should_end_session(False).ask(reprompt)
             return handler_input.response_builder.response
+
 
 class NoIntentHandler(AbstractRequestHandler):
     def __init__(self):
@@ -76,14 +80,19 @@ class NoIntentHandler(AbstractRequestHandler):
         if (previous_intent == "SendIntent"
             or previous_intent == "MessageIntent"
             or previous_intent == "SpeedIntent"
-            or previous_intent == "CustomYesIntent"
+            or previous_intent == "ReplyIntent"
+            or previous_intent == "SettingsIntent"
+            or previous_intent == "AuthorizationIntent"
+            or previous_intent == "AMAZON.YesIntent"
             or previous_intent == "AMAZON.NoIntent") \
                 and not sess_attrs.get("TELEGRAMS") and not sess_attrs.get('FIRST_NAMES'):
             speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
-            handler_input.response_builder.speak(speech_text).set_should_end_session(True)
+            handler_input.response_builder.speak(
+                speech_text).set_should_end_session(True)
             return handler_input.response_builder.response
 
-        if previous_intent == "SendIntent" or previous_intent == "SpeedIntent" or previous_intent == "MessageIntent":
+        if previous_intent == "SendIntent" or previous_intent == "SpeedIntent" or previous_intent == "MessageIntent" or previous_intent == "ReplyIntent":
             speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
-            handler_input.response_builder.speak(speech_text).set_should_end_session(True)
+            handler_input.response_builder.speak(
+                speech_text).set_should_end_session(True)
             return handler_input.response_builder.response

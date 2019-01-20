@@ -7,6 +7,7 @@ from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 from src.skill.i18n.language_model import LanguageModel
+from src.skill.utils.constants import Constants
 
 
 class AuthorizationIntentHandler(AbstractRequestHandler):
@@ -14,7 +15,7 @@ class AuthorizationIntentHandler(AbstractRequestHandler):
         return is_intent_name("AuthorizationIntent")(handler_input)
 
     def handle(self, handler_input):
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
         telethon_service = TelethonService()
         sess_attrs = handler_input.attributes_manager.session_attributes
         account = sess_attrs.get("ACCOUNT")

@@ -38,12 +38,12 @@ class SettingsIntentHandler(AbstractRequestHandler):
                         elicit_directive)
                 else:
                     # If another configuration will be added I have to move the logic here
-                    if current_slot.value == 'enable':
+                    if 'enable' in current_slot.value:
                         non_verbose_mode = True
+                        speech_text = i18n.NON_VERBOSE_CHOICE.format(i18n.ENABLE)
                     else:
                         non_verbose_mode = False
-                    speech_text = i18n.NON_VERBOSE_CHOICE.format(
-                        current_slot.value)
+                        speech_text = i18n.NON_VERBOSE_CHOICE.format(i18n.DISABLE)
 
                     speech_text += ' ' + i18n.LEAVING_SETTINGS_MODE
                     speech_text += ' ' + i18n.get_random_anyting_else_without_ack()

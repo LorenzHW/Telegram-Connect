@@ -57,7 +57,7 @@ class LanguageModel(GenericLanguageModel):
 
     def set_german_language_model(self):
         pass
-        
+
     def set_english_language_model(self):
         ### SendIntent ###
         self.FIRST_NAME = "{}, what is the first name of your contact?".format(
@@ -113,6 +113,8 @@ class LanguageModel(GenericLanguageModel):
         ## SettingsIntent ##
         self.SETTINGS_OPENED = 'You are now in the Settings mode. Do you want to enable or disable non-verbose mode?'
         self.NON_VERBOSE_CHOICE = 'You {} non-verbose mode.'
+        self.ENABLE = 'enable'
+        self.DISABLE = 'disable'
         self.LEAVING_SETTINGS_MODE = 'You are now leaving settings mode.'
 
         ## Errors ##
