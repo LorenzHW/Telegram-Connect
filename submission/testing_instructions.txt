@@ -5,8 +5,8 @@ E.G.: NEXT PASSWORD FOR stretchout.australia@gmail.com WOULD BE stretchaustralia
 You can use following E-Mail address for account linking (only GOOGLE will work):
 If you want to test FB login, create your own account.
 
-stretchout.australia@gmail.com
-GOOGLE PW: stretchaustralia1
+EMAIL: SECRETS.PY->EMAIL_VERIFICATION
+PW: SECRETS.PY->EMAIL_VERIFICATION_PW
 
 
 
@@ -21,8 +21,8 @@ The receiver of the message will see the phone number that was used during the a
 0. Execute Account Linking:
     Use account from above or newly created account
 1. Go to TextNow (https://www.textnow.com/login) and login:
-    User: alexatesting
-    Password: testforamazon
+    EMAIL: SECRETS.PY->EMAIL_VERIFICATION
+    PW: SECRETS.PY->EMAIL_VERIFICATION_PW
 2. Download Telegram Desktop (https://desktop.telegram.org/) and login.
     Phone number: +19062121566
     Code: Check TextNow for a text message from Telegram with a 5 digit code.
@@ -54,9 +54,3 @@ Test the skill:
 
 You can also check following youtube video:
 bit.ly/my-telegrams-video
-
-
-#################### DEVPOST ##################
-stretchout.canada@gmail.com (both work)
-FACEBOOK PW: stretchcanada
-GOOGLE PW: stretchcanada1
