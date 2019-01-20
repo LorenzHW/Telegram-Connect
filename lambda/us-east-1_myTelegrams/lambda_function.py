@@ -9,6 +9,7 @@ from src.skill.intents.general_intents import HelpIntentHandler, CancelOrStopInt
 from src.skill.intents.interceptors import LoggingRequestInterceptor, CardResponseInterceptor, \
     PreviousIntentInterceptor, AccountInterceptor
 from src.skill.intents.message_intent import MessageIntentHandler
+from src.skill.intents.reply_intent import ReplyIntentHandler
 from src.skill.intents.settings_intent import SettingsIntentHandler
 from src.skill.intents.authorization_intent import AuthorizationIntentHandler
 from src.skill.intents.send_intent import SendIntentHandler
@@ -27,7 +28,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
         return is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
         sess_attrs = handler_input.attributes_manager.session_attributes
 
         if not Constants.ACCESS_TOKEN:
@@ -61,6 +62,7 @@ sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(SendIntentHandler())
 sb.add_request_handler(SpeedIntentHandler())
 sb.add_request_handler(MessageIntentHandler())
+sb.add_request_handler(ReplyIntentHandler())
 sb.add_request_handler(SettingsIntentHandler())
 sb.add_request_handler(AuthorizationIntentHandler()) 
 sb.add_request_handler(YesIntentHandler())
