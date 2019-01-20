@@ -11,12 +11,13 @@ class DailyTelegramsService(object):
     """
     contacts_url = 'https://www.lorenzhofmannw.com/telexa/api/contacts/'
     account_url = 'https://www.lorenzhofmannw.com/telexa/api/accounts/'
+    settings_url = 'https://www.lorenzhofmannw.com/telexa/api/settings/'
 
     def __init__(self):
         pass
 
     def get_contacts(self):
-        r = self._execute_request(self.contacts_url)
+        r = self._execute_get_request(self.contacts_url)
         if isinstance(r, int):
             raise BackendException(r)
 
@@ -28,7 +29,7 @@ class DailyTelegramsService(object):
         this list contains only the authorized user.
         :return: DailyTelegramsAccount
         """
-        r = self._execute_request(self.account_url)
+        r = self._execute_get_request(self.account_url)
 
         if isinstance(r, int):
             # we got some http error status code
@@ -40,7 +41,9 @@ class DailyTelegramsService(object):
             account_id = str(account_information[0].get("id"))
             phone_number = account_information[0].get("phone_number")
             is_authorized = account_information[0].get("is_authorized")
-            daily_telegrams_account = DailyTelegramsAccount(account_id, phone_number, is_authorized)
+            settings_id = account_information[0].get("settings")
+            daily_telegrams_account = DailyTelegramsAccount(
+                account_id, phone_number, is_authorized, settings_id)
 
             return daily_telegrams_account
 
@@ -51,6 +54,24 @@ class DailyTelegramsService(object):
             if contact_info['speed_dial_number'] == int(speed_dial_number):
                 first_name = contact_info['first_name']
                 return first_name
+
+    def create_settings(self):
+        r = self._execute_post_request(self.settings_url)
+
+        if isinstance(r, int):
+            # we got some http error status code
+            raise BackendException(r)
+        else:
+            settings_information = r.json()
+            return settings_information.get('id')
+
+    def update_settings(self, settings_object):
+        url = self.settings_url + str(settings_object.id) + '/'
+        r = self._execute_put_request(url, data=settings_object.to_dict())
+
+        if isinstance(r, int):
+            # we got some http error status code
+            raise BackendException(r)
 
     def _create_authorization_header(self):
         """
@@ -63,7 +84,7 @@ class DailyTelegramsService(object):
 
         return headers
 
-    def _execute_request(self, url):
+    def _execute_get_request(self, url):
         headers = self._create_authorization_header()
 
         r = requests.get(url, headers=headers)
@@ -74,3 +95,31 @@ class DailyTelegramsService(object):
             # some error
             print(r)
             return r.status_code
+
+
+    def _execute_post_request(self, url):
+        headers = self._create_authorization_header()
+
+        r = requests.post(url, headers=headers)
+
+        if r.ok:
+            return r
+        else:
+            # some error
+            print(r)
+            return r.status_code
+
+    def _execute_put_request(self, url, data):
+        headers = self._create_authorization_header()
+
+        r = requests.put(url, headers=headers, data=data)
+
+        if r.ok:
+            return r
+        else:
+            # some error
+            print(r)
+            return r.status_code
+
+
+    
