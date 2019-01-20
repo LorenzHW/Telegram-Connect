@@ -1,8 +1,9 @@
 class DailyTelegramsAccount(object):
-    def __init__(self, id, phone_number, authorized):
+    def __init__(self, id, phone_number, authorized, settings_id):
         self.id = id
         self.phone_number = phone_number
         self.is_authorized = authorized
+        self.settings_id = settings_id
 
 
 class Contact(object):
@@ -19,3 +20,13 @@ class Conversation(object):
         self.telegrams = telegrams
         self.is_group = is_group
         self.entity_id = entity_id
+
+class Settings(object):
+    def __init__(self, settings_id, non_verbose_mode):
+        self.id = settings_id
+        self.non_verbose_mode = non_verbose_mode
+
+    def to_dict(self):
+        result = {}
+        result['non_verbose_mode'] = self.non_verbose_mode
+        return result

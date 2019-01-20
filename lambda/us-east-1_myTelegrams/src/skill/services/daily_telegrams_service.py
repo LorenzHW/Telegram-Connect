@@ -1,6 +1,6 @@
 import requests
 
-from src.skill.models.general_models import DailyTelegramsAccount
+from src.skill.models.general_models import DailyTelegramsAccount, Settings
 from src.skill.utils.constants import Constants
 from src.skill.utils.exceptions import BackendException
 
@@ -72,6 +72,22 @@ class DailyTelegramsService(object):
         if isinstance(r, int):
             # we got some http error status code
             raise BackendException(r)
+        else:
+            settings_information = r.json()
+            settings_object.non_verbose_mode = settings_information.get('non_verbose_mode')
+            return  settings_object
+
+    def get_settings(self, id):
+        url = self.settings_url + str(id) + '/'
+        r = self._execute_get_request(url)
+
+        if isinstance(r, int):
+            # we got some http error status code
+            raise BackendException(r)
+        else:
+            settings_information = r.json()
+            return Settings(id, settings_information.get('non_verbose_mode'))
+
 
     def _create_authorization_header(self):
         """
