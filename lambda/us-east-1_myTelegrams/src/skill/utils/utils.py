@@ -5,12 +5,13 @@ from ask_sdk_model import Intent
 from ask_sdk_model.dialog import ElicitSlotDirective
 from six import PY3
 
-############## PARSER ##############
-from src.skill.i18n.language_model import LanguageModel
+from src.skill.utils.constants import Constants
+from src.skill.i18n.non_verbose_language_model import NonVerboseLanguageModel
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
+from src.skill.services.daily_telegrams_service import DailyTelegramsService
 
-
+############## PARSER ##############
 def convert_speech_to_text(ssml_speech):
     # convert ssml speech to text, by removing html tags
     s = SSMLStripper()
@@ -56,51 +57,5 @@ class StringComparer():
         b = b.upper()
         return SequenceMatcher(None, a, b).ratio()
 
-
-def handle_authorization(handler_input):
-    i18n = LanguageModel(handler_input.request_envelope.request.locale)
-    telethon_service = TelethonService()
-    sess_attrs = handler_input.attributes_manager.session_attributes
-    account = sess_attrs.get("ACCOUNT")
-    slots = handler_input.request_envelope.request.intent.slots
-    reprompt = None
-
-    if not account.get("PHONE_NUMBER"):
-        speech_text = i18n.NO_PHONE
-        should_end = True
-    elif not slots.get("code").value:
-        try:
-            phone_code_hash = telethon_service.send_code_request()
-        except TelethonException as error:
-            return handle_telethon_error_response(error, handler_input)
-
-        sess_attrs["PHONE_CODE_HASH"] = phone_code_hash
-
-        updated_intent = Intent("CustomYesIntent", slots)
-        elicit_directive = ElicitSlotDirective(updated_intent, "code")
-        handler_input.response_builder.add_directive(elicit_directive)
-
-        speech_text = i18n.WHAT_IS_CODE
-        reprompt = i18n.WHAT_IS_CODE_REPROMPT
-        should_end = False
-    else:
-        phone_code_hash = sess_attrs.get("PHONE_CODE_HASH")
-        try:
-            ok = telethon_service.sign_user_in(slots.get("code").value, phone_code_hash)
-        except TelethonException as error:
-            return handle_telethon_error_response(error, handler_input)
-
-        if ok:
-            sess_attrs["ACCOUNT"]["AUTHORIZED"] = True
-            speech_text = i18n.AUTHORIZED
-            reprompt = i18n.FALLBACK
-            should_end = False
-        else:
-            speech_text = i18n.WRONG_CODE
-            should_end = True
-
-    handler_input.response_builder.speak(speech_text) \
-        .set_should_end_session(should_end)
-    if reprompt:
-        handler_input.response_builder.ask(reprompt)
-    return handler_input
+def set_language_model(locale, non_verbose_mode):
+    Constants.i18n = NonVerboseLanguageModel(locale, non_verbose_mode)    

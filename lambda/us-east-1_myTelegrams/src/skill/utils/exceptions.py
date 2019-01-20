@@ -1,8 +1,9 @@
 from src.skill.i18n.language_model import LanguageModel
+from src.skill.utils.constants import Constants
 
 
 def respond_to_http_error_code(handler_input, http_error_code):
-    i18n = LanguageModel(handler_input.request_envelope.request.locale)
+    i18n = Constants.i18n
     sess_attrs = handler_input.attributes_manager.session_attributes
 
     if http_error_code == 401:
@@ -20,7 +21,7 @@ def respond_to_http_error_code(handler_input, http_error_code):
 
 
 def handle_telethon_error_response(error, handler_input):
-    i18n = LanguageModel(handler_input.request_envelope.request.locale)
+    i18n = Constants.i18n
     error_name = error.name
 
     if error_name == "SessionPasswordNeededError":

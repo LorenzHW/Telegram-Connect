@@ -4,12 +4,13 @@ from src.tests.settings_intent.settings_requests import open_settings_first_time
 from src.tests.tokens import VALID_TOKEN
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.utils.constants import Constants
+from src.skill.utils.utils import set_language_model
 from lambda_function import sb
 
 
 class AlexaParticleTests(unittest.TestCase):
     def test_settings_intent(self):
-        i18n = LanguageModel('en-US')
+        i18n = Constants.i18n
         handler = sb.lambda_handler()
 
         # "In settings mode. Do you want to enable or disable non-verbose mode?"
@@ -31,7 +32,7 @@ class AlexaParticleTests(unittest.TestCase):
         
 
     def test_first_time_setting_intent(self):
-        i18n = LanguageModel('en-US')
+        i18n = Constants.i18n
         handler = sb.lambda_handler()
 
         # Creates a new settings object in backend
@@ -44,8 +45,10 @@ class AlexaParticleTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    suite = unittest.TestSuite()
+    set_language_model('en-US', True)
     Constants.ACCESS_TOKEN = VALID_TOKEN
+
+    suite = unittest.TestSuite()
     suite.addTest(AlexaParticleTests("test_settings_intent"))
     # suite.addTest(AlexaParticleTests("test_first_time_setting_intent"))
     runner = unittest.TextTestRunner()

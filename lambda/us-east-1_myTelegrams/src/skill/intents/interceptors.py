@@ -4,7 +4,8 @@ from ask_sdk_model.ui import SimpleCard, LinkAccountCard
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.utils.constants import Constants
 from src.skill.utils.exceptions import BackendException
-from src.skill.utils.utils import convert_speech_to_text
+from src.skill.utils.utils import convert_speech_to_text, set_language_model
+from src.skill.i18n.language_model import LanguageModel
 
 
 class LoggingRequestInterceptor(AbstractRequestInterceptor):
@@ -41,15 +42,27 @@ class AccountInterceptor(AbstractRequestInterceptor):
     def process(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
         Constants.ACCESS_TOKEN = handler_input.request_envelope.session.user.access_token
+        locale = handler_input.request_envelope.request.locale
+
+        if Constants.i18n is None:
+            set_language_model(locale, non_verbose_mode=False)
+
+        
 
         if not sess_attrs.get("ACCOUNT") and Constants.ACCESS_TOKEN:
+            service = DailyTelegramsService()
+
             try:
-                account = DailyTelegramsService().get_daily_telegrams_account()
+                account = service.get_daily_telegrams_account()
                 sess_attrs["ACCOUNT"] = {
                     "ID": account.id,
                     "PHONE_NUMBER": account.phone_number,
                     "AUTHORIZED": account.is_authorized,
                     "SETTINGS_ID": account.settings_id
                 }
+
+                settings = service.get_settings(account.settings_id)
+                set_language_model(locale, settings.non_verbose_mode)
+                
             except BackendException as http_error_code:
                 sess_attrs["HTTP_ERROR_CODE"] = http_error_code.args[0]

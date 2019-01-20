@@ -2,10 +2,11 @@ from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.utils import is_intent_name
 from ask_sdk_model.dialog import ElicitSlotDirective, DelegateDirective
 from ask_sdk_model import Intent
+
 from src.skill.intents.message_intent import MessageIntentHandler
 from src.skill.services.telethon_service import TelethonService
-
 from src.skill.i18n.language_model import LanguageModel
+from src.skill.utils.constants import Constants
 
 class ReplyIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
@@ -16,7 +17,7 @@ class ReplyIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         self.telethon_service = TelethonService()
         sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
         slots = handler_input.request_envelope.request.intent.slots
         updated_intent = Intent("SettingsIntent", slots)
 

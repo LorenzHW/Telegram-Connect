@@ -7,7 +7,7 @@ from src.skill.i18n.language_model import LanguageModel
 from src.skill.intents.message_intent import MessageIntentHandler
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.utils import handle_authorization
+from src.skill.utils.constants import Constants
 
 
 class YesIntentHandler(AbstractRequestHandler):
@@ -23,7 +23,7 @@ class YesIntentHandler(AbstractRequestHandler):
             "TELETHON_ENTITY_ID")
 
     def handle(self, handler_input):
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
         sess_attrs = handler_input.attributes_manager.session_attributes
         previous_intent = sess_attrs.get("PREV_INTENT")
         user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
@@ -60,7 +60,7 @@ class NoIntentHandler(AbstractRequestHandler):
             "TELETHON_ENTITY_ID")
 
     def handle(self, handler_input):
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
         sess_attrs = handler_input.attributes_manager.session_attributes
         previous_intent = sess_attrs.get("PREV_INTENT")
         user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")

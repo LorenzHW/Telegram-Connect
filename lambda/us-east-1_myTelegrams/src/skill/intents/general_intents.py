@@ -4,6 +4,7 @@ from ask_sdk_core.utils import is_request_type, is_intent_name
 
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.utils.exceptions import respond_to_http_error_code
+from src.skill.utils.constants import Constants
 
 
 class HelpIntentHandler(AbstractRequestHandler):
@@ -11,7 +12,7 @@ class HelpIntentHandler(AbstractRequestHandler):
         return is_intent_name("AMAZON.HelpIntent")(handler_input)
 
     def handle(self, handler_input):
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
         speech_text = i18n.HELP
 
         handler_input.response_builder.speak(speech_text).set_should_end_session(False)
@@ -24,7 +25,7 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
                 is_intent_name("AMAZON.StopIntent")(handler_input))
 
     def handle(self, handler_input):
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
         speech_text = i18n.get_random_goodbye()
 
         handler_input.response_builder.speak(speech_text).set_should_end_session(True)
@@ -37,7 +38,7 @@ class FallbackIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
         speech_text = i18n.FALLBACK_INTENT
         reprompt = i18n.FALLBACK_INTENT_REPROMPT
 
@@ -76,7 +77,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
     def handle(self, handler_input, exception):
         print("Encountered following exception: {}".format(exception))
         sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
 
         if "Couldn't find handler that can handle the request" in "{}".format(exception):
             detour_exception = True

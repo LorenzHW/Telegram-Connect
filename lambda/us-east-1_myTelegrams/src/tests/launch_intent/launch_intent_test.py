@@ -4,11 +4,13 @@ from lambda_function import sb
 from src.tests.launch_intent.launch_request import launch_request
 from src.skill.i18n.language_model import LanguageModel
 from src.tests.tokens import VALID_TOKEN, INVALID_TOKEN
+from src.skill.utils.constants import Constants
+from src.skill.utils.utils import set_language_model
 
 
 class AlexaParticleTests(unittest.TestCase):
     def test_authorized_launch_request(self):
-        i18n = LanguageModel('en-US')
+        i18n = Constants.i18n
         handler = sb.lambda_handler()
 
         launch_request["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
@@ -20,7 +22,7 @@ class AlexaParticleTests(unittest.TestCase):
 
 
     def test_account_not_linked_launch_request(self):
-        i18n = LanguageModel('en-US')
+        i18n = Constants.i18n
         handler = sb.lambda_handler()
         
         # Remove access token to simulate a user who did not link account
@@ -32,7 +34,7 @@ class AlexaParticleTests(unittest.TestCase):
         self.assertEqual(ssml, '<speak>{}</speak>'.format(i18n.ACCOUNT_LINKING_REQUIRED))
 
     def test_account_not_authorized_launch_request(self):
-        i18n = LanguageModel('en-US')
+        i18n = Constants.i18n
         handler = sb.lambda_handler()
         
         launch_request["context"]["System"]["user"]["accessToken"] = INVALID_TOKEN
@@ -43,6 +45,7 @@ class AlexaParticleTests(unittest.TestCase):
         self.assertEqual(ssml, '<speak>{}</speak>'.format(i18n.NOT_AUTHORIZED))
 
 if __name__ == "__main__":
+    set_language_model('en-US', True)
     suite = unittest.TestSuite()
     suite.addTest(AlexaParticleTests("test_authorized_launch_request"))
     suite.addTest(AlexaParticleTests("test_account_not_linked_launch_request"))

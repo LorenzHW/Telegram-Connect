@@ -6,6 +6,7 @@ from ask_sdk_model.dialog import ElicitSlotDirective
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
+from src.skill.utils.constants import Constants
 
 
 class SendIntentHandler(AbstractRequestHandler):
@@ -21,7 +22,7 @@ class SendIntentHandler(AbstractRequestHandler):
         slots = handler_input.request_envelope.request.intent.slots
         updated_intent = Intent("SendIntent", slots)
         sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
 
         for slot_name in slots:
             slot = slots[slot_name]

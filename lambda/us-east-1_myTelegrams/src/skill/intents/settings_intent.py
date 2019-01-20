@@ -6,6 +6,8 @@ from ask_sdk_model import Intent
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.models.general_models import Settings
+from src.skill.utils.utils import set_language_model
+from src.skill.utils.constants import Constants
 
 class SettingsIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
@@ -15,7 +17,7 @@ class SettingsIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
         current_intent = handler_input.request_envelope.request.intent
         settings_id = sess_attrs.get('ACCOUNT').get('SETTINGS_ID')
         daily_telegram_service = DailyTelegramsService()
@@ -26,10 +28,10 @@ class SettingsIntentHandler(AbstractRequestHandler):
 
 
         for slot_name, current_slot in current_intent.slots.items():
-            if slot_name == 'enable_non_verbose_mode':
+            if slot_name == 'enable_or_disable_non_verbose_mode':
                 if current_slot.value is None:
                     speech_text = i18n.SETTINGS_OPENED
-                    slot_to_elicit = 'enable_non_verbose_mode'
+                    slot_to_elicit = 'enable_or_disable_non_verbose_mode'
                     elicit_directive = ElicitSlotDirective(
                         current_intent, slot_to_elicit)
                     handler_input.response_builder.add_directive(
@@ -45,10 +47,12 @@ class SettingsIntentHandler(AbstractRequestHandler):
 
                     speech_text += ' ' + i18n.LEAVING_SETTINGS_MODE
                     speech_text += ' ' + i18n.get_random_anyting_else_without_ack()
+
                     settings = Settings(settings_id, non_verbose_mode)
-                    daily_telegram_service.update_settings(settings)
+                    settings = daily_telegram_service.update_settings(settings)
 
-
+                    locale = handler_input.request_envelope.request.locale
+                    set_language_model(locale, settings.non_verbose_mode)
 
         handler_input.response_builder \
             .speak(speech_text).set_should_end_session(False).ask(i18n.FALLBACK)

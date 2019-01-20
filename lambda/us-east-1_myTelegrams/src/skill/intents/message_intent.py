@@ -4,7 +4,7 @@ from ask_sdk_core.utils import is_intent_name
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
-
+from src.skill.utils.constants import Constants
 
 class MessageIntentHandler(AbstractRequestHandler):
     def __init__(self):
@@ -16,7 +16,7 @@ class MessageIntentHandler(AbstractRequestHandler):
         return is_intent_name("MessageIntent")(handler_input) and user_is_authorized
 
     def handle(self, handler_input):
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
         speech_text = self.get_telegram(handler_input)
         handler_input.response_builder.speak(speech_text) \
             .set_should_end_session(False).ask(i18n.FALLBACK)
@@ -24,7 +24,7 @@ class MessageIntentHandler(AbstractRequestHandler):
 
     def get_telegram(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = LanguageModel(handler_input.request_envelope.request.locale)
+        i18n = Constants.i18n
 
         if not sess_attrs.get("TELEGRAMS"):
             try:
