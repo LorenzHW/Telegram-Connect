@@ -33,8 +33,6 @@ class TelethonService(object):
             phone_code_hash = str(response.get('phone_code_hash'))
             return phone_code_hash
 
-    # TODO: Handle media files received
-    # TODO: data set (text messages in slot values)
     def sign_user_in(self, code, phone_code_hash):
         r = self._execute_request(self.telethon_sign_in_url.format(code, phone_code_hash))
 
