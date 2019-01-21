@@ -8,6 +8,7 @@ from src.skill.services.telethon_service import TelethonService
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.utils.constants import Constants
 
+
 class ReplyIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
@@ -19,16 +20,23 @@ class ReplyIntentHandler(AbstractRequestHandler):
         sess_attrs = handler_input.attributes_manager.session_attributes
         i18n = Constants.i18n
         slots = handler_input.request_envelope.request.intent.slots
-        updated_intent = Intent("SettingsIntent", slots)
 
         if slots.get("message").value:
-                contact = sess_attrs.get("CONTACTS")[sess_attrs.get("TELEGRAMS_COUNTER") - 1]
-                entity_id = sess_attrs.get("ENTITY_IDS")[sess_attrs.get("TELEGRAMS_COUNTER") - 1]
-                self.telethon_service.send_telegram(entity_id, slots.get("message").value)
+            if sess_attrs.get("TELEGRAMS_COUNTER") is None:
+                # User is replying on last unread dialog
+                index = len(sess_attrs.get("CONTACTS")) - 1
+            else:
+                # User is replying to some other dialog
+                index = sess_attrs.get("TELEGRAMS_COUNTER") - 1
 
-                next_telegram = MessageIntentHandler().get_telegram(handler_input)
-                speech_text = i18n.TELEGRAM_SENT.format(contact) + next_telegram
-                reprompt = i18n.FALLBACK
+            contact = sess_attrs.get("CONTACTS")[index]
+            entity_id = sess_attrs.get("ENTITY_IDS")[index]
+            self.telethon_service \
+                .send_telegram(entity_id, slots.get("message").value)
+
+            next_telegram = MessageIntentHandler().get_telegram(handler_input)
+            speech_text = i18n.TELEGRAM_SENT.format(contact) + next_telegram
+            reprompt = i18n.FALLBACK
         else:
             speech_text = i18n.get_random_acceptance_ack() + ", " + i18n.MESSAGE_2
             reprompt = i18n.get_random_dont_understand() + ", " + i18n.MESSAGE_2
