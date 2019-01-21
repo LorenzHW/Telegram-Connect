@@ -8,7 +8,7 @@ from src.skill.utils.constants import Constants
 from src.skill.utils.utils import set_language_model
 
 
-class AlexaParticleTests(unittest.TestCase):
+class LaunchIntentTest(unittest.TestCase):
     def test_authorized_launch_request(self):
         i18n = Constants.i18n
         handler = sb.lambda_handler()
@@ -47,8 +47,8 @@ class AlexaParticleTests(unittest.TestCase):
 if __name__ == "__main__":
     set_language_model('en-US', True)
     suite = unittest.TestSuite()
-    suite.addTest(AlexaParticleTests("test_authorized_launch_request"))
-    suite.addTest(AlexaParticleTests("test_account_not_linked_launch_request"))
-    suite.addTest(AlexaParticleTests("test_account_not_authorized_launch_request"))
+    suite.addTest(LaunchIntentTest("test_authorized_launch_request"))
+    suite.addTest(LaunchIntentTest("test_account_not_linked_launch_request"))
+    suite.addTest(LaunchIntentTest("test_account_not_authorized_launch_request"))
     runner = unittest.TextTestRunner()
     runner.run(suite)

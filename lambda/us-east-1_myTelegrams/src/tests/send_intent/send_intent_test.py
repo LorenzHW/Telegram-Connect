@@ -8,7 +8,7 @@ from src.skill.utils.utils import set_language_model
 from lambda_function import sb
 
 
-class AlexaParticleTests(unittest.TestCase):
+class SendIntentTest(unittest.TestCase):
 
     def start_send_intent(self):
         i18n = Constants.i18n
@@ -49,11 +49,10 @@ if __name__ == "__main__":
     set_language_model('en-US', True)
 
     suite = unittest.TestSuite()
-    suite.addTest(AlexaParticleTests("start_send_intent"))
-    suite.addTest(AlexaParticleTests("ask_for_message"))
-    suite.addTest(AlexaParticleTests("send_telegram"))
+    suite.addTest(SendIntentTest("start_send_intent"))
+    suite.addTest(SendIntentTest("ask_for_message"))
+    suite.addTest(SendIntentTest("send_telegram"))
     runner = unittest.TextTestRunner()
     runner.run(suite)
 
-    # TODO: Add test: One-shot start_send_intent
-    # TODO: Add test: User gets choices of first names --> User answers correct / incorrect
+    
