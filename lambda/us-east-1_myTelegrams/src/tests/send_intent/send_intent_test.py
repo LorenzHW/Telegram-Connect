@@ -45,6 +45,37 @@ class SendIntentTest(unittest.TestCase):
         self.assertTrue(test_case in i18n.ANYTHING_ELSE)
 
 
+    def test_multiple_choices(self):
+        i18n = Constants.i18n
+        handler = sb.lambda_handler()
+
+        # A: "First name"
+        # U: "Mik"
+        multiple_choices["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
+        multiple_choices["session"]["user"]["accessToken"] = VALID_TOKEN
+        event = handler(multiple_choices, None)
+        ssml = event.get('response').get('outputSpeech').get('ssml')
+        self.assertTrue(ssml[7:15] in i18n.NO_CONTACT)
+        
+        # A: "I found: 1 Michael, 2 Martin, and 3 Riki."
+        # U: "One"
+        user_made_choice["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
+        user_made_choice["session"]["user"]["accessToken"] = VALID_TOKEN
+        event = handler(user_made_choice, None)
+        ssml = event.get('response').get('outputSpeech').get('ssml')
+        self.assertTrue(ssml[-17:-8] in i18n.MESSAGE)
+
+        # A: "I found: 1 Michael, 2 Martin, and 3 Riki."
+        # U: "Mik"
+        user_says_wrong_on_choice["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
+        user_says_wrong_on_choice["session"]["user"]["accessToken"] = VALID_TOKEN
+        event = handler(user_says_wrong_on_choice, None)
+        ssml = event.get('response').get('outputSpeech').get('ssml')
+        self.assertTrue(ssml[7:30] in i18n.MAX_NO_CONTACT)
+
+
+
+
 if __name__ == "__main__":
     set_language_model('en-US', True)
 
@@ -52,6 +83,7 @@ if __name__ == "__main__":
     suite.addTest(SendIntentTest("start_send_intent"))
     suite.addTest(SendIntentTest("ask_for_message"))
     suite.addTest(SendIntentTest("send_telegram"))
+    suite.addTest(SendIntentTest("test_multiple_choices"))
     runner = unittest.TextTestRunner()
     runner.run(suite)
 

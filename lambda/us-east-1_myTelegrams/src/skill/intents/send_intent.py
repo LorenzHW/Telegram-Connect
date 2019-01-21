@@ -33,63 +33,40 @@ class SendIntentHandler(AbstractRequestHandler):
                     reprompt = i18n.FIRST_NAME_REPROMPT
                 else:
                     if not sess_attrs.get("FIRST_NAMES"):
-                        try:
-                            contacts = self.telethon_service.get_potential_contacts(slot.value)
-                        except TelethonException as error:
-                            return handle_telethon_error_response(error, handler_input)
+                        contacts = self.telethon_service \
+                            .get_potential_contacts(slot.value)
 
                         if len(contacts) == 1:
+                            c = contacts[0]
                             slot_to_elicit = "message"
-                            sess_attrs["TELETHON_ENTITY_ID"] = contacts[0].entity_id
-                            speech_text = i18n.MESSAGE.format(contacts[0].first_name)
-                            reprompt = i18n.MESSAGE_REPROMPT.format(contacts[0].first_name)
+                            sess_attrs["TELETHON_ENTITY_ID"] = c.entity_id
+                            speech_text = i18n.MESSAGE.format(c.first_name)
+                            reprompt = i18n.MESSAGE_REPROMPT \
+                                .format(c.first_name)
                         else:
-                            slot_to_elicit = "a_b_or_c"
-                            if len(contacts) == 3:
-                                name_1 = contacts[0].first_name
-                                name_2 = contacts[1].first_name
-                                name_3 = contacts[2].first_name
-                                speech_text = i18n.NO_CONTACT.format(name_1, name_2, name_3)
-                                reprompt = i18n.NO_CONTACT_REPROMPT.format(name_1, name_2, name_3)
-                            else:
-                                name_1 = contacts[0].first_name
-                                name_2 = contacts[1].first_name
-                                speech_text = i18n.NO_CONTACT_2.format(name_1, name_2)
-                                reprompt = i18n.NO_CONTACT_REPROMPT_2.format(name_1, name_2)
-
-                            sess_attrs["FIRST_NAMES"] = [contact.first_name for contact in contacts]
-                            sess_attrs["TELETHON_IDS"] = [contact.entity_id for contact in
-                                                          contacts]
+                            slot_to_elicit = "one_two_or_three"
+                            speech_text, reprompt = \
+                                self.provide_choices(contacts, i18n)
+                            sess_attrs["FIRST_NAMES"] = \
+                                [c.first_name for c in contacts]
+                            sess_attrs["TELETHON_IDS"] = \
+                                [c.entity_id for c in contacts]
                     else:
-                        # Multiple contacts were found. Alexa provided three choices.
-                        # Now we check what user chose
-                        # first_names = sess_attrs["FIRST_NAMES"]
-                        # name, index = get_most_likely_name(first_names, slot.value)
-                        a_b_or_c = slots.get("a_b_or_c")
+                        one_two_or_three = slots.get("one_two_or_three")
 
-                        if a_b_or_c.value == "1":
-                            index = 0
-                        elif a_b_or_c.value == "2":
-                            index = 1
-                        elif a_b_or_c.value == "3" and len(sess_attrs.get("FIRST_NAMES")) == 3:
-                            index = 2
-                        else:
+                        if one_two_or_three.value not in ["1", "2", "3"]:
                             speech_text = i18n.MAX_NO_CONTACT
                             handler_input.response_builder.speak(
                                 speech_text).set_should_end_session(True)
                             return handler_input.response_builder.response
 
-                        name = sess_attrs["FIRST_NAMES"][index]
-                        sess_attrs["TELETHON_ENTITY_ID"] = sess_attrs.get("TELETHON_IDS")[index]
+                        speech_text, reprompt = self \
+                            .get_users_choice(one_two_or_three, i18n, sess_attrs)
                         slot_to_elicit = "message"
-                        speech_text = i18n.get_random_acceptance_ack() + ", " \
-                                      + i18n.MESSAGE.format(name)
-                        reprompt = i18n.get_random_dont_understand() + ", " \
-                                   + i18n.MESSAGE.format(name)
 
-                elicit_directive = ElicitSlotDirective(updated_intent, slot_to_elicit)
-                handler_input.response_builder.add_directive(elicit_directive)
-
+                directive = ElicitSlotDirective(updated_intent, slot_to_elicit)
+                handler_input.response_builder.add_directive(directive)
+                
             if slot.name == "message" and slot.value:
                 try:
                     entity_id = sess_attrs.get("TELETHON_ENTITY_ID")
@@ -105,3 +82,26 @@ class SendIntentHandler(AbstractRequestHandler):
             .set_should_end_session(False).ask(reprompt)
 
         return handler_input.response_builder.response
+
+    def provide_choices(self, contacts, i18n):
+        name_1 = contacts[0].first_name
+        name_2 = contacts[1].first_name
+
+        if len(contacts) == 3:
+            name_3 = contacts[2].first_name
+            speech_text = i18n.NO_CONTACT.format(name_1, name_2, name_3)
+            reprompt = i18n.NO_CONTACT_REPROMPT.format(name_1, name_2, name_3)
+        else:
+            speech_text = i18n.NO_CONTACT_2.format(name_1, name_2)
+            reprompt = i18n.NO_CONTACT_REPROMPT_2.format(name_1, name_2)
+        return speech_text, reprompt
+
+    def get_users_choice(self, one_two_or_three, i18n, sess_attrs):
+        index = int(one_two_or_three.value) - 1
+        telethon_id = sess_attrs.get("TELETHON_IDS")[index]
+        sess_attrs["TELETHON_ENTITY_ID"] = telethon_id
+
+        name = sess_attrs["FIRST_NAMES"][index]
+        speech_text = i18n.MESSAGE.format(name)
+        reprompt = i18n.MESSAGE_REPROMPT.format(name)
+        return speech_text, reprompt

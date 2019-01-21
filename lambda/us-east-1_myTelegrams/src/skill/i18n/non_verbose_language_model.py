@@ -22,7 +22,7 @@ class NonVerboseLanguageModel(LanguageModel):
     def set_english_non_verbose_model(self):
         ### SendIntent ###
         self.FIRST_NAME = "First name?"
-        self.MESSAGE = "{}. Telegram?"
+        self.MESSAGE = "Ok. {}. Telegram?"
         self.NO_CONTACT = "I found: <break time='25ms'/> 1 <break time='75ms'/> {}, <break time='50ms'/> 2 <break time='75ms'/> {}, and <break time='50ms'/> 3 <break time='75ms'/> {}."
         self.NO_CONTACT_2 = "I found <break time='25ms'/> 1 <break time='75ms'/> {}, and <break time='50ms'/> 2 <break time='75ms'/> {}."
 

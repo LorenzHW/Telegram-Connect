@@ -63,7 +63,7 @@ class LanguageModel(GenericLanguageModel):
         self.FIRST_NAME = "{}, what is the first name of your contact?".format(
             self.get_random_ack())
         self.FIRST_NAME_REPROMPT = self.get_random_dont_understand() + ", what was the first name?"
-        self.MESSAGE = "What is the Telegram for {}?"
+        self.MESSAGE = self.get_random_acceptance_ack() + ", what is the Telegram for {}?"
         self.MESSAGE_REPROMPT = self.get_random_dont_understand() + ", what is the Telegram for {}?"
         self.NO_CONTACT = self.get_random_thinking() + ", I can't find any contact with that name. I found: <break time='100ms'/> 1 <break time='150ms'/> {}, <break time='100ms'/> 2 <break time='150ms'/> {}, and <break time='100ms'/> 3 <break time='150ms'/> {}. To whom should I send the Telegram?"
         self.NO_CONTACT_2 = self.get_random_thinking() + ", I can't find any contact with that name. I found <break time='100ms'/> 1 <break time='150ms'/> {}, and <break time='100ms'/> 2 <break time='150ms'/> {}. To whom should I send the Telegram?"
