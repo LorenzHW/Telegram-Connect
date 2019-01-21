@@ -1,6 +1,6 @@
 import unittest
 
-from src.tests.yes_no_intent.yes_requests import *
+from src.tests.yes_no_intent.yes_requests import yes_on_listen_to_new_telegrams
 from src.tests.yes_no_intent.no_requests import *
 from src.tests.tokens import VALID_TOKEN
 from src.skill.services.telethon_service import TelethonService
