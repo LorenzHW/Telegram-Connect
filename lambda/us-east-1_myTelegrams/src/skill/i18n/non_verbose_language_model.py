@@ -27,16 +27,18 @@ class NonVerboseLanguageModel(LanguageModel):
         self.NO_CONTACT_2 = "I found <break time='25ms'/> 1 <break time='75ms'/> {}, and <break time='50ms'/> 2 <break time='75ms'/> {}."
 
         ### MessageIntent ###
-        self.REPLY = "<break time='50ms'/> Reply or next telegram?"
+        self.REPLY_OR_NEXT_TELEGRAM = "<break time='100ms'/> Reply or next telegram?"
         self.NEW_TELEGRAMS = "New telegrams from: "
-        self.NO_MORE_TELEGRAMS = "Done. Anything else?"
+        self.REPLY_SEND_OR_STOP = " Reply, send a telegram, or stop?"
         self.NO_TELEGRAMS = "No new telegrams. Anything else?"
         self.GROUP_INTRO = "In {}: <break time='100ms'/>"
         self.GROUP_MESSAGE_INTRO = "{} wrote: <break time='50ms'/>"
         self.PERSONAL_CHAT_INTRO = "{} wrote: <break time='50ms'/>"
+        self.BREAK_BETWEEN_NAMES = self.BREAK_100
+        self.BREAK_BETWEEN_TELEGRAMS = self.BREAK_75
 
         ### LaunchIntent ###
-        self.USER_HAS_TELEGRAMS = "Welcome. Do you want to hear your new Telegrams?"
+        self.USER_HAS_TELEGRAMS = "Welcome. Listen to your new Telegrams?"
         self.WELCOME = "Welcome"
 
         ### ReplyIntent ###

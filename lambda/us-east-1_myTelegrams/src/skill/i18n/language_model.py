@@ -16,7 +16,7 @@ class LanguageModel(GenericLanguageModel):
 
         self.REPLY = None
         self.NEW_TELEGRAMS = None
-        self.NO_MORE_TELEGRAMS = None
+        self.REPLY_SEND_OR_STOP = None
         self.NO_TELEGRAMS = None
         self.AND = None
         self.GROUP_INTRO = None
@@ -72,15 +72,17 @@ class LanguageModel(GenericLanguageModel):
         self.MAX_NO_CONTACT = "Sorry. I am still having trouble understanding you. Please say: <break time='100ms'/> 1 <break time='150ms'/> <break time='100ms'/> 2 <break time='150ms'/> or <break time='100ms'/> 3 <break time='150ms'/>. Otherwise you can try out the speed dial feature. Check the skill description for more information. " + self.get_random_goodbye()
 
         ### MessageIntent ###
-        self.REPLY = "<break time='250ms'/> Do you want to reply or listen to the next Telegram?"
+        self.REPLY_OR_NEXT_TELEGRAM = "<break time='250ms'/> Do you want to reply or listen to the next Telegram?"
         self.NEW_TELEGRAMS = "You got new Telegrams from: "
-        self.NO_MORE_TELEGRAMS = "There are no more Telegrams. Is there anything else I can help you with?"
+        self.REPLY_SEND_OR_STOP = " Do you want to reply, send a Telegram to someone else, or stop?"
         self.NO_TELEGRAMS = "You got no new telegrams. " + self.get_random_anyting_else_without_ack()
         self.AND = ", and "
         self.GROUP_INTRO = "In {}: <break time='200ms'/>"
         self.GROUP_MESSAGE_INTRO = "{} wrote: <break time='100ms'/>"
         self.PERSONAL_CHAT_INTRO = "{} wrote: <break time='200ms'/>"
         self.MEDIA_FILE = "Media file"
+        self.BREAK_BETWEEN_NAMES = self.BREAK_200
+        self.BREAK_BETWEEN_TELEGRAMS = self.BREAK_150
 
         ### LaunchIntent ###
         self.NOT_AUTHORIZED = "Welcome to {}. {} let's you connect your Telegram Messenger with Alexa. Now, do you want to hear more information or start the authorization?" \
