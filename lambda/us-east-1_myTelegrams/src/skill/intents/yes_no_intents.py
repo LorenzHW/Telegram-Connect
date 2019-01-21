@@ -78,20 +78,24 @@ class NoIntentHandler(AbstractRequestHandler):
 
         # User answered No on question: "Is there anything else I can help you with?
         if (previous_intent == "SendIntent"
-            or previous_intent == "MessageIntent"
-            or previous_intent == "SpeedIntent"
-            or previous_intent == "ReplyIntent"
-            or previous_intent == "SettingsIntent"
-            or previous_intent == "AuthorizationIntent"
-            or previous_intent == "AMAZON.YesIntent"
-            or previous_intent == "AMAZON.NoIntent") \
+                or previous_intent == "MessageIntent"
+                or previous_intent == "SpeedIntent"
+                or previous_intent == "ReplyIntent"
+                or previous_intent == "SettingsIntent"
+                or previous_intent == "AuthorizationIntent"
+                or previous_intent == "AMAZON.YesIntent"
+                or previous_intent == "AMAZON.NoIntent") \
                 and not sess_attrs.get("TELEGRAMS") and not sess_attrs.get('FIRST_NAMES'):
             speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
             handler_input.response_builder.speak(
                 speech_text).set_should_end_session(True)
             return handler_input.response_builder.response
 
-        if previous_intent == "SendIntent" or previous_intent == "SpeedIntent" or previous_intent == "MessageIntent" or previous_intent == "ReplyIntent":
+        if (previous_intent == "SendIntent"
+                or previous_intent == "SpeedIntent"
+                or previous_intent == "MessageIntent"
+                or previous_intent == "ReplyIntent"
+                or previous_intent == "AuthorizationIntent"):
             speech_text = i18n.get_random_ack() + ", " + i18n.get_random_goodbye()
             handler_input.response_builder.speak(
                 speech_text).set_should_end_session(True)

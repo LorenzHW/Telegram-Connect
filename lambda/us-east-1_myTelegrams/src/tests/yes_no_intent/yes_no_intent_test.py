@@ -10,8 +10,7 @@ from src.skill.utils.utils import set_language_model
 from lambda_function import sb
 
 
-
-class AlexaParticleTests(unittest.TestCase):
+class YesNoIntentTest(unittest.TestCase):
     def yes_intent_on_new_telegrams(self):
         i18n = Constants.i18n
         handler = sb.lambda_handler()
@@ -20,7 +19,9 @@ class AlexaParticleTests(unittest.TestCase):
         yes_on_listen_to_new_telegrams["session"]["user"]["accessToken"] = VALID_TOKEN
         event = handler(yes_on_listen_to_new_telegrams, None)
         ssml = event.get('response').get('outputSpeech').get('ssml')
-        self.assertTrue(ssml[-31:-8] in i18n.REPLY)
+        self.assertTrue(ssml[-31:-8] in i18n.REPLY_OR_NEXT_TELEGRAM
+                        or ssml[-31:-8] in i18n.REPLY_SEND_OR_STOP
+                        or ssml[-40:-8] in i18n.NO_TELEGRAMS)
 
     def no_intent_on_new_telegrams(self):
         i18n = Constants.i18n
@@ -38,17 +39,12 @@ class AlexaParticleTests(unittest.TestCase):
 if __name__ == "__main__":
     set_language_model('en-US', True)
     Constants.ACCESS_TOKEN = VALID_TOKEN
-    
     suite = unittest.TestSuite()
-    telethon_service = TelethonService()
-    got_unread_telegrams = telethon_service.check_telegrams()
 
-    if got_unread_telegrams:
-        suite.addTest(AlexaParticleTests("no_intent_on_new_telegrams"))
-        suite.addTest(AlexaParticleTests("yes_intent_on_new_telegrams"))
-    
+    suite.addTest(YesNoIntentTest("no_intent_on_new_telegrams"))
+    suite.addTest(YesNoIntentTest("yes_intent_on_new_telegrams"))
+
     runner = unittest.TextTestRunner()
     runner.run(suite)
 
-# TODO: Add yes test on: "Is there anything else I can help you with?
-# TODO: Add no test on: "Is there anything else I can help you with?"
+
