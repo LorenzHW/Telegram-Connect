@@ -48,15 +48,22 @@ class MessageIntentHandler(AbstractRequestHandler):
 
             speech_text = i18n.NEW_TELEGRAMS + first_names
             speech_text = speech_text + spoken_telegrams[sess_attrs["TELEGRAMS_COUNTER"]]
-            speech_text = speech_text + i18n.REPLY
-
-            sess_attrs["TELEGRAMS_COUNTER"] += 1
-        elif sess_attrs["TELEGRAMS_COUNTER"] < len(sess_attrs["TELEGRAMS"]):
+            
+            if len(conversations) == 1:
+                speech_text += i18n.REPLY_SEND_OR_STOP
+                sess_attrs.pop("TELEGRAMS")
+                sess_attrs.pop("TELEGRAMS_COUNTER")
+            else:
+                speech_text += i18n.REPLY_OR_NEXT_TELEGRAM
+                sess_attrs["TELEGRAMS_COUNTER"] += 1
+            
+        elif sess_attrs["TELEGRAMS_COUNTER"] < len(sess_attrs["TELEGRAMS"]) - 1:
             speech_text = sess_attrs["TELEGRAMS"][sess_attrs["TELEGRAMS_COUNTER"]]
-            speech_text = speech_text + i18n.REPLY
+            speech_text = speech_text + i18n.REPLY_OR_NEXT_TELEGRAM
             sess_attrs["TELEGRAMS_COUNTER"] += 1
         else:
-            speech_text = i18n.NO_MORE_TELEGRAMS
+            speech_text = sess_attrs["TELEGRAMS"][sess_attrs["TELEGRAMS_COUNTER"]]
+            speech_text += i18n.REPLY_SEND_OR_STOP
             sess_attrs.pop("TELEGRAMS")
             sess_attrs.pop("TELEGRAMS_COUNTER")
         return speech_text
@@ -69,9 +76,9 @@ class MessageIntentHandler(AbstractRequestHandler):
             for telegram in conversations[:-1]:
                 first_names.append(telegram.sender)
             first_names = ", ".join(first_names)
-            first_names += i18n.AND + conversations[-1].sender + ". <break time='200ms'/>"
+            first_names += i18n.AND + conversations[-1].sender + ". " + i18n.BREAK_BETWEEN_NAMES
         else:
-            first_names = conversations[0].sender + ". <break time='200ms'/>"
+            first_names = conversations[0].sender + ". " + i18n.BREAK_BETWEEN_NAMES
 
         # Constructs a string like: "Tom, Paul, and Julia"
         return first_names
