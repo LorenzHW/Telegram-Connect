@@ -24,6 +24,9 @@ class GenericLanguageModel(object):
         self.ANYTHING_ELSE = None
         self.DETOUR_EXCEPTION = None
 
+        self.BREAK_50 = "<break time='50ms'/>"
+        self.BREAK_75 = "<break time='75ms'/>"
+        self.BREAK_100 = "<break time='100ms'/>"
         self.BREAK_150 = "<break time='150ms'/>"
         self.BREAK_200 = "<break time='200ms'/>"
 
