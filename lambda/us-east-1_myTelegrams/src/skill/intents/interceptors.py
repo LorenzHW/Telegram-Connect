@@ -44,7 +44,7 @@ class AccountInterceptor(AbstractRequestInterceptor):
         Constants.ACCESS_TOKEN = handler_input.request_envelope.session.user.access_token
         locale = handler_input.request_envelope.request.locale
 
-        if Constants.i18n is None:
+        if Constants.i18n is None or handler_input.request_envelope.session.new:
             set_language_model(locale, non_verbose_mode=False)
 
         

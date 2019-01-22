@@ -74,7 +74,7 @@ class GenericLanguageModel(object):
         self.HELP = "Du kannst ein Telegram zu einer Person oder Gruppe schicken und ungelesene Telegramme abhören." + self.BREAK_50 + \
                     " In den Einstellungen kannst du einen wortarmen Modus aktivieren um den Skill schneller zu verwenden." + self.BREAK_50 + \
                     " Du hast folgende Befehle zur Auswahl: 'Öffne Einstellungen', 'Verschicke ein Telegram', oder 'Checke meine Telegramme'. " + self.BREAK_50 + \
-                    " Falls ich, beim Versenden eines Telegrams, Probleme habe den Namen zu verstehen, kannst du Gebrauch von der Kurzwahl Funktion machen. Schaue dir dafür die Skillbeschreibung an." + self.BREAK_50 + \
+                    " Falls ich beim Versenden eines Telegrams, Probleme habe den Namen zu verstehen, kannst du Gebrauch von der Kurzwahl Funktion machen. Schaue dir dafür die Skillbeschreibung an." + self.BREAK_50 + \
                     " Wenn du neue Telegramme hast und den Skill startest werde ich dich fragen ob du sie hören möchtest." + self.BREAK_50 + \
                     " Bevor du den Skill nutzen kannst musst du dich autorisieren. Falls du das noch nicht gemacht hast, sage jetzt: 'Autorisiere mich'"
                     
@@ -118,11 +118,11 @@ class GenericLanguageModel(object):
                                                                      "telegram' or 'Check my " \
                                                                      "Telegrams' "
         self.HELP = "You can send Telegrams to a person or to a group and also check if you have new telegrams." + self.BREAK_50 + \
-                    " In a settings mode you can activate a non-verbose mode to use the skill faster."  + self.BREAK_50 + \
-                    " You got those commands: 'Open settings', 'Send a telegram', 'Check my telegrams' " + self.BREAK_50 + \
+                    " In settings mode you can activate a non-verbose mode to use the skill faster."  + self.BREAK_50 + \
+                    " You can use following commands: 'Open settings', 'Send a telegram', or 'Check my telegrams'. " + self.BREAK_50 + \
                     " If I have trouble understanding you while sending a Telegram you can make use of the speed dial feature. Check the skill description for more information." + self.BREAK_50 +\
                     " If you have new Telegrams and you start the skill, I will ask you if you want to hear them." + self.BREAK_50 + \
-                    " Before you can use that skill you need to authorize. If you have not done that yet say: 'Start authorisation'" 
+                    " Before you can use this skill you need to authorize. If you have not done that yet say: 'Start authorisation'" 
 
     def get_random_ack(self):
         return random.choice(self.ACKS)
