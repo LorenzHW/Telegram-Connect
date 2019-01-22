@@ -8,6 +8,7 @@ from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 from src.skill.utils.constants import Constants
 from src.skill.utils.exceptions import SpeedDialException
+from src.skill.utils.utils import handle_speed_dial_number_input, send_telegram
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 
 
@@ -40,8 +41,9 @@ class SendIntentHandler(AbstractRequestHandler):
                         if is_speed_dial:
                             try:
                                 num = int(slot.value)
-                                speech_text, reprompt, slot_to_elicit = self \
-                                    .handle_speed_dial_number_input(num, sess_attrs, i18n)
+                                speech_text, reprompt, slot_to_elicit = \
+                                    handle_speed_dial_number_input(
+                                        num, sess_attrs, i18n)
                             except SpeedDialException as error:
                                 return handler_input.response_builder \
                                     .speak(error.args[0]).set_should_end_session(True).response
@@ -66,14 +68,10 @@ class SendIntentHandler(AbstractRequestHandler):
 
             if slot.name == "message" and slot.value:
                 try:
-                    entity_id = sess_attrs.get("TELETHON_ENTITY_ID")
-                    self.telethon_service.send_telegram(entity_id, slot.value)
+                    m = slot.value
+                    speech_text, reprompt = send_telegram(m, sess_attrs, i18n)
                 except TelethonException as error:
                     return handle_telethon_error_response(error, handler_input)
-
-                speech_text = i18n.get_random_anyting_else()
-                reprompt = i18n.FALLBACK
-                sess_attrs.clear()
 
         handler_input.response_builder.speak(speech_text) \
             .set_should_end_session(False).ask(reprompt)
@@ -119,28 +117,3 @@ class SendIntentHandler(AbstractRequestHandler):
             sess_attrs["TELETHON_IDS"] = [c.entity_id for c in contacts]
 
         return (speech_text, reprompt, slot_to_elicit)
-
-    def handle_speed_dial_number_input(self, number, sess_attrs, i18n):
-        dt_service = DailyTelegramsService()
-
-        slot_to_elicit = "message"
-        first_name = dt_service.get_firstname_for_speed_dial_number(
-            number)
-        if first_name:
-            contacts = self.telethon_service.get_potential_contacts(first_name)
-
-            if len(contacts) > 1:
-                error_message = i18n.MULTIPLE_TELEGRAM_CONTACTS_FOR_SPEED_DIAL
-                raise SpeedDialException(error_message)
-
-            c = contacts[0]
-            speech_text = i18n.MESSAGE.format(c.first_name)
-            reprompt = i18n.MESSAGE.format(c.first_name)
-
-            sess_attrs["FIRST_NAMES"] = [c.first_name]
-            sess_attrs["TELETHON_ENTITY_ID"] = c.entity_id
-
-            return (speech_text, reprompt, slot_to_elicit)
-        else:
-            error_message = i18n.NO_SPEED_DIAL_CONTACT
-            raise SpeedDialException(error_message)

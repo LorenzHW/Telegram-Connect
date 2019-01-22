@@ -26,11 +26,11 @@ if __name__ == "__main__":
     suite.addTest(ReplyIntentTest("reply_on_last"))
 
     # TODO: Add test: One-shot start_send_intent
-    # TODO: Add test: User gets choices of first names --> User answers correct / incorrect
-    # TODO: Add speed dial tests
     suite.addTest(SendIntentTest("start_send_intent"))
     suite.addTest(SendIntentTest("ask_for_message"))
     suite.addTest(SendIntentTest("send_telegram"))
+    suite.addTest(SendIntentTest("test_multiple_choices"))
+    suite.addTest(SendIntentTest("test_send_intent_with_speed_number"))
 
     suite.addTest(SettingsIntentTest("test_first_time_setting_intent"))
     suite.addTest(SettingsIntentTest("test_settings_intent"))
@@ -39,6 +39,8 @@ if __name__ == "__main__":
     # TODO: Add no test on: "Is there anything else I can help you with?"
     suite.addTest(YesNoIntentTest("no_intent_on_new_telegrams"))
     suite.addTest(YesNoIntentTest("yes_intent_on_new_telegrams"))
+
+    # TODO: Add tests for speedIntent
 
 
     runner = unittest.TextTestRunner()
