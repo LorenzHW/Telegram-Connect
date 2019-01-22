@@ -25,13 +25,13 @@ class SendIntentTest(unittest.TestCase):
         i18n = Constants.i18n
         handler = sb.lambda_handler()
 
-        # User answered with a first name of the contact
+        # U: 'Lorenz'
+        # Alexa now asks for message
         ask_for_message["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
         ask_for_message["session"]["user"]["accessToken"] = VALID_TOKEN
         event = handler(ask_for_message, None)
         ssml = event.get('response').get('outputSpeech').get('ssml')
-        self.assertEqual(
-            ssml, '<speak>{}</speak>'.format(i18n.MESSAGE.format('Lorenz')))
+        self.assertTrue(ssml[19:-8] in i18n.MESSAGE.format('Lorenz'))
 
     def send_telegram(self):
         i18n = Constants.i18n
@@ -44,7 +44,6 @@ class SendIntentTest(unittest.TestCase):
         test_case = ssml.split('.')[1][1:-8]
         self.assertTrue(test_case in i18n.ANYTHING_ELSE)
 
-
     def test_multiple_choices(self):
         i18n = Constants.i18n
         handler = sb.lambda_handler()
@@ -56,7 +55,7 @@ class SendIntentTest(unittest.TestCase):
         event = handler(multiple_choices, None)
         ssml = event.get('response').get('outputSpeech').get('ssml')
         self.assertTrue(ssml[7:15] in i18n.NO_CONTACT)
-        
+
         # A: "I found: 1 Michael, 2 Martin, and 3 Riki."
         # U: "One"
         user_made_choice["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
@@ -73,6 +72,24 @@ class SendIntentTest(unittest.TestCase):
         ssml = event.get('response').get('outputSpeech').get('ssml')
         self.assertTrue(ssml[7:30] in i18n.MAX_NO_CONTACT)
 
+    def test_send_intent_with_speed_number(self):
+        i18n = Constants.i18n
+        handler = sb.lambda_handler()
+
+        # U: "10"
+        # Alexa asks for message
+        ask_for_message_speed_dial["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
+        ask_for_message_speed_dial["session"]["user"]["accessToken"] = VALID_TOKEN
+        event = handler(ask_for_message_speed_dial, None)
+        ssml = event.get('response').get('outputSpeech').get('ssml')
+        self.assertTrue(ssml[19:-8] in i18n.MESSAGE.format('Lorenz'))
+
+        # U: "111"
+        # Alexa: "No speed dial contact"
+        ask_for_message_speed_dial["request"]["intent"]["slots"]["first_name"]["value"] = "111"
+        event = handler(ask_for_message_speed_dial, None)
+        ssml = event.get('response').get('outputSpeech').get('ssml')
+        self.assertTrue(ssml[19:-8] in i18n.NO_SPEED_DIAL_CONTACT)
 
 
 
@@ -84,7 +101,6 @@ if __name__ == "__main__":
     suite.addTest(SendIntentTest("ask_for_message"))
     suite.addTest(SendIntentTest("send_telegram"))
     suite.addTest(SendIntentTest("test_multiple_choices"))
+    suite.addTest(SendIntentTest("test_send_intent_with_speed_number"))
     runner = unittest.TextTestRunner()
     runner.run(suite)
-
-    

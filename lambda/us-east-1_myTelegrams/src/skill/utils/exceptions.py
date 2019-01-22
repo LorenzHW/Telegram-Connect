@@ -64,3 +64,7 @@ class TelethonException(Exception):
         super(TelethonException, self).__init__(message)
         self.seconds = kwargs.get("seconds")
         self.name = kwargs.get("name")
+
+class SpeedDialException(Exception):
+    def __init__(self, message):
+        super(SpeedDialException, self).__init__(message)

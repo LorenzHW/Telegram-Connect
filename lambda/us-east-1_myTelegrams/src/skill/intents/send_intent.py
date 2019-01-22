@@ -7,6 +7,8 @@ from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 from src.skill.utils.constants import Constants
+from src.skill.utils.exceptions import SpeedDialException
+from src.skill.services.daily_telegrams_service import DailyTelegramsService
 
 
 class SendIntentHandler(AbstractRequestHandler):
@@ -33,31 +35,26 @@ class SendIntentHandler(AbstractRequestHandler):
                     reprompt = i18n.FIRST_NAME_REPROMPT
                 else:
                     if not sess_attrs.get("FIRST_NAMES"):
-                        contacts = self.telethon_service \
-                            .get_potential_contacts(slot.value)
+                        is_speed_dial = slot.value.isdigit()
 
-                        if len(contacts) == 1:
-                            c = contacts[0]
-                            slot_to_elicit = "message"
-                            sess_attrs["TELETHON_ENTITY_ID"] = c.entity_id
-                            speech_text = i18n.MESSAGE.format(c.first_name)
-                            reprompt = i18n.MESSAGE_REPROMPT \
-                                .format(c.first_name)
+                        if is_speed_dial:
+                            try:
+                                num = int(slot.value)
+                                speech_text, reprompt, slot_to_elicit = self \
+                                    .handle_speed_dial_number_input(num, sess_attrs, i18n)
+                            except SpeedDialException as error:
+                                return handler_input.response_builder \
+                                    .speak(error.args[0]).set_should_end_session(True).response
                         else:
-                            slot_to_elicit = "one_two_or_three"
-                            speech_text, reprompt = \
-                                self.provide_choices(contacts, i18n)
-                            sess_attrs["FIRST_NAMES"] = \
-                                [c.first_name for c in contacts]
-                            sess_attrs["TELETHON_IDS"] = \
-                                [c.entity_id for c in contacts]
+                            speech_text, reprompt, slot_to_elicit = self \
+                                .handle_first_name_input(slot.value, sess_attrs, i18n)
                     else:
                         one_two_or_three = slots.get("one_two_or_three")
 
                         if one_two_or_three.value not in ["1", "2", "3"]:
                             speech_text = i18n.MAX_NO_CONTACT
-                            handler_input.response_builder.speak(
-                                speech_text).set_should_end_session(True)
+                            handler_input.response_builder\
+                                .speak(speech_text).set_should_end_session(True)
                             return handler_input.response_builder.response
 
                         speech_text, reprompt = self \
@@ -66,7 +63,7 @@ class SendIntentHandler(AbstractRequestHandler):
 
                 directive = ElicitSlotDirective(updated_intent, slot_to_elicit)
                 handler_input.response_builder.add_directive(directive)
-                
+
             if slot.name == "message" and slot.value:
                 try:
                     entity_id = sess_attrs.get("TELETHON_ENTITY_ID")
@@ -105,3 +102,45 @@ class SendIntentHandler(AbstractRequestHandler):
         speech_text = i18n.MESSAGE.format(name)
         reprompt = i18n.MESSAGE_REPROMPT.format(name)
         return speech_text, reprompt
+
+    def handle_first_name_input(self, first_name, sess_attrs, i18n):
+        contacts = self.telethon_service.get_potential_contacts(first_name)
+
+        if len(contacts) == 1:
+            c = contacts[0]
+            slot_to_elicit = "message"
+            sess_attrs["TELETHON_ENTITY_ID"] = c.entity_id
+            speech_text = i18n.MESSAGE.format(c.first_name)
+            reprompt = i18n.MESSAGE_REPROMPT.format(c.first_name)
+        else:
+            slot_to_elicit = "one_two_or_three"
+            speech_text, reprompt = self.provide_choices(contacts, i18n)
+            sess_attrs["FIRST_NAMES"] = [c.first_name for c in contacts]
+            sess_attrs["TELETHON_IDS"] = [c.entity_id for c in contacts]
+
+        return (speech_text, reprompt, slot_to_elicit)
+
+    def handle_speed_dial_number_input(self, number, sess_attrs, i18n):
+        dt_service = DailyTelegramsService()
+
+        slot_to_elicit = "message"
+        first_name = dt_service.get_firstname_for_speed_dial_number(
+            number)
+        if first_name:
+            contacts = self.telethon_service.get_potential_contacts(first_name)
+
+            if len(contacts) > 1:
+                error_message = i18n.MULTIPLE_TELEGRAM_CONTACTS_FOR_SPEED_DIAL
+                raise SpeedDialException(error_message)
+
+            c = contacts[0]
+            speech_text = i18n.MESSAGE.format(c.first_name)
+            reprompt = i18n.MESSAGE.format(c.first_name)
+
+            sess_attrs["FIRST_NAMES"] = [c.first_name]
+            sess_attrs["TELETHON_ENTITY_ID"] = c.entity_id
+
+            return (speech_text, reprompt, slot_to_elicit)
+        else:
+            error_message = i18n.NO_SPEED_DIAL_CONTACT
+            raise SpeedDialException(error_message)
