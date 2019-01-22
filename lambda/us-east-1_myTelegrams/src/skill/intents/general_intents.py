@@ -78,15 +78,9 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         print("Encountered following exception: {}".format(exception))
         sess_attrs = handler_input.attributes_manager.session_attributes
         i18n = Constants.i18n
+        user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
 
-        if "Couldn't find handler that can handle the request" in "{}".format(exception):
-            detour_exception = True
-        else:
-            detour_exception = False
-
-        if detour_exception and sess_attrs.get("ACCOUNT").get("AUTHORIZED"):
-            speech = i18n.DETOUR_EXCEPTION
-        elif detour_exception and not sess_attrs.get("ACCOUNT").get("AUTHORIZED"):
+        if not user_is_authorized:
             speech = i18n.NOT_AUTHORIZED_DETOUR
         else:
             # Technically also backend exceptions will be logged here. E.G.: if problem when

@@ -22,7 +22,6 @@ class GenericLanguageModel(object):
         self.HELP = None
         self.GOODBYES = None
         self.ANYTHING_ELSE = None
-        self.DETOUR_EXCEPTION = None
 
         self.BREAK_50 = "<break time='50ms'/>"
         self.BREAK_75 = "<break time='75ms'/>"
@@ -58,7 +57,6 @@ class GenericLanguageModel(object):
 
         self.WRONG_INTENT = "Sorry das habe ich jetzt nicht nachvollziehen können. Ich kann dir " \
                             "hier nicht weiter helfen. "
-        self.DETOUR_EXCEPTION = "Sorry, " + self.skill_name + " kann dir hier nicht weiterhelfen. Ein mögliches Problem ist, dass du mit: 'Ja' auf ein Telegram antworten möchtest. Das ist nicht möglich. " + self.get_random_goodbye()
 
         ##############################
         # Required intents
@@ -123,7 +121,6 @@ class GenericLanguageModel(object):
                     "Furthermore, you can also check for new telegrams. Say: 'Check my " \
                     "telegrams.' or 'Send a telegram' or " \
                     "'send a speedgram' ".format(self.skill_name)
-        self.DETOUR_EXCEPTION = "Sorry, " + self.skill_name + " can't help you here. A possible problem is that you wanted to reply with: 'Yes' to a Telegram. That is not possible. Bye for now"
 
     def get_random_ack(self):
         return random.choice(self.ACKS)

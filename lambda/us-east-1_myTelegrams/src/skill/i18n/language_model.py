@@ -60,7 +60,7 @@ class LanguageModel(GenericLanguageModel):
 
     def set_english_language_model(self):
         ### SendIntent ###
-        self.FIRST_NAME = self.get_random_ack() + ", what is the first name or speed dial nubmer of your contact?"
+        self.FIRST_NAME = self.get_random_ack() + ", what is the first name or speed dial number of your contact?"
         self.FIRST_NAME_REPROMPT = self.get_random_dont_understand() + ", what was the first name?"
         self.MESSAGE = self.get_random_acceptance_ack() + ", what is the Telegram for {}?"
         self.MESSAGE_REPROMPT = self.get_random_dont_understand() + ", what is the Telegram for {}?"
