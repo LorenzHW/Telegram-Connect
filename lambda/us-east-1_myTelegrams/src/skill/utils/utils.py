@@ -8,7 +8,6 @@ from six import PY3
 from src.skill.utils.constants import Constants
 from src.skill.i18n.non_verbose_language_model import NonVerboseLanguageModel
 from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 
 ############## PARSER ##############

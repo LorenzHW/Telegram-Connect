@@ -27,6 +27,7 @@ if __name__ == "__main__":
 
     # TODO: Add test: One-shot start_send_intent
     # TODO: Add test: User gets choices of first names --> User answers correct / incorrect
+    # TODO: Add speed dial tests
     suite.addTest(SendIntentTest("start_send_intent"))
     suite.addTest(SendIntentTest("ask_for_message"))
     suite.addTest(SendIntentTest("send_telegram"))
