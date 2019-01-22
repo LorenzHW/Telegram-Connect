@@ -127,7 +127,7 @@ class LanguageModel(GenericLanguageModel):
         ## Errors ##
         self.INVALID_PHONE = "Es existiert kein Telegram Account zu dieser Telefonnummer. Erstelle einen Telegram Account zuerst, bevor du diesen Skill verwendest. Bis später."
         self.CODE_EXPIRED = "Der Code ist bereits abgelaufen. Versuche es erneut. Bis später."
-        self.CODE_INVALID = "Der Code ist ungültigt. Sage den Code Zahl nach Zahl. Bis später."
+        self.CODE_INVALID = "Der Code ist ungültig. Sage den Code Zahl für Zahl. Bis später."
         self.TWO_STEPS_VERIFICATION_ERROR = "Zwei Schritt Verifizierung ist nicht unterstützt. Deaktiviere Zwei Schritt Verifizierung in Telegram und versuche es erneut. Danach kannst du Zwei Schritt Verifizierung wieder aktivieren. Bis später."
         self.FLOODWAIT_ERROR = "Aufgrund von Server Wartung ist der Skill nicht verfügbar. Du kannst den Skill in {} Stunden und {} Minuten wider verwenden. Bis später."
         self.CHAT_ADMIN_REQUIRED_ERROR = "Dir fehlen die Berechtigungen um ein Telegram zu verschicken."
