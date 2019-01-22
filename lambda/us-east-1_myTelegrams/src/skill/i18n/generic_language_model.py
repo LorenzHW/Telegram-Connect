@@ -116,11 +116,12 @@ class GenericLanguageModel(object):
                                                                      "telegram' or 'Check my " \
                                                                      "Telegrams' "
         self.HELP = "{} connects Alexa with your Telegram Messenger. You can send a Telegram to a " \
-                    "person, group, or bot. Alternately, If I have trouble understanding a " \
+                    "person, group, or bot. If Alexa has trouble understanding a " \
                     "complex name, you can use the speed dial feature to send a telegram. " \
-                    "Furthermore, you can also check for new telegrams. Say: 'Check my " \
-                    "telegrams.' or 'Send a telegram' or " \
-                    "'send a speedgram' ".format(self.skill_name)
+                    "In the settings mode you can enable a non-verbose mode to make the usage" \
+                    "of this skill faster. Furthermore, if you open the skill and got new telegrams" \
+                    "Alexa will ask if you want to hear them." \
+                    "Now, say: 'Send a telegram' or 'Check my Telegrams'".format(self.skill_name)
 
     def get_random_ack(self):
         return random.choice(self.ACKS)
