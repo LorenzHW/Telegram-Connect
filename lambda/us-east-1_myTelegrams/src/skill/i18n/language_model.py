@@ -60,8 +60,7 @@ class LanguageModel(GenericLanguageModel):
 
     def set_english_language_model(self):
         ### SendIntent ###
-        self.FIRST_NAME = "{}, what is the first name of your contact?".format(
-            self.get_random_ack())
+        self.FIRST_NAME = self.get_random_ack() + ", what is the first name or speed dial nubmer of your contact?"
         self.FIRST_NAME_REPROMPT = self.get_random_dont_understand() + ", what was the first name?"
         self.MESSAGE = self.get_random_acceptance_ack() + ", what is the Telegram for {}?"
         self.MESSAGE_REPROMPT = self.get_random_dont_understand() + ", what is the Telegram for {}?"
@@ -96,8 +95,10 @@ class LanguageModel(GenericLanguageModel):
         self.TELEGRAM_SENT = self.get_random_done_ack() + ", a Telegram was sent to {}. <break time='200ms'/>"
         self.MESSAGE_2 = "What is the Telegram?"
 
-        ### YesIntent ###
+        ### YesIntent / NoIntent ###
         self.HELP_USER = "I can help you to send a Telegram or check for new Telegrams. So, which do you need?"
+        self.YES = "Yes"
+        self.NO  = "No"
 
         ### AuthorizationIntent ###
         self.NO_PHONE = "You have not added a telephone number. Visit the website mentioned in the skill description and add a telephone number then try again. Bye for now."
@@ -109,7 +110,7 @@ class LanguageModel(GenericLanguageModel):
         ## SpeedDialIntent ##
         self.SPEED_DIAL = "What is the number of your speed dial contact?"
         self.SPEED_DIAL_REPROMPT = self.get_random_dont_understand() + ", what number?"
-        self.NO_SPEED_DIAL_CONTACT = self.get_random_thinking() + ", I can't find any speed dial contact with that number. Is there anything else I can help you with?"
+        self.NO_SPEED_DIAL_CONTACT = self.get_random_thinking() + ", I can't find any speed dial contact with that number. Bye for now."
         self.MULTIPLE_TELEGRAM_CONTACTS_FOR_SPEED_DIAL = self.get_random_thinking() + ", I found multiple contacts with that first name. Please check that the first name of your Telegram contact matches exactly the first name of your speed dial contact. Bye for now."
 
         ## SettingsIntent ##

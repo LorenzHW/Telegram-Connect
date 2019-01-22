@@ -8,6 +8,8 @@ from src.skill.intents.message_intent import MessageIntentHandler
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.constants import Constants
+from src.skill.utils.utils import send_telegram
+from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 
 
 class YesIntentHandler(AbstractRequestHandler):
@@ -16,11 +18,7 @@ class YesIntentHandler(AbstractRequestHandler):
         self.daily_telegrams_service = DailyTelegramsService()
 
     def can_handle(self, handler_input):
-        sess_attrs = handler_input.attributes_manager.session_attributes
-        # If Alexa is user listening for message slot on SendIntent it happens that she hears
-        # 'yes' and therefore executes this intent handler. We don't want that.
-        return is_intent_name("AMAZON.YesIntent")(handler_input) and not sess_attrs.get(
-            "TELETHON_ENTITY_ID")
+        return is_intent_name("AMAZON.YesIntent")(handler_input)
 
     def handle(self, handler_input):
         i18n = Constants.i18n
@@ -34,6 +32,19 @@ class YesIntentHandler(AbstractRequestHandler):
             handler_input.response_builder.speak(speech_text) \
                 .set_should_end_session(False).ask(i18n.FALLBACK)
             return handler_input.response_builder.response
+
+        # User answered with "Yes" on "What is the telegram for Lorenz?"
+        if (previous_intent == "SendIntent"
+            or previous_intent == "SpeedIntent"
+                and sess_attrs.get("TELETHON_ENTITY_ID")):
+            try:
+                speech_text, reprompt = send_telegram(
+                    i18n.YES, sess_attrs, i18n)
+                handler_input.response_builder.speak(speech_text) \
+                    .set_should_end_session(False).ask(reprompt)
+                return handler_input.response_builder.response
+            except TelethonException as error:
+                return handle_telethon_error_response(error, handler_input)
 
         # User answered Yes on question: "Is there anything else I can help you with?"
         if (previous_intent == "SendIntent"
@@ -57,11 +68,7 @@ class NoIntentHandler(AbstractRequestHandler):
         self.telethon_service = TelethonService()
 
     def can_handle(self, handler_input):
-        sess_attrs = handler_input.attributes_manager.session_attributes
-        # If Alexa is user listening for message slot on SendIntent it happens that she hears
-        # 'yes' and therefore executes this intent handler. We don't want that.
-        return is_intent_name("AMAZON.NoIntent")(handler_input) and not sess_attrs.get(
-            "TELETHON_ENTITY_ID")
+        return is_intent_name("AMAZON.NoIntent")(handler_input)
 
     def handle(self, handler_input):
         i18n = Constants.i18n
@@ -90,6 +97,19 @@ class NoIntentHandler(AbstractRequestHandler):
             handler_input.response_builder.speak(
                 speech_text).set_should_end_session(True)
             return handler_input.response_builder.response
+
+        # User answered with "Yes" on "What is the telegram for Lorenz?"
+        if (previous_intent == "SendIntent"
+            or previous_intent == "SpeedIntent"
+                and sess_attrs.get("TELETHON_ENTITY_ID")):
+            try:
+                speech_text, reprompt = send_telegram(
+                    i18n.NO, sess_attrs, i18n)
+                handler_input.response_builder.speak(speech_text) \
+                    .set_should_end_session(False).ask(reprompt)
+                return handler_input.response_builder.response
+            except TelethonException as error:
+                return handle_telethon_error_response(error, handler_input)
 
         if (previous_intent == "SendIntent"
                 or previous_intent == "SpeedIntent"

@@ -1,6 +1,6 @@
 import unittest
 
-from src.tests.yes_no_intent.yes_requests import yes_on_listen_to_new_telegrams
+from src.tests.yes_no_intent.yes_requests import yes_on_listen_to_new_telegrams, send_yes_telegram
 from src.tests.yes_no_intent.no_requests import *
 from src.tests.tokens import VALID_TOKEN
 from src.skill.services.telethon_service import TelethonService
@@ -23,6 +23,19 @@ class YesNoIntentTest(unittest.TestCase):
                         or ssml[-31:-8] in i18n.REPLY_SEND_OR_STOP
                         or ssml[-40:-8] in i18n.NO_TELEGRAMS)
 
+    def yes_on_send_telegram(self):
+        i18n = Constants.i18n
+        handler = sb.lambda_handler()
+
+        send_yes_telegram["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
+        send_yes_telegram["session"]["user"]["accessToken"] = VALID_TOKEN
+        event = handler(send_yes_telegram, None)
+        ssml = event.get('response').get('outputSpeech').get('ssml')
+        test_case = ssml.split('.')[1][1:-8]
+        self.assertTrue(test_case in i18n.ANYTHING_ELSE)
+        
+
+
     def no_intent_on_new_telegrams(self):
         i18n = Constants.i18n
         handler = sb.lambda_handler()
@@ -35,6 +48,17 @@ class YesNoIntentTest(unittest.TestCase):
         ssml = ssml[-33:-8]
         self.assertTrue(ssml in i18n.HELP_USER)
 
+    def no_on_send_telegram(self):
+        i18n = Constants.i18n
+        handler = sb.lambda_handler()
+
+        send_no_telegram["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
+        send_no_telegram["session"]["user"]["accessToken"] = VALID_TOKEN
+        event = handler(send_no_telegram, None)
+        ssml = event.get('response').get('outputSpeech').get('ssml')
+        test_case = ssml.split('.')[1][1:-8]
+        self.assertTrue(test_case in i18n.ANYTHING_ELSE)
+
 
 if __name__ == "__main__":
     set_language_model('en-US', True)
@@ -43,7 +67,8 @@ if __name__ == "__main__":
 
     suite.addTest(YesNoIntentTest("no_intent_on_new_telegrams"))
     suite.addTest(YesNoIntentTest("yes_intent_on_new_telegrams"))
-
+    suite.addTest(YesNoIntentTest("yes_on_send_telegram"))
+    suite.addTest(YesNoIntentTest("no_on_send_telegram"))
     runner = unittest.TextTestRunner()
     runner.run(suite)
 

@@ -21,7 +21,7 @@ class NonVerboseLanguageModel(LanguageModel):
 
     def set_english_non_verbose_model(self):
         ### SendIntent ###
-        self.FIRST_NAME = "First name?"
+        self.FIRST_NAME = "First name or number?"
         self.MESSAGE = "Ok. {}. Telegram?"
         self.NO_CONTACT = "I found: <break time='25ms'/> 1 <break time='75ms'/> {}, <break time='50ms'/> 2 <break time='75ms'/> {}, and <break time='50ms'/> 3 <break time='75ms'/> {}."
         self.NO_CONTACT_2 = "I found <break time='25ms'/> 1 <break time='75ms'/> {}, and <break time='50ms'/> 2 <break time='75ms'/> {}."
@@ -50,4 +50,4 @@ class NonVerboseLanguageModel(LanguageModel):
 
         ## SpeedDialIntent ##
         self.SPEED_DIAL = "Number of speed dial contact?"
-        self.NO_SPEED_DIAL_CONTACT ="No speed dial contact with that number. Anything else?"
+        self.NO_SPEED_DIAL_CONTACT ="No speed dial contact with that number. Bye for now."

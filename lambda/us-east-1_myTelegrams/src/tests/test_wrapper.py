@@ -39,6 +39,8 @@ if __name__ == "__main__":
     # TODO: Add no test on: "Is there anything else I can help you with?"
     suite.addTest(YesNoIntentTest("no_intent_on_new_telegrams"))
     suite.addTest(YesNoIntentTest("yes_intent_on_new_telegrams"))
+    suite.addTest(YesNoIntentTest("yes_on_send_telegram"))
+    suite.addTest(YesNoIntentTest("no_on_send_telegram"))
 
     # TODO: Add tests for speedIntent
 
