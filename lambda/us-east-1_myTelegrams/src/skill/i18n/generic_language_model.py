@@ -40,7 +40,7 @@ class GenericLanguageModel(object):
         self.DONE_ACKS = ["Okay", "In Ordnung", "Alles klar", "Geschafft"]
         self.THINKING = ["Umm", "Ahhm", "Hmmm"]
         self.ANYTHING_ELSE = ["Gibt es sonst noch was?",
-                              "Gibt es noch etwas wobei ich dir helfen kann?"
+                              "Gibt es noch etwas wobei ich dir helfen kann?",
                               "Brauchst du noch etwas?", "Noch etwas?"]
         self.GOODBYES = ["adiós", "aloha", "arrivederci", "ciao", "auf Wiedersehen", "au revoir",
                          "bon voyage", "shalom", "vale"]
@@ -71,12 +71,14 @@ class GenericLanguageModel(object):
                                                                      "'Versende ein Telegram' " \
                                                                      "oder 'Checke meine " \
                                                                      "Telegramme' "
-        self.HELP = "{} verbindet Alexa mit deinem Telegram Messenger. Du kannst ein Telegram zu " \
-                    "einer Person, Gruppe oder einem Bot schicken. Alternativ kannst du, " \
-                    "falls ich Probleme habe den Namen zu verstehen, ein 'Speedgram' verschicken. " \
-                    "Außerdem kannst du checken ob du neue Telegrame hast. Sage:  'Verschicke ein " \
-                    "Telegram.' oder 'Checke meine Telegramme.' oder 'Verschicke ein " \
-                    "Speedgram.'".format(self.skill_name)
+        self.HELP = "{} verbindet Alexa mit deinem Telegram Messenger. Du kannst ein Telegram zu einer Person oder Gruppe schicken und ungelesene Telegramme abhören." \
+                    "In den Einstellungen kannst du einen wortarmen Modus aktivieren um den Skill schneller zu verwenden" \
+                    "Du hast folgende Befehle zur Auswahl: 'Öffne Einstellungen', 'Verschicke ein Telegram', 'Checke meine Telegramme' " \
+                    "Falls ich, beim Versenden eines Telegrams, Probleme habe den Namen zu verstehen, kannst du Gebrauch von der Kurzwahl Funktion machen. Schaue dir dafür die Skillbeschreibung an." \
+                    "Wenn du neue Telegramme hast und den Skill startest werde ich dich fragen ob du sie hören möchtest." \
+                    "Bevor du den Skill nutzen kannst musst du dich autorisieren. Falls du das noch nicht gemacht hast sage jetzt: 'Starte Autorisierung.'".format(self.skill_name)                    
+                    
+                    
 
     def set_generic_phrases_english(self):
         self.ACKS = ["Okay", "Alright", "Okey Dokey"]
@@ -115,13 +117,12 @@ class GenericLanguageModel(object):
                                                                      "either say: 'Send a " \
                                                                      "telegram' or 'Check my " \
                                                                      "Telegrams' "
-        self.HELP = "{} connects Alexa with your Telegram Messenger. You can send a Telegram to a " \
-                    "person, group, or bot. If Alexa has trouble understanding a " \
-                    "complex name, you can use the speed dial feature to send a telegram. " \
-                    "In the settings mode you can enable a non-verbose mode to make the usage" \
-                    "of this skill faster. Furthermore, if you open the skill and got new telegrams" \
-                    "Alexa will ask if you want to hear them." \
-                    "Now, say: 'Send a telegram' or 'Check my Telegrams'".format(self.skill_name)
+        self.HELP = "{} connects Alexa with the Telegram Messenger. You can send Telegrams to a person or to a group and also check if you have new telegrams." \
+                    "In a settings mode you can activate a non-verbose mode to use the skill faster." \
+                    "You got those commands: 'Open settings', 'Send a telegram', 'Check my telegrams' " \
+                    "If I have trouble understanding you while sending a Telegram you can make use of the speed dial feature. Check the skill description for more information." \
+                    "If you have new Telegrams and you start the skill, I will ask you if you want to hear them." \
+                    "Before you can use that skill you need to authorize. If you have not done that yet say: 'Start authorisation'".format(self.skill_name)
 
     def get_random_ack(self):
         return random.choice(self.ACKS)

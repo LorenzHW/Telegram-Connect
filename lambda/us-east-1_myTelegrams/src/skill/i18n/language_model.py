@@ -88,11 +88,11 @@ class LanguageModel(GenericLanguageModel):
         self.BREAK_BETWEEN_TELEGRAMS = self.BREAK_150
 
         ### LaunchIntent ###
-        self.NOT_AUTHORIZED = "Willkommen bei {}. {} verbindet den Telegram Messenger mit Alexa. Nun, möchtest du mehr Informationen hören oder die Authorisierung beginnen?" \
+        self.NOT_AUTHORIZED = "Willkommen bei {}. {} verbindet den Telegram Messenger mit Alexa. Nun, möchtest du mehr Informationen hören oder die Autorisierung starten?" \
             .format(self.skill_name, self.skill_name)
         self.USER_HAS_TELEGRAMS = "Willkommen zurück bei {}. Du hast neue Telegramme. Möchtest du sie hören?" \
             .format(self.skill_name)
-        self.WELCOME = "Willkommen zurück bei {}. Ich kann dir helfen ein Telegram zu verschicken oder checke ob es neue gibt. Also, was brauchst du?" \
+        self.WELCOME = "Willkommen zurück bei {}. Ich kann dir helfen ein Telegram zu verschicken oder zu checken ob es neue gibt. Also, was brauchst du?" \
             .format(self.skill_name)
 
         ### ReplyIntent ###
@@ -100,7 +100,7 @@ class LanguageModel(GenericLanguageModel):
         self.MESSAGE_2 = "Wie lautet das Telegram?"
 
         ### YesIntent / NoIntent ###
-        self.HELP_USER = "Ich kann dir helfen ein Telegram zu verschicken oder checke ob es neue gibt. Also, was brauchst du?"
+        self.HELP_USER = "Ich kann dir helfen ein Telegram zu verschicken oder zu checken ob es neue gibt. Also, was brauchst du?"
         self.YES = "Ja"
         self.NO  = "Nein"
 
@@ -109,7 +109,7 @@ class LanguageModel(GenericLanguageModel):
         self.WHAT_IS_CODE = "Du hast einen Code auf deinem Telefon erhalten. <break time='200ms' /> Wie lauten die Zahlen von dem Code?"
         self.WHAT_IS_CODE_REPROMPT = "Checke dein Telefon. Wie lauten die Zahlen von dem Code?"
         self.WRONG_CODE = "Der Code ist falsch. Sage den Code Zahl nach Zahl. Versuche es erneut indem du neu startest."
-        self.AUTHORIZED = self.get_random_acceptance_ack() + ". Du bist autorisiert. <break time='200ms'/> Ich kann dir helfen ein Telegram zu verschicken oder checke ob es neue gibt. Also, was brauchst du?"
+        self.AUTHORIZED = self.get_random_acceptance_ack() + ". Du bist autorisiert. <break time='200ms'/> Ich kann dir helfen ein Telegram zu verschicken oder zu checken ob es neue gibt. Also, was brauchst du?"
 
         ## SpeedDialIntent ##
         self.SPEED_DIAL = "Wie lautet die Nummer von deinem Kurzwahl Kontakt?"
@@ -131,7 +131,7 @@ class LanguageModel(GenericLanguageModel):
         self.TWO_STEPS_VERIFICATION_ERROR = "Zwei Schritt Verifizierung ist nicht unterstützt. Deaktiviere Zwei Schritt Verifizierung in Telegram und versuche es erneut. Danach kannst du Zwei Schritt Verifizierung wieder aktivieren. Bis später."
         self.FLOODWAIT_ERROR = "Aufgrund von Server Wartung ist der Skill nicht verfügbar. Du kannst den Skill in {} Stunden und {} Minuten wider verwenden. Bis später."
         self.CHAT_ADMIN_REQUIRED_ERROR = "Dir fehlen die Berechtigungen um ein Telegram zu verschicken."
-        self.NOT_AUTHORIZED_DETOUR = "Du bist momentan nicht authorisiert. Bitte authorisiere dich zuerst bevor du den Skill verwendest. Um mit der Autorisierung zu beginnen sage: 'Alexa, start {}'. Bis später".format(
+        self.NOT_AUTHORIZED_DETOUR = "Du bist momentan nicht authorisiert. Bitte authorisiere dich zuerst bevor du den Skill verwendest. Um mit der Autorisierung zu beginnen sage: 'Alexa, starte {}'. Bis später".format(
             self.skill_name)
         self.BYE_FOR_NOW = "Bis später."
 

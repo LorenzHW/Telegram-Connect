@@ -12,7 +12,9 @@ from src.skill.utils.constants import Constants
 
 class AuthorizationIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
-        return is_intent_name("AuthorizationIntent")(handler_input)
+        sess_attrs = handler_input.attributes_manager.session_attributes
+        user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
+        return is_intent_name("AuthorizationIntent")(handler_input) and not user_is_authorized
 
     def handle(self, handler_input):
         i18n = Constants.i18n

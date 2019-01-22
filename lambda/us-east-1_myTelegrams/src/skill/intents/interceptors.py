@@ -61,8 +61,9 @@ class AccountInterceptor(AbstractRequestInterceptor):
                     "SETTINGS_ID": account.settings_id
                 }
 
-                settings = service.get_settings(account.settings_id)
-                set_language_model(locale, settings.non_verbose_mode)
+                if account.settings_id:
+                    settings = service.get_settings(account.settings_id)
+                    set_language_model(locale, settings.non_verbose_mode)
                 
             except BackendException as http_error_code:
                 sess_attrs["HTTP_ERROR_CODE"] = http_error_code.args[0]
