@@ -18,7 +18,8 @@ class LaunchIntentTest(unittest.TestCase):
 
         event = handler(launch_request, None)
         ssml = event.get('response').get('outputSpeech').get('ssml')
-        self.assertTrue(ssml == '<speak>{}</speak>'.format(i18n.WELCOME) or ssml == '<speak>{}</speak>'.format(i18n.USER_HAS_TELEGRAMS))
+        ssml = ssml[-7:8]
+        self.assertTrue(ssml in i18n.WELCOME or ssml in i18n.USER_HAS_TELEGRAMS)
 
 
     def test_account_not_linked_launch_request(self):

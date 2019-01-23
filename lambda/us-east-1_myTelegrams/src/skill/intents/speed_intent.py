@@ -18,7 +18,11 @@ class SpeedIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
         user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
-        return is_intent_name("SpeedIntent")(handler_input) and user_is_authorized
+        if is_intent_name("SpeedIntent")(handler_input) and user_is_authorized:
+            slots = handler_input.request_envelope.request.intent.slots
+            if slots.get('message').value and not slots.get('speed_dial_number').value:
+                return False
+            return True
 
     def handle(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
