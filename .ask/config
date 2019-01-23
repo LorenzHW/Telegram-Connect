@@ -35,7 +35,7 @@
             "codeUri": "lambda/us-east-1_myTelegrams",
             "functionName": "myTelegrams",
             "handler": "lambda_function.lambda_handler",
-            "revisionId": "0023e7ea-9714-4993-8bda-4a41fd735154",
+            "revisionId": "3fc15188-29c3-4f3f-9063-f4f64533246b",
             "runtime": "python3.7"
           }
         ]

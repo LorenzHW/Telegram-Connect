@@ -80,4 +80,4 @@ sb.add_global_response_interceptor(PreviousIntentInterceptor())
 sb.add_exception_handler(CatchBackendExceptionHandler())
 sb.add_exception_handler(CatchAllExceptionHandler())
 
-handler = sb.lambda_handler()
+lambda_handler = sb.lambda_handler()
