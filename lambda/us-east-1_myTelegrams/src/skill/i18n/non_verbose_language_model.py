@@ -17,7 +17,7 @@ class NonVerboseLanguageModel(LanguageModel):
 
     def set_german_non_verbose_model(self):
         ### SendIntent ###
-        self.FIRST_NAME = "Vorname oder Kurwahl Nummer?"
+        self.FIRST_NAME = "Vorname oder Kurzwahl Nummer?"
         self.MESSAGE = "Ok. {}. Telegram?"
         self.NO_CONTACT = "Es gibt: <break time='25ms'/> 1 <break time='75ms'/> {}, <break time='50ms'/> 2 <break time='75ms'/> {}, und <break time='50ms'/> 3 <break time='75ms'/> {}."
         self.NO_CONTACT_2 = "Es gibt <break time='25ms'/> 1 <break time='75ms'/> {}, und <break time='50ms'/> 2 <break time='75ms'/> {}."

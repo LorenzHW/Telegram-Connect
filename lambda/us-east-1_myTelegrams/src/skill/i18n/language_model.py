@@ -118,8 +118,8 @@ class LanguageModel(GenericLanguageModel):
         self.MULTIPLE_TELEGRAM_CONTACTS_FOR_SPEED_DIAL = self.get_random_thinking() + ", Ich habe mehrere Kontakt mit diesen Namen gefunden. Bitte versichere, dass der Vorname von deinem Kurzwahl Kontakt genau so lautet wie er im Telegram Messenger angezeigt wird. Bis später."
 
         ## SettingsIntent ##
-        self.SETTINGS_OPENED = 'Du bist jetzt in den Einstellungen. Möchtest du den weniger wortreichen Modus einschalten oder ausschalten?'
-        self.NON_VERBOSE_CHOICE = 'Du hast den weniger wortreichen Modus {}'
+        self.SETTINGS_OPENED = 'Du bist jetzt in den Einstellungen. Möchtest du den wortarmen Modus einschalten?'
+        self.NON_VERBOSE_CHOICE = 'Du hast den weniger wortreichen Modus {}.'
         self.ENABLE = 'eingeschaltet'
         self.DISABLE = 'ausgeschaltet'
         self.LEAVING_SETTINGS_MODE = 'Du verlässt jetzt die Einstellungen.'
@@ -192,7 +192,7 @@ class LanguageModel(GenericLanguageModel):
         self.MULTIPLE_TELEGRAM_CONTACTS_FOR_SPEED_DIAL = self.get_random_thinking() + ", I found multiple contacts with that first name. Please check that the first name of your Telegram contact matches exactly the first name of your speed dial contact. Bye for now."
 
         ## SettingsIntent ##
-        self.SETTINGS_OPENED = 'You are now in the Settings mode. Do you want to enable or disable non-verbose mode?'
+        self.SETTINGS_OPENED = 'You are now in the Settings mode. Do you want to enable non-verbose mode?'
         self.NON_VERBOSE_CHOICE = 'You {} non-verbose mode.'
         self.ENABLE = 'enable'
         self.DISABLE = 'disable'
