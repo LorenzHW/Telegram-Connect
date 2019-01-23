@@ -8,7 +8,7 @@ from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 from src.skill.utils.constants import Constants
 from src.skill.utils.exceptions import SpeedDialException
-from src.skill.utils.utils import handle_speed_dial_number_input, send_telegram
+from src.skill.utils.utils import handle_speed_dial_number_input, send_telegram, parse_spoken_numbers_to_integers
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 
 
@@ -19,12 +19,17 @@ class SendIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
         user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
-        return is_intent_name("SendIntent")(handler_input) and user_is_authorized
+        if is_intent_name("SendIntent")(handler_input) and user_is_authorized:
+            slots = handler_input.request_envelope.request.intent.slots
+            if slots.get('message').value and not slots.get('first_name').value:
+                return False
+            return True
 
     def handle(self, handler_input):
         slots = handler_input.request_envelope.request.intent.slots
         updated_intent = Intent("SendIntent", slots)
         sess_attrs = handler_input.attributes_manager.session_attributes
+        locale = handler_input.request_envelope.request.locale
         i18n = Constants.i18n
 
         for slot_name in slots:
@@ -36,6 +41,12 @@ class SendIntentHandler(AbstractRequestHandler):
                     reprompt = i18n.FIRST_NAME_REPROMPT
                 else:
                     if not sess_attrs.get("FIRST_NAMES"):
+                        if locale == 'de-DE':
+                            # On German Alexa we get "vier" if user says a speed dial number
+                            # On English Alexa we get "4"... --> need that also for German
+                            slot.value = parse_spoken_numbers_to_integers(
+                                slot.value)
+
                         is_speed_dial = slot.value.isdigit()
 
                         if is_speed_dial:

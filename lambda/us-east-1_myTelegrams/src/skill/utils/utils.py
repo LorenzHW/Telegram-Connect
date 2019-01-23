@@ -100,3 +100,23 @@ def send_telegram(message, sess_attrs, i18n):
         reprompt = i18n.FALLBACK
         sess_attrs.clear()
         return speech_text, reprompt
+
+
+def parse_spoken_numbers_to_integers(spoken_number):
+    mapping = {
+        'eins': "1",
+        "zwei": "2",
+        "drei": "3",
+        "vier": "4",
+        "fünf": "5",
+        "sechs": "6",
+        "sieben": "7",
+        "acht": "8",
+        "neun": "9",
+        "zehn": "10",
+        "elf": "11",
+        "zwölf": "12",
+        "dreizehn": "13",
+        "vierzehn": "14"
+    }
+    return mapping[spoken_number]

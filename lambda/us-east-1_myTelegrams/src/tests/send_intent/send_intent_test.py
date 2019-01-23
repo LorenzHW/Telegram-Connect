@@ -62,7 +62,7 @@ class SendIntentTest(unittest.TestCase):
         user_made_choice["session"]["user"]["accessToken"] = VALID_TOKEN
         event = handler(user_made_choice, None)
         ssml = event.get('response').get('outputSpeech').get('ssml')
-        self.assertTrue(ssml[-17:-8] in i18n.MESSAGE)
+        self.assertTrue(ssml[-17:-8] in i18n.MESSAGE.format('Michael'))
 
         # A: "I found: 1 Michael, 2 Martin, and 3 Riki."
         # U: "Mik"
@@ -91,7 +91,18 @@ class SendIntentTest(unittest.TestCase):
         ssml = event.get('response').get('outputSpeech').get('ssml')
         self.assertTrue(ssml[19:-8] in i18n.NO_SPEED_DIAL_CONTACT)
 
+    def german_speed_dial(self):
+        set_language_model('de-DE', True)
+        i18n = Constants.i18n
+        handler = sb.lambda_handler()
 
+        german_speed_dial["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
+        german_speed_dial["session"]["user"]["accessToken"] = VALID_TOKEN
+        event = handler(german_speed_dial, None)
+        ssml = event.get('response').get('outputSpeech').get('ssml')
+        self.assertTrue(ssml[19:-8] in i18n.MESSAGE.format('Lorenz'))
+
+        set_language_model('en-US', True)
 
 if __name__ == "__main__":
     set_language_model('en-US', True)
@@ -102,5 +113,6 @@ if __name__ == "__main__":
     suite.addTest(SendIntentTest("send_telegram"))
     suite.addTest(SendIntentTest("test_multiple_choices"))
     suite.addTest(SendIntentTest("test_send_intent_with_speed_number"))
+    suite.addTest(SendIntentTest("german_speed_dial"))
     runner = unittest.TextTestRunner()
     runner.run(suite)

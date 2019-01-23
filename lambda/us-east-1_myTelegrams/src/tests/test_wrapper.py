@@ -31,6 +31,7 @@ if __name__ == "__main__":
     suite.addTest(SendIntentTest("send_telegram"))
     suite.addTest(SendIntentTest("test_multiple_choices"))
     suite.addTest(SendIntentTest("test_send_intent_with_speed_number"))
+    suite.addTest(SendIntentTest("german_speed_dial"))
 
     suite.addTest(SettingsIntentTest("test_first_time_setting_intent"))
     suite.addTest(SettingsIntentTest("test_settings_intent"))
