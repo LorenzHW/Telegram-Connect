@@ -44,8 +44,7 @@ class SendIntentHandler(AbstractRequestHandler):
                         if locale == 'de-DE':
                             # On German Alexa we get "vier" if user says a speed dial number
                             # On English Alexa we get "4"... --> need that also for German
-                            slot.value = parse_spoken_numbers_to_integers(
-                                slot.value)
+                            slot.value = parse_spoken_numbers_to_integers(slot.value)
 
                         is_speed_dial = slot.value.isdigit()
 

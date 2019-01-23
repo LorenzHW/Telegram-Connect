@@ -119,4 +119,8 @@ def parse_spoken_numbers_to_integers(spoken_number):
         "dreizehn": "13",
         "vierzehn": "14"
     }
-    return mapping[spoken_number]
+    digit = mapping.get(spoken_number)
+    if digit:
+        return digit
+    else:
+        return spoken_number
