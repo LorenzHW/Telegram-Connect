@@ -8,6 +8,8 @@ from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.models.general_models import Settings
 from src.skill.utils.utils import set_language_model
 from src.skill.utils.constants import Constants
+from ask_sdk_model.slu.entityresolution import StatusCode
+
 
 class SettingsIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
@@ -26,7 +28,6 @@ class SettingsIntentHandler(AbstractRequestHandler):
             settings_id = daily_telegram_service.create_settings()
             sess_attrs['ACCOUNT']['SETTINGS_ID'] = settings_id
 
-
         for slot_name, current_slot in current_intent.slots.items():
             if slot_name == 'enable_or_disable_non_verbose_mode':
                 if current_slot.value is None:
@@ -38,12 +39,20 @@ class SettingsIntentHandler(AbstractRequestHandler):
                         elicit_directive)
                 else:
                     # If another configuration will be added I have to move the logic here
-                    if 'enable' in current_slot.value:
-                        non_verbose_mode = True
-                        speech_text = i18n.NON_VERBOSE_CHOICE.format(i18n.ENABLE)
+                    if current_slot.resolutions.resolutions_per_authority[0].status.code == StatusCode.ER_SUCCESS_MATCH:
+                        val = current_slot.resolutions.resolutions_per_authority[0].values[0].value
+                        if val.name.lower() in ['enable', 'einschalten']:
+                            non_verbose_mode = True
+                            speech_text = i18n.NON_VERBOSE_CHOICE.format(
+                                i18n.ENABLE)
+                        else:
+                            non_verbose_mode = False
+                            speech_text = i18n.NON_VERBOSE_CHOICE.format(
+                                i18n.DISABLE)
                     else:
+                        # User did not say 'enable' or 'disable'
                         non_verbose_mode = False
-                        speech_text = i18n.NON_VERBOSE_CHOICE.format(i18n.DISABLE)
+                        speech_text = i18n.HINT_DISABLE_ENABLE
 
                     speech_text += ' ' + i18n.LEAVING_SETTINGS_MODE
                     speech_text += ' ' + i18n.get_random_anyting_else_without_ack()
