@@ -49,6 +49,12 @@ class SettingsIntentHandler(AbstractRequestHandler):
                             non_verbose_mode = False
                             speech_text = i18n.NON_VERBOSE_CHOICE.format(
                                 i18n.DISABLE)
+
+                        settings = Settings(settings_id, non_verbose_mode)
+                        settings = daily_telegram_service.update_settings(settings)
+
+                        locale = handler_input.request_envelope.request.locale
+                        set_language_model(locale, settings.non_verbose_mode)
                     else:
                         # User did not say 'enable' or 'disable'
                         non_verbose_mode = False
@@ -56,12 +62,6 @@ class SettingsIntentHandler(AbstractRequestHandler):
 
                     speech_text += ' ' + i18n.LEAVING_SETTINGS_MODE
                     speech_text += ' ' + i18n.get_random_anyting_else_without_ack()
-
-                    settings = Settings(settings_id, non_verbose_mode)
-                    settings = daily_telegram_service.update_settings(settings)
-
-                    locale = handler_input.request_envelope.request.locale
-                    set_language_model(locale, settings.non_verbose_mode)
 
         handler_input.response_builder \
             .speak(speech_text).set_should_end_session(False).ask(i18n.FALLBACK)
