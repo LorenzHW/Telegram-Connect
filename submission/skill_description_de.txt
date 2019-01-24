@@ -29,13 +29,13 @@ Oder:
 - Alexa, starte My Telegrams und verschicke ein Telegram.
 Oder:
 - Alexa, starte My Telegrams und verschicke ein Telegram an Michael.
-- Alexa, starte My Telegrams und verschicke ein Telegram an 15.
 
 Kurzwahl:
 Wenn Alexa den Vornamen nicht versteht kannst du einen Kurzwahl Kontakt anlegen:
 1.: Logge dich hier ein: bit.ly/my-telegrams
-2.: Füge einen Kurzwahl Kontakt hinzu.
-3.: Alexa, starte My Telegrams und verschicke ein Telegram an 15
+2.: Füge einen Kurzwahl Kontakt hinzu mit Nummer 8 hinzu.
+3.: Alexa: "Wie lautet die Kurzwahlnummer?"
+    DU:  "8"
 
 Notes:
 - Zwei Schritt Verifizierung wird nicht unterstützt.

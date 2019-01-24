@@ -1,6 +1,6 @@
 ---------------- PREREQUISITE ----------------
 !!!!!!!!!!!!!!! PLEASE: IF YOU ARE ASKED TO CHANGE THE PASSWORD INCREMENT THE INTEGER AT THE END !!!!!!!!!!!!!!!
-E.G.: NEXT PASSWORD FOR stretchout.australia@gmail.com WOULD BE stretchaustralia2
+E.G.: NEXT PASSWORD FOR SECRETS.PY->EMAIL_VERIFICATION WOULD BE SECRETS.PY->EMAIL_VERIFICATION_PW
 
 You can use following E-Mail address for account linking (only GOOGLE will work):
 If you want to test FB login, create your own account.
@@ -29,8 +29,8 @@ The receiver of the message will see the phone number that was used during the a
 3. Execute the authorization process:
     1.: Go to: bit.ly/my-telegrams and login. Enter your telephone number (+19062121566).
     2.: USER: "Alexa, start My Telegrams"
-        ALEXA: "Welcome... Do you want to start the authorization process now?"
-        USER: "Yes"
+        ALEXA: "Welcome..."
+        USER: "Start authorization"
     3.: Check Telegram for code. Say code to Alexa.
     Note: watch out: You should authorize yourself within the first 4 codes that you get in Telegram
     otherwise you will be blocked for 24 hours by Telegram
@@ -38,19 +38,36 @@ The receiver of the message will see the phone number that was used during the a
 -----------------------------------------------------------------------
 Test the skill:
 1. Test: Sending a Telegram
-    "Alexa, ask My Telegrams to send a Telegram."
-    "Alexa, ask My Telegrams to send a telegram to Lorenz."
+    U: "Alexa, ask My Telegrams to send a Telegram."
+    U: "Alexa, ask My Telegrams to send a telegram to Lorenz."
 
 2. Test: Listening to Messages:
-    "Alexa, ask My Telegrams to check my Telegrams."
+    U: "Alexa, ask My Telegrams to check my Telegrams."
 
 3. Test: Speed Dial Feature
     Go to: bit.ly/my-telegrams and login.
     Create a speed dial contact.
     First Name: Lorenz
     Number: 25
-    "Alexa, ask My Telegrams to make a speed dial"
-    "Alexa, ask My Telegrams to make a speed dial to 25"
+    U: "Alexa, ask My Telegrams to send a telegram"
+    A: "Contact or Speed dial number?"
+    U: "25"
+
+4. Test replying to telegrams:
+  Send a telegram to the account you use on Alexa.
+  U: "Alexa, open My Telegrams"
+  A: "You got new Telegrams. Do you want to hear them?"
+  U: "Yes"
+  A: "New Telegrams from {placeholder}, {placeholder} wrote {something}. Do you want to reply or hear next Telegram?
+  U: "Reply / Next Telegram"
+
+5. Test Settings (non-verbose mode):
+   U: "Alexa, open My Telegrams"
+   A: "Welcome..."
+   U: "Open Settings"
+   A: "You are now in Settings mode. Enable or disable non-verbose mode"
+   U: "Enable/disable"
+
 
 You can also check following youtube video:
 bit.ly/my-telegrams-video
