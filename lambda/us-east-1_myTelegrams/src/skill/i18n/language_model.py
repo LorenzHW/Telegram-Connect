@@ -41,6 +41,7 @@ class LanguageModel(GenericLanguageModel):
         self.WHAT_IS_CODE_REPROMPT = None
         self.WRONG_CODE = None
         self.AUTHORIZED = None
+        self.ALREADY_AUTHORIZED = None
 
         self.SPEED_DIAL = None
         self.SPEED_DIAL_REPROMPT = None
@@ -111,6 +112,7 @@ class LanguageModel(GenericLanguageModel):
         self.WHAT_IS_CODE_REPROMPT = "Checke dein Telefon. Wie lauten die Zahlen von dem Code?"
         self.WRONG_CODE = "Der Code ist falsch. Sage den Code Zahl nach Zahl. Versuche es erneut indem du neu startest."
         self.AUTHORIZED = self.get_random_acceptance_ack() + ". Du bist autorisiert. <break time='200ms'/> Ich kann dir helfen ein Telegram zu verschicken oder zu checken ob es neue gibt. Also, was brauchst du?"
+        self.ALREADY_AUTHORIZED = "Du bist bereits autorisiert. Wenn du einen anderen Account autorisieren möchtest, lösche den My Telegrams account, auf der Webseite die in der Skillbeschreibung steht und aktiviere den Skill erneut. Noch  etwas?"
 
         ## SpeedDialIntent ##
         self.SPEED_DIAL = "Wie lautet die Nummer von deinem Kurzwahl Kontakt?"
@@ -186,6 +188,7 @@ class LanguageModel(GenericLanguageModel):
         self.WHAT_IS_CODE_REPROMPT = "Check your phone. What are the digits?"
         self.WRONG_CODE = "The code is wrong. Say the code digit after digit. Try requesting a new code by starting over. Bye for now."
         self.AUTHORIZED = self.get_random_acceptance_ack() + ". You are now authorized. <break time='200ms'/> I can help you send a Telegram or check for new Telegrams. So, which do you need?"
+        self.ALREADY_AUTHORIZED = "You are already authorized. If you want to authorize another account delete you My Telegrams account on the website mentioned in the skill description, disable the skill, and then enable it again. Anything else?"
 
         ## SpeedDialIntent ##
         self.SPEED_DIAL = "What is the number of your speed dial contact?"
