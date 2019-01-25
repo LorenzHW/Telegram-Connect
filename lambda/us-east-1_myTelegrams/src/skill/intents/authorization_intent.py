@@ -12,18 +12,22 @@ from src.skill.utils.constants import Constants
 
 class AuthorizationIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
-        sess_attrs = handler_input.attributes_manager.session_attributes
-        user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
-        return is_intent_name("AuthorizationIntent")(handler_input) and not user_is_authorized
+        return is_intent_name("AuthorizationIntent")(handler_input)
 
     def handle(self, handler_input):
         i18n = Constants.i18n
         telethon_service = TelethonService()
         sess_attrs = handler_input.attributes_manager.session_attributes
+        user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
         account = sess_attrs.get("ACCOUNT")
         slots = handler_input.request_envelope.request.intent.slots
         reprompt = None
 
+        if user_is_authorized:
+            speech_text = i18n.ALREADY_AUTHORIZED
+            handler_input.response_builder.speak(speech_text) \
+                .set_should_end_session(False).ask(i18n.FALLBACK)
+            return handler_input.response_builder.response
         if not account.get("PHONE_NUMBER"):
             speech_text = i18n.NO_PHONE
             should_end = True
