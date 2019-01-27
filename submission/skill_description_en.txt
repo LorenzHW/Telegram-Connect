@@ -34,9 +34,11 @@ Speed dial:
 If you have contact names that Alexa can not understand you have the possibility to add a speed dial contact.
 1.: Go to: www.bit.ly/my-telegrams and login
 2.: Add a speed dial contact. (e.g.: Assign number 8 to a contact).
-3.: Alexa: "What is the speed dial number?"
+3.: You: "Alexa, ask My Telegrams to send a telegram
+    Alexa: "What is the first name or speed dial number of you contact?"
     You: "8"
 
+If you have unread telegrams Alexa will ask if you want to hear and reply to them.
 
 Notes:
 - Two Step Verification is not supported.

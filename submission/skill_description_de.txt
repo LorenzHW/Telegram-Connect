@@ -13,7 +13,7 @@ Wie es funktioniert:
 - Autorisiere dich.
 - Verschicke oder höre neue Telegramme.
 
-Before you can start, you need to authorize yourself:
+Bevor du loselegen kannst musst du dich autorisieren:
 1.: Gehe auf folgende Webseite, logge dich ein und gib deine Telefonnummer an: bit.ly/my-telegrams.
 2.: DU: "Alexa, starte My Telegrams"
     ALEXA: "Willkommen...."
@@ -34,8 +34,11 @@ Kurzwahl:
 Wenn Alexa den Vornamen nicht versteht kannst du einen Kurzwahl Kontakt anlegen:
 1.: Logge dich hier ein: bit.ly/my-telegrams
 2.: Füge einen Kurzwahl Kontakt hinzu mit Nummer 8 hinzu.
-3.: Alexa: "Wie lautet die Kurzwahlnummer?"
+3.: DU: "Alexa, starte My Telegrams und verschicke ein Telegram"
+    Alexa: "Wie lautet der Vorname oder die Kurzwahlnummer?"
     DU:  "8"
+
+Wenn du ungelesene Telegramme hast wird Alexa dich fragen ob du sie hören und darauf antworten möchtest wenn du den Skill startest.
 
 Notes:
 - Zwei Schritt Verifizierung wird nicht unterstützt.
