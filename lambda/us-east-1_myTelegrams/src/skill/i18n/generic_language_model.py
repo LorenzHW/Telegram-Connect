@@ -50,10 +50,11 @@ class GenericLanguageModel(object):
         self.FRONTEND_ERROR = self.get_random_thinking() + ", es ist ein Fehler aufgetreten. Versuche es später noch einmal. " + self.get_random_goodbye()
         self.SERVER_ERROR = "Aufgrund von Server Updates ist dieser Skill momentan nicht " \
                             "verfügbar. Versuche es später erneut "
-        self.ACCOUNT_LINKING_REQUIRED = "Du benötigst einen {} Account um diesen Skill " \
-                                        "nutzen zu können. Bevor du diesen Skill verwenden kannst, benutze die Alexa app um deinen " \
-                                        "Amazon Account mit dem {} Account" \
-                                        " zu verknüpfen.".format(self.skill_name, self.skill_name)
+        self.ACCOUNT_LINKING_REQUIRED = "Willkommen bei {}. {} verbindet Alexa mit dem Telegram Messenger. " \
+                                        "Du benötigst einen {} Account um diesen Skill nutzen zu können. " \
+                                        "Gehe in die Alexa App um deinen Amazon Account mit dem {} Account zu verknüpfen. " \
+                                        "Besuche die Webseite die in der Skillbeschreibung steht. " \
+                                        " Bis später.".format(self.skill_name, self.skill_name, self.skill_name, self.skill_name)
 
         self.WRONG_INTENT = "Sorry das habe ich jetzt nicht nachvollziehen können. Ich kann dir " \
                             "hier nicht weiter helfen. "

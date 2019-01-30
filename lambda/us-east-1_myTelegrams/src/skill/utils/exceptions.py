@@ -68,3 +68,7 @@ class TelethonException(Exception):
 class SpeedDialException(Exception):
     def __init__(self, message):
         super(SpeedDialException, self).__init__(message)
+
+class AccountException(Exception):
+    def __init__(self, message):
+        super(AccountException, self).__init__(message)

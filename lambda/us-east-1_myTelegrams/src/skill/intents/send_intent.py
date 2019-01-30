@@ -7,8 +7,8 @@ from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
 from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
 from src.skill.utils.constants import Constants
-from src.skill.utils.exceptions import SpeedDialException
-from src.skill.utils.utils import handle_speed_dial_number_input, send_telegram, parse_spoken_numbers_to_integers
+from src.skill.utils.exceptions import SpeedDialException, AccountException
+from src.skill.utils.utils import handle_speed_dial_number_input, send_telegram, parse_spoken_numbers_to_integers, check_for_account
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 
 
@@ -17,15 +17,19 @@ class SendIntentHandler(AbstractRequestHandler):
         self.telethon_service = TelethonService()
 
     def can_handle(self, handler_input):
-        sess_attrs = handler_input.attributes_manager.session_attributes
-        user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
-        if is_intent_name("SendIntent")(handler_input) and user_is_authorized:
+        if is_intent_name("SendIntent")(handler_input):
             slots = handler_input.request_envelope.request.intent.slots
             if slots.get('message').value and not slots.get('first_name').value:
                 return False
             return True
 
     def handle(self, handler_input):
+        try:
+            check_for_account(handler_input)
+        except AccountException as error:
+            return handler_input.response_builder \
+                .speak(error.args[0]).set_should_end_session(True).response
+
         slots = handler_input.request_envelope.request.intent.slots
         updated_intent = Intent("SendIntent", slots)
         sess_attrs = handler_input.attributes_manager.session_attributes

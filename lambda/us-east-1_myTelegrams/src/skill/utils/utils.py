@@ -10,7 +10,7 @@ from src.skill.i18n.non_verbose_language_model import NonVerboseLanguageModel
 from src.skill.services.telethon_service import TelethonService
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
-from src.skill.utils.exceptions import SpeedDialException
+from src.skill.utils.exceptions import SpeedDialException, AccountException
 
 ############## PARSER ##############
 
@@ -124,3 +124,17 @@ def parse_spoken_numbers_to_integers(spoken_number):
         return digit
     else:
         return spoken_number
+
+def check_for_account(handler_input):
+    i18n = Constants.i18n
+    sess_attrs = handler_input.attributes_manager.session_attributes
+    user_account = sess_attrs.get("ACCOUNT", {})
+
+    if not user_account:
+        user_info = i18n.ACCOUNT_LINKING_REQUIRED
+        sess_attrs["LINK_ACCOUNT_CARD"] = True
+        raise AccountException(user_info)
+    elif not user_account.get("AUTHORIZED"):
+        user_info = i18n.NOT_AUTHORIZED_DETOUR
+        raise AccountException(user_info)
+    

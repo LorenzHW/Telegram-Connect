@@ -78,9 +78,11 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         print("Encountered following exception: {}".format(exception))
         sess_attrs = handler_input.attributes_manager.session_attributes
         i18n = Constants.i18n
-        user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
+        user_account = sess_attrs.get("ACCOUNT", {})
 
-        if not user_is_authorized:
+        if not user_account:
+            speech = i18n.ACCOUNT_LINKING_REQUIRED
+        elif not user_account.get("AUTHORIZED"):
             speech = i18n.NOT_AUTHORIZED_DETOUR
         else:
             # Technically also backend exceptions will be logged here. E.G.: if problem when
@@ -89,6 +91,5 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
             speech = i18n.FRONTEND_ERROR
 
         handler_input.response_builder.speak(speech).set_should_end_session(True)
-        sess_attrs.clear()
 
         return handler_input.response_builder.response

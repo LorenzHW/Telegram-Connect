@@ -3,19 +3,25 @@ from ask_sdk_core.utils import is_intent_name
 
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
+from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response, AccountException
 from src.skill.utils.constants import Constants
+from src.skill.utils.utils import check_for_account
+
 
 class MessageIntentHandler(AbstractRequestHandler):
     def __init__(self):
         self.telethon_service = TelethonService()
 
     def can_handle(self, handler_input):
-        sess_attrs = handler_input.attributes_manager.session_attributes
-        user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
-        return is_intent_name("MessageIntent")(handler_input) and user_is_authorized
+        return is_intent_name("MessageIntent")(handler_input)
 
     def handle(self, handler_input):
+        try:
+            check_for_account(handler_input)
+        except AccountException as error:
+            return handler_input.response_builder \
+                .speak(error.args[0]).set_should_end_session(True).response
+
         i18n = Constants.i18n
         speech_text = self.get_telegram(handler_input)
         handler_input.response_builder.speak(speech_text) \
@@ -47,8 +53,9 @@ class MessageIntentHandler(AbstractRequestHandler):
             sess_attrs["ENTITY_IDS"] = entity_ids
 
             speech_text = i18n.NEW_TELEGRAMS + first_names
-            speech_text = speech_text + spoken_telegrams[sess_attrs["TELEGRAMS_COUNTER"]]
-            
+            speech_text = speech_text + \
+                spoken_telegrams[sess_attrs["TELEGRAMS_COUNTER"]]
+
             if len(conversations) == 1:
                 speech_text += i18n.REPLY_SEND_OR_STOP
                 sess_attrs.pop("TELEGRAMS")
@@ -56,7 +63,7 @@ class MessageIntentHandler(AbstractRequestHandler):
             else:
                 speech_text += i18n.REPLY_OR_NEXT_TELEGRAM
                 sess_attrs["TELEGRAMS_COUNTER"] += 1
-            
+
         elif sess_attrs["TELEGRAMS_COUNTER"] < len(sess_attrs["TELEGRAMS"]) - 1:
             speech_text = sess_attrs["TELEGRAMS"][sess_attrs["TELEGRAMS_COUNTER"]]
             speech_text = speech_text + i18n.REPLY_OR_NEXT_TELEGRAM
@@ -76,9 +83,11 @@ class MessageIntentHandler(AbstractRequestHandler):
             for telegram in conversations[:-1]:
                 first_names.append(telegram.sender)
             first_names = ", ".join(first_names)
-            first_names += i18n.AND + conversations[-1].sender + ". " + i18n.BREAK_BETWEEN_NAMES
+            first_names += i18n.AND + \
+                conversations[-1].sender + ". " + i18n.BREAK_BETWEEN_NAMES
         else:
-            first_names = conversations[0].sender + ". " + i18n.BREAK_BETWEEN_NAMES
+            first_names = conversations[0].sender + \
+                ". " + i18n.BREAK_BETWEEN_NAMES
 
         # Constructs a string like: "Tom, Paul, and Julia"
         return first_names
@@ -90,7 +99,8 @@ class MessageIntentHandler(AbstractRequestHandler):
             if conversation.is_group:
                 speech_text = i18n.GROUP_INTRO.format(conversation.sender)
             else:
-                speech_text = i18n.PERSONAL_CHAT_INTRO.format(conversation.sender)
+                speech_text = i18n.PERSONAL_CHAT_INTRO.format(
+                    conversation.sender)
 
             telegrams = " ".join(conversation.telegrams)
             speech_text += telegrams
