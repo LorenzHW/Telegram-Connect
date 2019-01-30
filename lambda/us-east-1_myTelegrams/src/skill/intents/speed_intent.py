@@ -6,7 +6,7 @@ from ask_sdk_model.dialog import ElicitSlotDirective
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.services.daily_telegrams_service import DailyTelegramsService
 from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
+from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response, SpeedDialException
 from src.skill.utils.constants import Constants
 from src.skill.utils.utils import handle_speed_dial_number_input, send_telegram
 
@@ -17,7 +17,7 @@ class SpeedIntentHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
-        user_is_authorized = sess_attrs.get("ACCOUNT").get("AUTHORIZED")
+        user_is_authorized = sess_attrs.get("ACCOUNT", {}).get("AUTHORIZED")
         if is_intent_name("SpeedIntent")(handler_input) and user_is_authorized:
             slots = handler_input.request_envelope.request.intent.slots
             if slots.get('message').value and not slots.get('speed_dial_number').value:
@@ -39,8 +39,12 @@ class SpeedIntentHandler(AbstractRequestHandler):
                     reprompt = i18n.SPEED_DIAL_REPROMPT
                 else:
                     num = int(slot.value)
-                    speech_text, reprompt, slot_to_elicit = handle_speed_dial_number_input(
-                        num, sess_attrs, i18n)
+                    try:
+                        speech_text, reprompt, slot_to_elicit = handle_speed_dial_number_input(
+                            num, sess_attrs, i18n)
+                    except SpeedDialException as error:
+                                return handler_input.response_builder \
+                                    .speak(error.args[0]).set_should_end_session(True).response
 
                 directive = ElicitSlotDirective(updated_intent, slot_to_elicit)
                 handler_input.response_builder.add_directive(directive)
