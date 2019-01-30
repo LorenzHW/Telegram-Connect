@@ -126,6 +126,9 @@ def parse_spoken_numbers_to_integers(spoken_number):
         return spoken_number
 
 def check_for_account(handler_input):
+    # Amazon's functional test (pre certification) prohibit me from returning
+    # an error if the user has no account (used on SendIntent and MessageIntent).
+
     i18n = Constants.i18n
     sess_attrs = handler_input.attributes_manager.session_attributes
     user_account = sess_attrs.get("ACCOUNT", {})
