@@ -31,6 +31,7 @@ class LanguageModel(GenericLanguageModel):
 
         self.TELEGRAM_SENT = None
         self.MESSAGE_2 = None
+        self.NO_TELETHON_ID = None
 
         self.HELP_USER = None
         self.YES = None
@@ -100,6 +101,7 @@ class LanguageModel(GenericLanguageModel):
         ### ReplyIntent ###
         self.TELEGRAM_SENT = self.get_random_done_ack() + ", ein Telegram wurde an {} verschickt. <break time='200ms'/>"
         self.MESSAGE_2 = "Wie lautet das Telegram?"
+        self.NO_TELETHON_ID = "Du kannst nicht zurückschreiben. Verschicke ein Telegram oder checke ob es neue gibt."
 
         ### YesIntent / NoIntent ###
         self.HELP_USER = "Ich kann dir helfen ein Telegram zu verschicken oder zu checken ob es neue gibt. Also, was brauchst du?"
@@ -176,6 +178,7 @@ class LanguageModel(GenericLanguageModel):
         ### ReplyIntent ###
         self.TELEGRAM_SENT = self.get_random_done_ack() + ", a Telegram was sent to {}. <break time='200ms'/>"
         self.MESSAGE_2 = "What is the Telegram?"
+        self.NO_TELETHON_ID = "You can't reply. Do you want to send a telegram or check for telegrams?"
 
         ### YesIntent / NoIntent ###
         self.HELP_USER = "I can help you to send a Telegram or check for new Telegrams. So, which do you need?"

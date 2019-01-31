@@ -24,6 +24,7 @@ if __name__ == "__main__":
 
     suite.addTest(ReplyIntentTest("reply_or_next_telegram"))
     suite.addTest(ReplyIntentTest("reply_on_last"))
+    suite.addTest(ReplyIntentTest("no_telethon_ids"))
 
     # TODO: Add test: One-shot start_send_intent
     suite.addTest(SendIntentTest("start_send_intent"))

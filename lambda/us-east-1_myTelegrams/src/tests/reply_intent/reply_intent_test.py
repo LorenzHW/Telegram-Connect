@@ -1,6 +1,6 @@
 import unittest
 
-from src.tests.reply_intent.reply_requests import reply_on_first_telegram, reply_on_last_telegram, message_for_reply_on_last_telegram
+from src.tests.reply_intent.reply_requests import *
 from src.tests.tokens import VALID_TOKEN
 from src.skill.i18n.language_model import LanguageModel
 from src.skill.utils.constants import Constants
@@ -43,6 +43,17 @@ class ReplyIntentTest(unittest.TestCase):
         ssml = event.get('response').get('outputSpeech').get('ssml')
         self.assertTrue(ssml[-40:-8] in i18n.NO_TELEGRAMS)
 
+    def no_telethon_ids(self):
+        i18n = Constants.i18n
+        handler = sb.lambda_handler()
+
+        no_telethon_ids["context"]["System"]["user"]["accessToken"] = VALID_TOKEN
+        no_telethon_ids["session"]["user"]["accessToken"] = VALID_TOKEN
+        event = handler(no_telethon_ids, None)
+        ssml = event.get('response').get('outputSpeech').get('ssml')
+        self.assertTrue(ssml[7:-8] in i18n.NO_TELETHON_ID)
+        
+
 if __name__ == "__main__":
     set_language_model('en-US', True)
     Constants.ACCESS_TOKEN = VALID_TOKEN
@@ -50,5 +61,6 @@ if __name__ == "__main__":
     suite = unittest.TestSuite()
     suite.addTest(ReplyIntentTest("reply_or_next_telegram"))
     suite.addTest(ReplyIntentTest("reply_on_last"))
+    suite.addTest(ReplyIntentTest("no_telethon_ids"))
     runner = unittest.TextTestRunner()
     runner.run(suite)

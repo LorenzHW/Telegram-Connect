@@ -21,6 +21,11 @@ class ReplyIntentHandler(AbstractRequestHandler):
         i18n = Constants.i18n
         slots = handler_input.request_envelope.request.intent.slots
 
+        if not sess_attrs.get("ENTITY_IDS"):
+            speech_text = i18n.NO_TELETHON_ID
+            return handler_input.response_builder.speak(speech_text) \
+            .set_should_end_session(False).ask(i18n.FALLBACK).response
+
         if slots.get("message").value:
             if sess_attrs.get("TELEGRAMS_COUNTER") is None:
                 # User is replying on last unread dialog
