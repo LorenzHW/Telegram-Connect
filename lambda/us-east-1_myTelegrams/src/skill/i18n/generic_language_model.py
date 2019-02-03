@@ -31,6 +31,8 @@ class GenericLanguageModel(object):
 
         if locale == "de-DE":
             self.set_generic_phrases_german()
+        elif locale == "it-IT":
+            self.set_generic_phrases_italian()
         else:
             self.set_generic_phrases_english()
 
@@ -124,6 +126,50 @@ class GenericLanguageModel(object):
                     " If I have trouble understanding you while sending a Telegram you can make use of the speed dial feature. Check the skill description for more information." + self.BREAK_50 +\
                     " If you have new Telegrams and you start the skill, I will ask you if you want to hear them." + self.BREAK_50 + \
                     " Before you can use this skill you need to authorize. If you have not done that yet say: 'Start authorisation'" 
+
+
+
+    def set_generic_phrases_italian(self):
+        self.ACKS = ["Okay", "Va bene", "D'accordo", "Okey Dokey"]
+        self.ACCEPTANCE_ACKS = ["Okay", "Certamente", "Va bene", "D'accordo", "Come desideri"]
+        self.DONE_ACKS = ["Okay", "Va bene", "D'accordo", "Fatto", "Come desideri"]
+        self.THINKING = ["Umm", "Ahhm", "Hmmm"]
+        self.ANYTHING_ELSE = ["Serve altro?", "C'è qualche altra cosa in cui posso aiutarti?",
+                              "Hai bisogno di altro?", "Posso aiutarti in altro?"]
+        self.DONT_UNDERSTAND = ["Sorry", "Scusa", "Pardon"]
+        self.GOODBYES = ["adiós", "aloha", "arrivederci", "ciao", "auf Wiedersehen", "au revoir",
+                         "bon voyage", "shalom", "vale"]
+
+        self.BACKEND_EXCEPTION = "Si è verificato un imprevisto. Mi dispiace."
+        self.FRONTEND_ERROR = self.get_random_thinking() + ", si è verificato un errore inatteso. Riprova più tardi. " + self.get_random_goodbye()
+        self.SERVER_ERROR = "A causa di un aggiornamento, il servizio non è disponibile." \
+                            " Riprova più tardi."
+        self.ACCOUNT_LINKING_REQUIRED = "Benvenuto in {}. {} ti permettere di connettere Alexa con il tuo Telegram Messenger. " \
+                                        "È necessario un account {} per poter utilizzare questa skill. " \
+                                        "Apri la app di Alexa per collegare " \
+                                        "il tuo account Amazon con il tuo account {}. Visita il sito" \
+                                        " nella descrizione della skill. " \
+                                        "A presto.".format(self.skill_name, self.skill_name,
+                                                              self.skill_name, self.skill_name)
+
+        self.WRONG_INTENT = "Credo di non aver capito. Non sono in grado di aiutarti."
+
+        ##############################
+        # Required intents
+        ##############################
+        self.WELCOME = "Benvenuto"
+        self.FALLBACK = self.get_random_dont_understand() + ", puoi ripetere?"
+        self.FALLBACK_INTENT = "{} non è in grado di aiutarti. Puoi inviare un messaggio Telegram oppure controllare " \
+                               "nuovi messaggi. Di cosa hai bisogno?".format(self.skill_name)
+        self.FALLBACK_INTENT_REPROMPT = self.get_random_thinking() + ", continuo a non capirti. " \
+                                                                     "Puoi dire: 'Invia un telegram' " \
+                                                                     "or 'Controlla i miei messaggi' "
+        self.HELP = "Puoi inviare messaggi ad una persona o ad un gruppo e controllare se ci sono nuovi messaggi." + self.BREAK_50 + \
+                    " In impostazioni puoi attivare la modalità sintetica per usare la skill più velocemente."  + self.BREAK_50 + \
+                    " Puoi usare i seguenti comandi: 'Apri impostazioni', 'Invia un telegram' o 'Controlla i miei messaggi'. " + self.BREAK_50 + \
+                    " Se faccio fatica a capire i tuoi telegram, prova ad usare lo speed dial. Consulta la descrizione della skill per ulteriori informazioni." + self.BREAK_50 +\
+                    " Se quando avvii la skill hai nuovi telegram non letti, ti chiederò proporrò di ascoltarli." + self.BREAK_50 + \
+                    " Prima di poter utilizzare questa skill c’è bisogno di autorizzarla. Se ancora non l’hai fatto, pronuncia: ‘Avvia autorizzazione'"
 
     def get_random_ack(self):
         return random.choice(self.ACKS)
