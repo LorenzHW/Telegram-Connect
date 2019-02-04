@@ -8,11 +8,15 @@ class NonVerboseLanguageModel(LanguageModel):
             self.set_german_language_model()
             if non_verbose_mode:
                 self.set_german_non_verbose_model()
+        elif locale == "it-IT":
+            self.set_italian_language_model()
+            if non_verbose_mode:
+                self.set_italian_non_verbose_model()
         else:
             self.set_english_language_model()
             if non_verbose_mode:
                 self.set_english_non_verbose_model()
-                
+
 
 
     def set_german_non_verbose_model(self):
@@ -81,3 +85,37 @@ class NonVerboseLanguageModel(LanguageModel):
         ## SpeedDialIntent ##
         self.SPEED_DIAL = "Number of speed dial contact?"
         self.NO_SPEED_DIAL_CONTACT ="No speed dial contact with that number. Bye for now."
+
+
+    def set_italian_non_verbose_model(self):
+        ### SendIntent ###
+        self.FIRST_NAME = "Nome o numero speed dial?"
+        self.MESSAGE = "Ok. {}. Telegram?"
+        self.NO_CONTACT = "Ho trovato: <break time='25ms'/> 1 <break time='75ms'/> {}, <break time='50ms'/> 2 <break time='75ms'/> {}, e <break time='50ms'/> 3 <break time='75ms'/> {}."
+        self.NO_CONTACT_2 = "Ho trovato <break time='25ms'/> 1 <break time='75ms'/> {}, e <break time='50ms'/> 2 <break time='75ms'/> {}."
+
+        ### MessageIntent ###
+        self.REPLY_OR_NEXT_TELEGRAM = "<break time='100ms'/> Rispondi o prossimo telegram?"
+        self.NEW_TELEGRAMS = "Nuovo telegram da: "
+        self.REPLY_SEND_OR_STOP = " Rispond, invia un telegram, o esci?"
+        self.NO_TELEGRAMS = "Nessun nuovo telegram. Altro?"
+        self.GROUP_INTRO = "In {}: <break time='100ms'/>"
+        self.GROUP_MESSAGE_INTRO = "{} ha scritto: <break time='50ms'/>"
+        self.PERSONAL_CHAT_INTRO = "{} ha scritto: <break time='50ms'/>"
+        self.BREAK_BETWEEN_NAMES = self.BREAK_100
+        self.BREAK_BETWEEN_TELEGRAMS = self.BREAK_75
+
+        ### LaunchIntent ###
+        self.USER_HAS_TELEGRAMS = "Benvenuto. Vuoi ascoltare i nuovi Telegram?"
+        self.WELCOME = "Benvenuto"
+
+        ### ReplyIntent ###
+        self.TELEGRAM_SENT = "Un Telegram è stato inviato a {}. <break time='100ms'/>"
+        self.MESSAGE_2 = "Qual è il Telegram?"
+
+        ### YesIntent ###
+        self.HELP_USER = "Invia Telegram o controlla nuovi Telegram?"
+
+        ## SpeedDialIntent ##
+        self.SPEED_DIAL = "Number speed dial?"
+        self.NO_SPEED_DIAL_CONTACT ="Non è stato trovato nessun speed dial con quel numero. A presto."

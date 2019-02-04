@@ -28,6 +28,7 @@ class LanguageModel(GenericLanguageModel):
 
         self.NOT_AUTHORIZED = None
         self.USER_HAS_TELEGRAMS = None
+        self.WELCOME = None
 
         self.TELEGRAM_SENT = None
         self.MESSAGE_2 = None
@@ -217,3 +218,80 @@ class LanguageModel(GenericLanguageModel):
         self.NOT_AUTHORIZED_DETOUR = "You are currently not authorized. Please authorize first if you want to use all features of this skill. To start the authorization process say: 'Alexa, start {}'. Bye for now".format(
             self.skill_name)
         self.BYE_FOR_NOW = "Bye for now."
+
+
+    def set_italian_language_model(self):
+        ### SendIntent ###
+        self.FIRST_NAME = self.get_random_ack() + ", qual è il nome o il numero speed dial del tuo contatto?"
+        self.FIRST_NAME_REPROMPT = self.get_random_dont_understand() + ", quale era il nome o il numero?"
+        self.MESSAGE = self.get_random_acceptance_ack() + ", qual è il Telegram per {}?"
+        self.MESSAGE_REPROMPT = self.get_random_dont_understand() + ", qual è il Telegram per {}?"
+        self.NO_CONTACT = self.get_random_thinking() + ", Non ho trovato nessun contatto con quel nome. Ho trovato: <break time='100ms'/> 1 <break time='150ms'/> {}, <break time='100ms'/> 2 <break time='150ms'/> {}, e <break time='100ms'/> 3 <break time='150ms'/> {}. A chi devo mandare il Telegram?"
+        self.NO_CONTACT_2 = self.get_random_thinking() + ", Non ho trovato nessun contatto con quel nome. Ho trovato <break time='100ms'/> 1 <break time='150ms'/> {}, e <break time='100ms'/> 2 <break time='150ms'/> {}. A chi devo mandare il Telegram?"
+        self.NO_CONTACT_REPROMPT = self.get_random_dont_understand() + ", Credo di non aver capito. Ho trovato: <break time='100ms'/> 1 <break time='150ms'/> {}, <break time='100ms'/> 2 <break time='150ms'/> {}, e <break time='100ms'/> 3 <break time='150ms'/> {}. A chi devo mandare il Telegram?"
+        self.NO_CONTACT_REPROMPT_2 = self.get_random_dont_understand() + ", Credo di non aver capito. Ho trovato: <break time='100ms'/> 1 <break time='150ms'/> {}, e <break time='100ms'/> 2 <break time='150ms'/> {}. A chi devo mandare il Telegram?"
+        self.MAX_NO_CONTACT = "Scusa. Continuo a non capirti. Pronuncia: <break time='100ms'/> 1 <break time='150ms'/> <break time='100ms'/> 2 <break time='150ms'/> o <break time='100ms'/> 3 <break time='150ms'/>. Altrimenti prova il numero speed dial. Consulta la descrizione della skill per ulteriori informazioni. " + self.get_random_goodbye()
+
+        ### MessageIntent ###
+        self.REPLY_OR_NEXT_TELEGRAM = "<break time='250ms'/> Vuoi rispondere o ascoltare il prossimo Telegram?"
+        self.NEW_TELEGRAMS = "Hai un nuovo Telegram da: "
+        self.REPLY_SEND_OR_STOP = " Vuoi rispondere, inviare un nuovo Telegram a qualcunaltro, o uscire?"
+        self.NO_TELEGRAMS = "Non ci sono nuovi Telegram. " + self.get_random_anyting_else_without_ack()
+        self.AND = ", e "
+        self.GROUP_INTRO = "In {}: <break time='200ms'/>"
+        self.GROUP_MESSAGE_INTRO = "{} ha scritto: <break time='100ms'/>"
+        self.PERSONAL_CHAT_INTRO = "{} ha scritto: <break time='200ms'/>"
+        self.MEDIA_FILE = "file multimediale"
+        self.BREAK_BETWEEN_NAMES = self.BREAK_200
+        self.BREAK_BETWEEN_TELEGRAMS = self.BREAK_150
+
+        ### LaunchIntent ###
+        self.NOT_AUTHORIZED = "Benvenuto in {}. {} ti permettere di connettere Alexa con il tuo Telegram Messenger. Vuoi ascoltare ulteriori informazioni o iniziare il processo di autorizzazione?" \
+            .format(self.skill_name, self.skill_name)
+        self.USER_HAS_TELEGRAMS = "Benvenuto in {}. Hai nuovi telegram. Li vuoi ascoltare?" \
+            .format(self.skill_name)
+        self.WELCOME = "Benvenuto in {}. Ti posso aiutare a inviare un nuovo Telegram o a controllare se hai nuovi Telegram. Cosa vuoi che faccia?" \
+            .format(self.skill_name)
+
+        ### ReplyIntent ###
+        self.TELEGRAM_SENT = self.get_random_done_ack() + ", un Telegram è stato inviato a {}. <break time='200ms'/>"
+        self.MESSAGE_2 = "Qual è il Telegram?"
+        self.NO_TELETHON_ID = "Non puoi rispondere. Vuoi inviare un nuovo Telegram o controllare se hai nuovi Telegram?"
+
+        ### YesIntent / NoIntent ###
+        self.HELP_USER = "Ti posso aiutare a inviare un nuovo Telegram o a controllare se hai nuovi Telegram. Cosa vuoi che faccia?"
+        self.YES = "Si"
+        self.NO  = "No"
+
+        ### AuthorizationIntent ###
+        self.NO_PHONE = "Non hai impostato un numero di telefono. Visita il sito nella descrizione della skill e imposta un numero di telefono prima di riprovare. A presto."
+        self.WHAT_IS_CODE = "Hai ricevuto un codice sul tuo telefono. <break time='200ms' /> Quali sono le cifre del codice?"
+        self.WHAT_IS_CODE_REPROMPT = "Controlla il tuo telefono. Qual è il codice?"
+        self.WRONG_CODE = "Il codice non è corretto. Ripeti singolarmente le cifre del codice. Prova a richiedere un nuovo codice ripetendo la procedura dall'inizio. A presto."
+        self.AUTHORIZED = self.get_random_acceptance_ack() + ". Sei autorizzato. <break time='200ms'/> Ti posso aiutare a inviare un nuovo Telegram o a controllare se hai nuovi Telegram. Cosa vuoi che faccia?"
+        self.ALREADY_AUTHORIZED = "Ti sei già autorizzato. Se vuoi autorizzare un account diverso, cancella il tuo account Telegram dal sito nella descrizione della skill, disabilita la skill e abilitala nuovamente. Posso fare altro per te?"
+
+        ## SpeedDialIntent ##
+        self.SPEED_DIAL = "Qual è il numero speed dial del tuo contatto?"
+        self.SPEED_DIAL_REPROMPT = self.get_random_dont_understand() + ", che numero?"
+        self.NO_SPEED_DIAL_CONTACT = self.get_random_thinking() + ", Non ho trovato nessun speed dial con quel numero. A presto."
+        self.MULTIPLE_TELEGRAM_CONTACTS_FOR_SPEED_DIAL = self.get_random_thinking() + ", Ho trovato più di un contatto con quel numero. Contralla che il nome del tuo contatto Telegram corrisponda col nome del tuo numero speed dial. A presto."
+
+        ## SettingsIntent ##
+        self.SETTINGS_OPENED = 'Sei in modalità impostazioni. Vuoi abilitare o disabilitare la modalità sintetica?'
+        self.HINT_DISABLE_ENABLE = "Pronuncia 'abilita' or 'disabilita'."
+        self.NON_VERBOSE_CHOICE = '{} la modalità sintetica.'
+        self.ENABLE = 'abilita'
+        self.DISABLE = 'disabilita'
+        self.LEAVING_SETTINGS_MODE = 'Stai lasciano la modalità impostazioni.'
+
+        ## Errors ##
+        self.INVALID_PHONE = "There is no Telegram account associated with that phone number. Create a Telegram Account first, before you can use that skill. A presto."
+        self.CODE_EXPIRED = "Il codice è scaduto. Richiedi un nuovo codice. A presto."
+        self.CODE_INVALID = "Il codice non è valido. A presto."
+        self.TWO_STEPS_VERIFICATION_ERROR = "Autenticazione a due fattori non è supportata. Disattiva l'autenticazione a due fattori in Telegram per usare questa skill. Potrai riattivare l'autenticazione a due fattori successivamente. A presto."
+        self.FLOODWAIT_ERROR = "La skill non è momentaneamente disponibile. Potrai utilizzare al skill tra {} ore e {} minuti. A presto."
+        self.CHAT_ADMIN_REQUIRED_ERROR = "Non hai i permessi per inviare un Telegram."
+        self.NOT_AUTHORIZED_DETOUR = "Non sei autorizzato. Autorizzati per poter utilizzare tutte le funzionalità di questa skill. Per iniziare il processo di autorizzazion pronuncia: 'Alexa, avvia {}'. A presto".format(
+            self.skill_name)
+        self.BYE_FOR_NOW = "A presto."
