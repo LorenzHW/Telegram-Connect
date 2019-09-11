@@ -1,11 +1,11 @@
 import unittest
 
-from lambda_function import sb
-from src.tests.launch_intent.launch_request import launch_request
-from src.skill.i18n.language_model import LanguageModel
-from src.tests.tokens import VALID_TOKEN, INVALID_TOKEN
-from src.skill.utils.constants import Constants
-from src.skill.utils.utils import set_language_model
+from skill.lambda_function import sb
+from tests.launch_intent.launch_request import launch_request
+from skill.i18n.language_model import LanguageModel
+from tests.tokens import VALID_TOKEN, INVALID_TOKEN
+from skill.utils.constants import Constants
+from skill.utils.utils import set_language_model
 
 
 class LaunchIntentTest(unittest.TestCase):

@@ -1,20 +1,19 @@
 import unittest
-from src.skill.utils.utils import set_language_model
-from src.tests.tokens import VALID_TOKEN, INVALID_TOKEN
-from src.skill.utils.constants import Constants
-from src.tests.launch_intent.launch_intent_test import LaunchIntentTest
-from src.tests.message_intent.message_intent_test import MessageIntentTest
-from src.tests.reply_intent.reply_intent_test import ReplyIntentTest
-from src.tests.send_intent.send_intent_test import SendIntentTest
-from src.tests.yes_no_intent.yes_no_intent_test import YesNoIntentTest
-from src.tests.settings_intent.settings_test import SettingsIntentTest
-
+from skill.utils.utils import set_language_model
+from tests.tokens import VALID_TOKEN, INVALID_TOKEN
+from skill.utils.constants import Constants
+from tests.launch_intent.launch_intent_test import LaunchIntentTest
+from tests.message_intent.message_intent_test import MessageIntentTest
+from tests.reply_intent.reply_intent_test import ReplyIntentTest
+from tests.send_intent.send_intent_test import SendIntentTest
+from tests.yes_no_intent.yes_no_intent_test import YesNoIntentTest
+from tests.settings_intent.settings_test import SettingsIntentTest
 
 if __name__ == "__main__":
     set_language_model('en-US', True)
     Constants.ACCESS_TOKEN = VALID_TOKEN
     suite = unittest.TestSuite()
-    
+
     suite.addTest(LaunchIntentTest("test_authorized_launch_request"))
     suite.addTest(LaunchIntentTest("test_account_not_linked_launch_request"))
     suite.addTest(LaunchIntentTest("test_account_not_authorized_launch_request"))
@@ -45,7 +44,6 @@ if __name__ == "__main__":
     suite.addTest(YesNoIntentTest("no_on_send_telegram"))
 
     # TODO: Add tests for speedIntent
-
 
     runner = unittest.TextTestRunner()
     runner.run(suite)

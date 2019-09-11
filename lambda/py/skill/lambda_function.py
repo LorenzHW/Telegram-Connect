@@ -1,4 +1,5 @@
-from ask_sdk_core.skill_builder import SkillBuilder
+from ask_sdk.standard import StandardSkillBuilder
+
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.utils import is_request_type
 from skill.i18n.language_model import LanguageModel
@@ -18,7 +19,7 @@ from skill.services.telethon_service import TelethonService
 from skill.utils.constants import Constants
 from skill.utils.exceptions import TelethonException, handle_telethon_error_response
 
-sb = SkillBuilder()
+sb = StandardSkillBuilder()
 
 
 class LaunchRequestHandler(AbstractRequestHandler):

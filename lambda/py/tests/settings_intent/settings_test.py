@@ -1,12 +1,12 @@
 import unittest
 
-from src.tests.settings_intent.settings_requests import open_settings_first_time, enable_non_verbose_mode, open_settings
-from src.tests.tokens import VALID_TOKEN
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.utils.constants import Constants
-from src.skill.utils.utils import set_language_model
-from src.skill.services.daily_telegrams_service import DailyTelegramsService
-from lambda_function import sb
+from tests.settings_intent.settings_requests import open_settings_first_time, enable_non_verbose_mode, open_settings
+from tests.tokens import VALID_TOKEN
+from skill.i18n.language_model import LanguageModel
+from skill.utils.constants import Constants
+from skill.utils.utils import set_language_model
+from skill.services.daily_telegrams_service import DailyTelegramsService
+from skill.lambda_function import sb
 
 
 class SettingsIntentTest(unittest.TestCase):

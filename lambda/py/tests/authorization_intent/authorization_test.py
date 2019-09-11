@@ -1,10 +1,9 @@
-
 import unittest
 
-from src.tests.authorization_intent.authorization_requests import no_phone_added
-from src.tests.tokens import VALID_TOKEN
-from src.skill.i18n.non_verbose_language_model import NonVerboseLanguageModel
-from lambda_function import sb
+from tests.authorization_intent.authorization_requests import no_phone_added
+from tests.tokens import VALID_TOKEN
+from skill.i18n.non_verbose_language_model import NonVerboseLanguageModel
+from skill.lambda_function import sb
 
 
 class AlexaParticleTests(unittest.TestCase):
@@ -18,6 +17,7 @@ class AlexaParticleTests(unittest.TestCase):
         event = handler(no_phone_added, None)
         ssml = event.get('response').get('outputSpeech').get('ssml')
         self.assertEqual(ssml, '<speak>{}</speak>'.format(i18n.NO_PHONE))
+
 
 if __name__ == "__main__":
     suite = unittest.TestSuite()

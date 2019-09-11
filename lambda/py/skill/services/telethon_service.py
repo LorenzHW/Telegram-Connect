@@ -1,8 +1,8 @@
 import requests
 
-from src.skill.models.general_models import Contact, Conversation
-from src.skill.utils.constants import Constants
-from src.skill.utils.exceptions import BackendException, TelethonException
+from skill.models.general_models import Contact, Conversation
+from skill.utils.constants import Constants
+from skill.utils.exceptions import BackendException, TelethonException
 
 
 class TelethonService(object):

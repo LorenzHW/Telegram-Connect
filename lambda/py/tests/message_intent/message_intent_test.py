@@ -1,12 +1,12 @@
 import unittest
 
-from src.tests.message_intent.message_requests import new_telegrams, multiple_messages_last_one
-from src.tests.tokens import VALID_TOKEN
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.utils.constants import Constants
-from src.skill.utils.utils import set_language_model
-from src.skill.services.telethon_service import TelethonService
-from lambda_function import sb
+from tests.message_intent.message_requests import new_telegrams, multiple_messages_last_one
+from tests.tokens import VALID_TOKEN
+from skill.i18n.language_model import LanguageModel
+from skill.utils.constants import Constants
+from skill.utils.utils import set_language_model
+from skill.services.telethon_service import TelethonService
+from skill.lambda_function import sb
 
 
 class MessageIntentTest(unittest.TestCase):

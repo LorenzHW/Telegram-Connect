@@ -1,13 +1,13 @@
 import unittest
 
-from src.tests.yes_no_intent.yes_requests import yes_on_listen_to_new_telegrams, send_yes_telegram
-from src.tests.yes_no_intent.no_requests import *
-from src.tests.tokens import VALID_TOKEN
-from src.skill.services.telethon_service import TelethonService
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.utils.constants import Constants
-from src.skill.utils.utils import set_language_model
-from lambda_function import sb
+from tests.yes_no_intent.yes_requests import yes_on_listen_to_new_telegrams, send_yes_telegram
+from tests.yes_no_intent.no_requests import *
+from tests.tokens import VALID_TOKEN
+from skill.services.telethon_service import TelethonService
+from skill.i18n.language_model import LanguageModel
+from skill.utils.constants import Constants
+from skill.utils.utils import set_language_model
+from skill.lambda_function import sb
 
 
 class YesNoIntentTest(unittest.TestCase):

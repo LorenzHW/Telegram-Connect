@@ -1,11 +1,11 @@
 import unittest
 
-from src.tests.reply_intent.reply_requests import *
-from src.tests.tokens import VALID_TOKEN
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.utils.constants import Constants
-from src.skill.utils.utils import set_language_model
-from lambda_function import sb
+from tests.reply_intent.reply_requests import *
+from tests.tokens import VALID_TOKEN
+from skill.i18n.language_model import LanguageModel
+from skill.utils.constants import Constants
+from skill.utils.utils import set_language_model
+from skill.lambda_function import sb
 
 
 
