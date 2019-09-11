@@ -35,7 +35,7 @@
             "codeUri": "lambda/py/lambda_upload",
             "functionName": "myTelegrams",
             "handler": "skill/lambda_function.lambda_handler",
-            "revisionId": "971bd92a-2b38-4246-9321-4b528d3651de",
+            "revisionId": "eeea63c2-eb83-4c70-99f5-0ebb327ce77e",
             "runtime": "python3.7"
           }
         ]

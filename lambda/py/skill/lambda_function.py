@@ -53,7 +53,6 @@ class LaunchRequestHandler(AbstractRequestHandler):
         else:
             speech_text = i18n.NOT_AUTHORIZED
 
-        speech_text = "Hello World"
         handler_input.response_builder.speak(speech_text) \
             .set_should_end_session(False).ask(i18n.FALLBACK)
         return handler_input.response_builder.response

@@ -6,5 +6,5 @@
 # First copies installed packages from conda environment to virtualenv used inside lambda upload, cuz pip install does not work inside virtualenv....
 # Deploys the folder lambda_upload to AWS and then removes it otherwise pycharme is indexing
 cp -r /Users/lorenzhofmann-wellenhof/anaconda3/envs/alexa-skills/lib/python3.7/site-packages /Users/lorenzhofmann-wellenhof/Desktop/Coding/github.com/LorenzHW/My-Telegrams/.venv/skill_env/lib/python3.7/
-ask deploy --profile "default" --target "lambda"
+ask deploy --profile "default" --target "lambda" --force
 rm -r lambda/us-east-1_myTelegrams/lambda_upload/
