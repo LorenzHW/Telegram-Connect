@@ -3,10 +3,10 @@ from ask_sdk_core.utils import is_intent_name
 from ask_sdk_model.dialog import ElicitSlotDirective, DelegateDirective
 from ask_sdk_model import Intent
 
-from src.skill.intents.message_intent import MessageIntentHandler
-from src.skill.services.telethon_service import TelethonService
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.utils.constants import Constants
+from skill.intents.message_intent import MessageIntentHandler
+from skill.services.telethon_service import TelethonService
+from skill.i18n.language_model import LanguageModel
+from skill.utils.constants import Constants
 
 
 class ReplyIntentHandler(AbstractRequestHandler):

@@ -3,13 +3,13 @@ from ask_sdk_core.utils import is_intent_name
 from ask_sdk_model import Intent
 from ask_sdk_model.dialog import ElicitSlotDirective
 
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.intents.message_intent import MessageIntentHandler
-from src.skill.services.daily_telegrams_service import DailyTelegramsService
-from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.constants import Constants
-from src.skill.utils.utils import send_telegram
-from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
+from skill.i18n.language_model import LanguageModel
+from skill.intents.message_intent import MessageIntentHandler
+from skill.services.daily_telegrams_service import DailyTelegramsService
+from skill.services.telethon_service import TelethonService
+from skill.utils.constants import Constants
+from skill.utils.utils import send_telegram
+from skill.utils.exceptions import TelethonException, handle_telethon_error_response
 
 
 class YesIntentHandler(AbstractRequestHandler):

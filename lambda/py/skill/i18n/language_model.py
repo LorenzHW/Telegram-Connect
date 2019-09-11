@@ -1,4 +1,4 @@
-from src.skill.i18n.generic_language_model import GenericLanguageModel
+from skill.i18n.generic_language_model import GenericLanguageModel
 
 
 class LanguageModel(GenericLanguageModel):

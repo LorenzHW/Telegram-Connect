@@ -5,12 +5,12 @@ from ask_sdk_model import Intent
 from ask_sdk_model.dialog import ElicitSlotDirective
 from six import PY3
 
-from src.skill.utils.constants import Constants
-from src.skill.i18n.non_verbose_language_model import NonVerboseLanguageModel
-from src.skill.services.telethon_service import TelethonService
-from src.skill.services.daily_telegrams_service import DailyTelegramsService
-from src.skill.services.daily_telegrams_service import DailyTelegramsService
-from src.skill.utils.exceptions import SpeedDialException, AccountException
+from skill.utils.constants import Constants
+from skill.i18n.non_verbose_language_model import NonVerboseLanguageModel
+from skill.services.telethon_service import TelethonService
+from skill.services.daily_telegrams_service import DailyTelegramsService
+from skill.services.daily_telegrams_service import DailyTelegramsService
+from skill.utils.exceptions import SpeedDialException, AccountException
 
 ############## PARSER ##############
 

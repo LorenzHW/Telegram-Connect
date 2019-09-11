@@ -1,8 +1,8 @@
 import requests
 
-from src.skill.models.general_models import DailyTelegramsAccount, Settings
-from src.skill.utils.constants import Constants
-from src.skill.utils.exceptions import BackendException
+from skill.models.general_models import DailyTelegramsAccount, Settings
+from skill.utils.constants import Constants
+from skill.utils.exceptions import BackendException
 
 
 class DailyTelegramsService(object):

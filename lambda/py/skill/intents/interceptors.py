@@ -1,11 +1,11 @@
 from ask_sdk_core.dispatch_components import AbstractRequestInterceptor, AbstractResponseInterceptor
 from ask_sdk_model.ui import SimpleCard, LinkAccountCard
 
-from src.skill.services.daily_telegrams_service import DailyTelegramsService
-from src.skill.utils.constants import Constants
-from src.skill.utils.exceptions import BackendException
-from src.skill.utils.utils import convert_speech_to_text, set_language_model
-from src.skill.i18n.language_model import LanguageModel
+from skill.services.daily_telegrams_service import DailyTelegramsService
+from skill.utils.constants import Constants
+from skill.utils.exceptions import BackendException
+from skill.utils.utils import convert_speech_to_text, set_language_model
+from skill.i18n.language_model import LanguageModel
 
 
 class LoggingRequestInterceptor(AbstractRequestInterceptor):

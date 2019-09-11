@@ -1,23 +1,22 @@
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.utils import is_request_type
-
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.intents.general_intents import HelpIntentHandler, CancelOrStopIntentHandler, \
+from skill.i18n.language_model import LanguageModel
+from skill.intents.general_intents import HelpIntentHandler, CancelOrStopIntentHandler, \
     FallbackIntentHandler, SessionEndedRequestHandler, CatchAllExceptionHandler, \
     CatchBackendExceptionHandler
-from src.skill.intents.interceptors import LoggingRequestInterceptor, CardResponseInterceptor, \
+from skill.intents.interceptors import LoggingRequestInterceptor, CardResponseInterceptor, \
     PreviousIntentInterceptor, AccountInterceptor
-from src.skill.intents.message_intent import MessageIntentHandler
-from src.skill.intents.reply_intent import ReplyIntentHandler
-from src.skill.intents.settings_intent import SettingsIntentHandler
-from src.skill.intents.authorization_intent import AuthorizationIntentHandler
-from src.skill.intents.send_intent import SendIntentHandler
-from src.skill.intents.speed_intent import SpeedIntentHandler
-from src.skill.intents.yes_no_intents import YesIntentHandler, NoIntentHandler
-from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.constants import Constants
-from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
+from skill.intents.message_intent import MessageIntentHandler
+from skill.intents.reply_intent import ReplyIntentHandler
+from skill.intents.settings_intent import SettingsIntentHandler
+from skill.intents.authorization_intent import AuthorizationIntentHandler
+from skill.intents.send_intent import SendIntentHandler
+from skill.intents.speed_intent import SpeedIntentHandler
+from skill.intents.yes_no_intents import YesIntentHandler, NoIntentHandler
+from skill.services.telethon_service import TelethonService
+from skill.utils.constants import Constants
+from skill.utils.exceptions import TelethonException, handle_telethon_error_response
 
 sb = SkillBuilder()
 
@@ -53,6 +52,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
         else:
             speech_text = i18n.NOT_AUTHORIZED
 
+        speech_text = "Hello World"
         handler_input.response_builder.speak(speech_text) \
             .set_should_end_session(False).ask(i18n.FALLBACK)
         return handler_input.response_builder.response

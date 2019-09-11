@@ -3,11 +3,11 @@ from ask_sdk_core.utils import is_intent_name
 from ask_sdk_model.dialog import ElicitSlotDirective, DelegateDirective
 from ask_sdk_model import Intent
 
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.services.daily_telegrams_service import DailyTelegramsService
-from src.skill.models.general_models import Settings
-from src.skill.utils.utils import set_language_model
-from src.skill.utils.constants import Constants
+from skill.i18n.language_model import LanguageModel
+from skill.services.daily_telegrams_service import DailyTelegramsService
+from skill.models.general_models import Settings
+from skill.utils.utils import set_language_model
+from skill.utils.constants import Constants
 from ask_sdk_model.slu.entityresolution import StatusCode
 
 

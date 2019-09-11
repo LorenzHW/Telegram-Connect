@@ -1,11 +1,11 @@
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.utils import is_intent_name
 
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response, AccountException
-from src.skill.utils.constants import Constants
-from src.skill.utils.utils import check_for_account
+from skill.i18n.language_model import LanguageModel
+from skill.services.telethon_service import TelethonService
+from skill.utils.exceptions import TelethonException, handle_telethon_error_response, AccountException
+from skill.utils.constants import Constants
+from skill.utils.utils import check_for_account
 
 
 class MessageIntentHandler(AbstractRequestHandler):

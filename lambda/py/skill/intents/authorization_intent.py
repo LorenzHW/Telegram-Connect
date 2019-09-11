@@ -3,11 +3,11 @@ from ask_sdk_core.utils import is_intent_name
 from ask_sdk_model.dialog import ElicitSlotDirective, DelegateDirective
 from ask_sdk_model import Intent
 
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.utils.constants import Constants
+from skill.i18n.language_model import LanguageModel
+from skill.services.telethon_service import TelethonService
+from skill.utils.exceptions import TelethonException, handle_telethon_error_response
+from skill.i18n.language_model import LanguageModel
+from skill.utils.constants import Constants
 
 
 class AuthorizationIntentHandler(AbstractRequestHandler):

@@ -1,5 +1,5 @@
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.utils.constants import Constants
+from skill.i18n.language_model import LanguageModel
+from skill.utils.constants import Constants
 
 
 def respond_to_http_error_code(handler_input, http_error_code):

@@ -3,13 +3,13 @@ from ask_sdk_core.utils import is_intent_name
 from ask_sdk_model import Intent
 from ask_sdk_model.dialog import ElicitSlotDirective
 
-from src.skill.i18n.language_model import LanguageModel
-from src.skill.services.telethon_service import TelethonService
-from src.skill.utils.exceptions import TelethonException, handle_telethon_error_response
-from src.skill.utils.constants import Constants
-from src.skill.utils.exceptions import SpeedDialException, AccountException
-from src.skill.utils.utils import handle_speed_dial_number_input, send_telegram, parse_spoken_numbers_to_integers, check_for_account
-from src.skill.services.daily_telegrams_service import DailyTelegramsService
+from skill.i18n.language_model import LanguageModel
+from skill.services.telethon_service import TelethonService
+from skill.utils.exceptions import TelethonException, handle_telethon_error_response
+from skill.utils.constants import Constants
+from skill.utils.exceptions import SpeedDialException, AccountException
+from skill.utils.utils import handle_speed_dial_number_input, send_telegram, parse_spoken_numbers_to_integers, check_for_account
+from skill.services.daily_telegrams_service import DailyTelegramsService
 
 
 class SendIntentHandler(AbstractRequestHandler):

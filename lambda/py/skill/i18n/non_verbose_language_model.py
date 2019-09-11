@@ -1,4 +1,4 @@
-from src.skill.i18n.language_model import LanguageModel
+from skill.i18n.language_model import LanguageModel
 
 class NonVerboseLanguageModel(LanguageModel):
     def __init__(self, locale, non_verbose_mode):
