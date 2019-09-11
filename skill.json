@@ -232,7 +232,7 @@
       "custom": {
         "endpoint": {
           "uri": "myTelegrams",
-          "sourceDir": "lambda/us-east-1_myTelegrams/lambda_upload"
+          "sourceDir": "lambda/py/lambda_upload"
         },
         "interfaces": [
           {

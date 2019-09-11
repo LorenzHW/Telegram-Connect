@@ -30,12 +30,12 @@
             "alexaUsage": [
               "custom/default"
             ],
-            "arn": "arn:aws:lambda:us-east-1:410662029421:function:myTelegrams:DEV",
+            "arn": "arn:aws:lambda:us-east-1:410662029421:function:myTelegrams",
             "awsRegion": "us-east-1",
-            "codeUri": "lambda/us-east-1_myTelegrams",
+            "codeUri": "lambda/py/lambda_upload",
             "functionName": "myTelegrams",
-            "handler": "lambda_function.lambda_handler",
-            "revisionId": "3fc15188-29c3-4f3f-9063-f4f64533246b",
+            "handler": "skill/lambda_function.lambda_handler",
+            "revisionId": "971bd92a-2b38-4246-9321-4b528d3651de",
             "runtime": "python3.7"
           }
         ]
