@@ -1,0 +1,6 @@
+skill_env/
+.idea/
+
+secrets.py
+
+lambda_upload/
