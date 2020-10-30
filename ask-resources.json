@@ -13,8 +13,8 @@
       },
       "skillInfrastructure": {
         "userConfig": {
-          "runtime": "python3.6",
-          "handler": "hello_world.handler",
+          "runtime": "python3.7",
+          "handler": "skill/telegram_connect.handler",
           "awsRegion": "us-east-1"
         },
         "type": "@ask-cli/lambda-deployer"
