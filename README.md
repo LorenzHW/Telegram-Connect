@@ -1,5 +1,5 @@
 # Telegram Connect
-Telegram Connect is an open source  Alexa Skill that connects Alexa with the [Telegram Messenger](https://telegram.org/).
+[Telegram Connect](https://github.com/LorenzHW/Telegram-connect) is an open source  Alexa Skill that connects Alexa with the [Telegram Messenger](https://telegram.org/).
 
 ### High Level Overview
 <p align="center">
@@ -13,27 +13,73 @@ Telegram Connect is an open source  Alexa Skill that connects Alexa with the [Te
 
 ### Desired Features (contributions welcome!)
 - Support more languages: German, Spanish, Italian
+- Add [Voice Profiles](https://developer.amazon.com/blogs/alexa/post/1ad16e9b-4f52-4e68-9187-ec2e93faae55/recognize-voices-and-personalize-your-skills)
+for people who use the same Alexa device but different telegram accounts.
 
 ### Getting started
-If you don't want to play around with the Skill in the Alexa developer console, you can jump to step x  
+If you just want to contribute jump to step x  
+If you want to play around with the skill in your own Alexa Developer Console, follow these steps:
+
 **Prerequisites**  
 [ASK cli](https://developer.amazon.com/en-US/docs/alexa/smapi/quick-start-alexa-skills-kit-command-line-interface.html) (Version 2.19 or higher)
 
-**First step:**  
 Clone the repository
 ```
-git clone https://github.com/LorenzHW/My-Telegrams
+git clone https://github.com/LorenzHW/Telegram-Connect.git
+cd Telegram-Connect
+touch lambda/secrets.py
+```
+We now want to deploy the skill to your Alexa developer console. In order to do that, we need to do a couple of things first.
+
+
+Head over to [Telegram](https://core.telegram.org/api/obtaining_api_id) and create an `api_id` and `api_hash`.
+Then update secrets.py
+```
+API_ID = YOUR_API_ID (type: integer)
+API_HASH = YOUR_API_HASH (type: string)
 ```
 
+Go to .ask/ask-states.json and change the file to
+```
+{
+  "askcliStatesVersion": "2020-03-31",
+  "profiles": {
+    "default": {
+      "skillInfrastructure": {
+        "@ask-cli/lambda-deployer": {
+          "deployState": {}
+        }
+      }
+    }
+  }
+}
+```
 
-ask smapi get-interaction-model --skill-id amzn1.ask.skill.174177e4-dc9f-4411-82b3-0bf9bd7ce2d5 --stage development --locale en-US
+Then head over to skill-package/skill.json and set the `custom` key to:
+```
+.
+.
+    "custom": {}
+.
+.
 
-ask smapi delete-skill --skill-id amzn1.ask.skill.174177e4-dc9f-4411-82b3-0bf9bd7ce2d5
+``` 
 
-TODO: Keep track of up to date interaction model in github repo
-TODO: First finish skill in english, then do beta, then add german
-TODO: Add typings to signatures, add codecov
-TODO: Probably remove skill id
-TODO: Send read acknowledgment
-TODO: Unit Test for PyrogramManager
+Deploy the skill to AWS:
+```
+ask deploy
+```
+This will create a new skill in your Alexa Developer Console, an AWS Lambda function and DynamoDB database.
+
+You need to grant your lambda function access to your DynamoDB database. 
+- Head over to [AWS](https://aws.amazon.com/de/console/)
+- IAM -> Roles. Find the role that is associated with your lambda function (something like: ask-lambda-telegram-connect)
+- Attach policy: AmazonDynamoDBFullAccess
+
+At last you need to increase the timeout of your lambda function.
+- Inside the AWS console go to lambda and find you lambda function.
+- After you clicked on it, edit Basic Settings->Timeout to 8 seconds. 
+
+
+Feel free to create PR's!
 
