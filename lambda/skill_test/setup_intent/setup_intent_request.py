@@ -9,7 +9,7 @@ setup_request = {
         "attributes": {
             "explore_intent": "asked_to_explore_setup_intent",
             "tz_database_name": "Europe/Vienna",
-            "phone_num": "491756571322"
+            "phone_num": "491111111111"
         },
         "user": {
             "userId": "amzn1.ask.account.AETT5PJVWV3QG3IKMX7MHKJNV7MVUH5UHXYZXPGGWFOODZGCVJYCZFW4WFDKBSA5POIJEQWLZXKCMDEOZKHX7742FGNRCRTJVVPBQPE22TLSMHZMSWFIKD366BDNTS4JTFAW7ZWZJAWLTGR4XC4J746MAF4WQFFZVGC55XLEH3ZSWT7LFE6NUYGTZEH3OECQCJAJ32SK3FGDIYQ",

@@ -30,7 +30,7 @@ class SetupIntentHandler(AbstractRequestHandler):
         settings_service = AlexaSettingsService(handler_input.request_envelope.context.system,
                                                 handler_input.request_envelope.request.locale)
 
-        if not pyrogram_manager.is_authorized:
+        if pyrogram_manager.is_authorized:
             return handler_input.response_builder.speak(i18n.ALREADY_AUTHORIZED).set_should_end_session(True).response
 
         code = slots.get('code').value
