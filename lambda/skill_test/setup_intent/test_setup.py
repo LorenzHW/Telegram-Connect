@@ -16,9 +16,8 @@ class SetupIntentTest(unittest.TestCase):
         self.handler = sb.lambda_handler()
 
     def test_setup_intent(self):
-        # for locale in ["en-US"]:
-        # self._test_setup_intent_with_mock_values(locale)
-        self._test_setup_real()
+        for locale in ["en-US"]:
+            self._test_setup_intent_with_mock_values(locale)
 
     def _test_setup_intent_with_mock_values(self, locale):
         PyrogramManager.send_code = Mock(return_value='random_phone_code_hash')
@@ -70,26 +69,3 @@ class SetupIntentTest(unittest.TestCase):
         event = self.handler(req, None)
         output = remove_ssml_tags(event.get('response').get('outputSpeech').get('ssml'))
         self.assertEqual(output, i18n.TWO_STEP_ON)
-
-    def _test_setup_real(self):
-        """
-        This is not a Unit test. This method will help to create a dynamo db database entry with id: 'test_user_authorized'
-        You need to provide your real phone number and the code you receive in Telegram once you execute this method.
-
-        This user can then be used to actually fetch data from the Telegram API like in the PyrogramTest
-        """
-        locale = 'en-US'
-        i18n = get_i18n(locale, "America/Los_Angeles")
-        req = update_request(setup_request, locale, TEST_USER_AUTHORIZED)
-        req["session"]["attributes"]["phone_num"] = input('Type in your phone number (e.g.: 49123456)')
-
-        event = self.handler(req, None)
-
-        req["session"]["attributes"]["phone_code_hash"] = event.get("sessionAttributes").get("phone_code_hash")
-        req["request"]["intent"]["slots"]["code"]["value"] = input('Check your phone for a code. What is the code?')
-
-        event = self.handler(req, None)
-        output = remove_ssml_tags(event.get('response').get('outputSpeech').get('ssml'))
-
-        self.assertEqual(output, i18n.SUCCESS_SETUP)
-        self.assertTrue(event.get("sessionAttributes").get("phone_code_hash") is not None)

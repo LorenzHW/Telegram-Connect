@@ -1,11 +1,12 @@
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, PropertyMock
 
 from skill.helper_functions import remove_ssml_tags
 from skill.i18n.util import get_i18n
 from skill.pyrogram.pyrogram_manager import PyrogramManager
 from skill.telegram_connect import sb
 from skill_test.message_intent.message_request import message_request
+from skill_test.util import update_request, TEST_USER_AUTHORIZED
 
 mock_data = [
     {
@@ -27,27 +28,33 @@ expected_results = [
 
 
 class MessageIntentTest(unittest.TestCase):
-    def test_message(self):
-        handler = sb.lambda_handler()
+    def setUp(self) -> None:
+        self.handler = sb.lambda_handler()
 
+    def test_message_intent(self):
         for locale in ["en-US"]:
-            i18n = get_i18n(locale, "America/Los_Angeles")
-            req = self._update_request(message_request, locale)
+            PyrogramManager.is_authorized = PropertyMock(return_value=True)
+            self.test_when_user_has_new_telegrams(locale)
+            self.test_when_user_has_new_telegrams(locale)
 
-            PyrogramManager.get_unread_telegrams = Mock(return_value=[])
-            event = handler(req, None)
-            output_text = remove_ssml_tags(event.get('response').get('outputSpeech').get('ssml'))
-            self.assertTrue(i18n.NO_NEW_TELEGRAMS in output_text)
+    def test_when_user_has_no_new_telegrams(self, locale):
+        i18n = get_i18n(locale, "America/Los_Angeles")
+        req = update_request(message_request, locale, TEST_USER_AUTHORIZED)
+        PyrogramManager.get_unread_telegrams = Mock(return_value=[])
 
-            PyrogramManager.get_unread_telegrams = Mock(return_value=mock_data)
-            for new_telegrams_index in range(len(mock_data)):
-                req["session"]["attributes"]["new_telegrams_index"] = new_telegrams_index
-                event = handler(req, None)
-                output_text = event.get('response').get('outputSpeech').get('ssml')
-                self.assertEqual(output_text, expected_results[new_telegrams_index])
+        event = self.handler(req, None)
+        output_text = remove_ssml_tags(event.get('response').get('outputSpeech').get('ssml'))
 
-    def _update_request(self, request, locale):
-        request["session"]["user"]["userId"] = "test_user"
-        request["context"]["System"]["user"]["userId"] = "test_user"
-        request["request"]["locale"] = locale
-        return request
+        self.assertTrue(i18n.NO_NEW_TELEGRAMS in output_text)
+
+    def test_when_user_has_new_telegrams(self, locale):
+        req = update_request(message_request, locale, TEST_USER_AUTHORIZED)
+        PyrogramManager.get_unread_telegrams = Mock(return_value=mock_data)
+
+        for new_telegrams_index in range(len(mock_data)):
+            req["session"]["attributes"]["new_telegrams_index"] = new_telegrams_index
+
+            event = self.handler(req, None)
+            output_text = event.get('response').get('outputSpeech').get('ssml')
+
+            self.assertEqual(output_text, expected_results[new_telegrams_index])
