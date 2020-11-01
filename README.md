@@ -78,7 +78,11 @@ You need to grant your lambda function access to your DynamoDB database.
 
 At last you need to increase the timeout of your lambda function.
 1. Inside the AWS console go to lambda and find you lambda function.
-2. After you clicked on it, edit Basic Settings->Timeout to 8 seconds. 
+2. After you clicked on it, edit Basic Settings->Timeout to 20 seconds.
+
+Since we are using the phone number of the user, we need set according permissions for that inside the Alexa Developer Console
+1. On the main page of the Alexa Developer Console go edit the newly deployed skill
+2. In the menu on the left choose Tools->Permission and activate: 'Customer Phone Number'
 
 
 Feel free to create PR's!

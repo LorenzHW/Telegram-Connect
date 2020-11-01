@@ -1,9 +1,6 @@
-import logging
-
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.utils import is_intent_name
 from ask_sdk_model.dialog import ElicitSlotDirective
-from pyrogram import types
 from pyrogram.errors import PhoneCodeInvalid, PhoneCodeExpired, PhoneNumberUnoccupied, SessionPasswordNeeded
 
 from skill.i18n.util import get_i18n
@@ -20,8 +17,6 @@ class SetupIntentHandler(AbstractRequestHandler):
             return True
 
     def handle(self, handler_input):
-        logger = logging.getLogger()
-        logger.debug('INSIDE SETUp INTENT')
         sess_attrs = handler_input.attributes_manager.session_attributes
         i18n = get_i18n(handler_input.request_envelope.request.locale, sess_attrs.get("tz_database_name"))
 

@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Union, Coroutine, Any
 
 from pyrogram import Client
 from pyrogram.storage import Storage
@@ -125,15 +125,18 @@ class PyrogramManager:
         data = []
         for dialog in unread_dialogs:
             messages = self.client.get_history(dialog.chat.id, dialog.unread_messages_count)
-            self.client.read_history(dialog.chat.id)
             data.append(
                 {
                     "name": dialog.chat.first_name if dialog.chat.first_name else dialog.chat.title,
                     "telegrams": self._get_unread_telegrams(messages),
                     "is_group": True if dialog.chat.type in ['group', 'supergroup', 'channel'] else False,
+                    "chad_id": dialog.chat.id
                 }
             )
         return data
+
+    def read_history(self, chat_id: Union[str, int]) -> Coroutine[Any, Any, bool]:
+        return self.client.read_history(chat_id)
 
     def _get_unread_telegrams(self, messages: List[Message]) -> List[Tuple[str, str]]:
         messages.reverse()

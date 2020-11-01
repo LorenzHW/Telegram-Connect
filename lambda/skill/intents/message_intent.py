@@ -24,7 +24,8 @@ class MessageIntentHandler(AbstractRequestHandler):
             new_telegrams = pyrogram_manager.get_unread_telegrams()
             sess_attrs['new_telegrams'] = new_telegrams
             if not new_telegrams:
-                return handler_input.response_builder.speak(self.i18n.NO_NEW_TELEGRAMS).response
+                speech = self.i18n.NO_NEW_TELEGRAMS + ' ' + self.i18n.get_random_goodbye()
+                return handler_input.response_builder.speak(speech).response
 
         new_telegrams_index = sess_attrs.get('new_telegrams_index', 0)
         new_telegrams = sess_attrs.get('new_telegrams', [])
@@ -34,14 +35,15 @@ class MessageIntentHandler(AbstractRequestHandler):
             first_names = self.get_first_names(new_telegrams)
             speech_text += self.i18n.NEW_TELEGRAMS_FROM.format(first_names)
 
-        speech_text += self.construct_output_speech_for_dialog(new_telegrams[new_telegrams_index])
+        dialog = new_telegrams[new_telegrams_index]
+        pyrogram_manager.read_history(dialog['chat_id'])
+        speech_text += self.construct_output_speech_for_dialog(dialog)
 
         if new_telegrams_index == len(new_telegrams) - 1:
             speech_text += self.i18n.BREAK_2000 + ' ' + self.i18n.NO_MORE_TELEGRAMS
             return handler_input.response_builder.speak(speech_text).set_should_end_session(True).response
-        else:
-            speech_text += self.i18n.BREAK_2000 + ' ' + self.i18n.NEXT_TELEGRAMS
 
+        speech_text += self.i18n.BREAK_2000 + ' ' + self.i18n.NEXT_TELEGRAMS
         sess_attrs['new_telegrams_index'] = new_telegrams_index + 1
         return handler_input.response_builder.speak(speech_text).ask(self.i18n.FALLBACK).response
 

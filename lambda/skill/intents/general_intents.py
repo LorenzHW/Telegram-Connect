@@ -18,7 +18,6 @@ class HelpIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        _ = handler_input.attributes_manager.request_attributes["_"]
         sess_attrs = handler_input.attributes_manager.session_attributes
         i18n = get_i18n(handler_input.request_envelope.request.locale, sess_attrs.get("tz_database_name"))
         return handler_input.response_builder.speak(i18n.HELP).ask(i18n.FALLBACK).response
@@ -82,7 +81,6 @@ class IntentReflectorHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        _ = handler_input.attributes_manager.request_attributes["_"]
         intent_name = ask_utils.get_intent_name(handler_input)
         speak_output = "Triggered {}.".format(intent_name)
         return handler_input.response_builder.speak(speak_output).response

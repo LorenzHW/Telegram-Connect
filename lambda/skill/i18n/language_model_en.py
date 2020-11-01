@@ -3,10 +3,11 @@ from skill.i18n.language_model_abc import LanguageModelABC
 
 
 class LanguageModelEN(LanguageModelABC):
-    def __init__(self, timezone: tzinfo, skill_name: str):
+    def __init__(self, timezone: tzinfo):
         self.timezone = timezone
-        self.SKILL_NAME_SPOKEN_EN = "<lang xml:lang='en-US'></lang>".format(skill_name)
-        self.SKILL_NAME = skill_name
+        self.SKILL_NAME = 'Telegram Connect'
+        self.SKILL_NAME_SPOKEN_EN = "<lang xml:lang='en-US'>Telegram Connect</lang>".format(self.SKILL_NAME)
+
         self.set_language_model()
 
     def set_language_model(self):

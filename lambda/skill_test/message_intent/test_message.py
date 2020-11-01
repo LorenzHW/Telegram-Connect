@@ -12,12 +12,14 @@ mock_data = [
     {
         "name": 'Bello',
         "telegrams": [('This is the first message', 'Bello'), ('This is the second message', 'Bello')],
-        "is_group": False
+        "is_group": False,
+        "chat_id": "12341234"
     },
     {
         "name": 'My Group',
         "telegrams": [('Group Message A', 'Chico'), ('Group Message B', 'Bello')],
-        "is_group": True
+        "is_group": True,
+        "chat_id": "12341234"
     }
 ]
 
@@ -50,6 +52,7 @@ class MessageIntentTest(unittest.TestCase):
     def test_when_user_has_new_telegrams(self, locale):
         req = update_request(message_request, locale, TEST_USER_AUTHORIZED)
         PyrogramManager.get_unread_telegrams = Mock(return_value=mock_data)
+        PyrogramManager.read_history = Mock(return_value=True)
 
         for new_telegrams_index in range(len(mock_data)):
             req["session"]["attributes"]["new_telegrams_index"] = new_telegrams_index
