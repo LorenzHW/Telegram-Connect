@@ -42,11 +42,11 @@ class LaunchRequestHandler(AbstractRequestHandler):
             set_explore_sess_attr(sess_attrs, ExploreIntents.EXPLORE_SETUP_INTENT)
             return handler_input.response_builder.speak(i18n.NEW_SETUP).ask(i18n.FALLBACK).response
 
-        new_telegrams = pyrogram_manager.get_unread_telegrams()
-        if new_telegrams:
+        unread_dialogs = pyrogram_manager.get_unread_dialogs()
+        if unread_dialogs:
             speech = i18n.WELCOME_BACK + ' ' + i18n.NEW_TELEGRAMS
             set_explore_sess_attr(sess_attrs, ExploreIntents.EXPLORE_MESSAGE_INTENT)
-            sess_attrs['new_telegrams'] = new_telegrams
+            sess_attrs['unread_dialogs'] = unread_dialogs
             return handler_input.response_builder.speak(speech).ask(i18n.FALLBACK).response
 
         speech = i18n.WELCOME_BACK + ' ' + i18n.NO_NEW_TELEGRAMS + ' ' + i18n.get_random_anyting_else()

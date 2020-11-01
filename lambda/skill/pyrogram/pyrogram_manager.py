@@ -119,7 +119,7 @@ class PyrogramManager:
         result = self.client.sign_in(phone_num, phone_code_hash, str(code))
         return result
 
-    def get_unread_telegrams(self):
+    def get_unread_dialogs(self) -> List[dict]:
         all_dialogs = self.client.get_dialogs(limit=3)
         unread_dialogs = [dialog for dialog in all_dialogs if dialog.unread_messages_count > 0]
         data = []
@@ -130,7 +130,7 @@ class PyrogramManager:
                     "name": dialog.chat.first_name if dialog.chat.first_name else dialog.chat.title,
                     "telegrams": self._get_unread_telegrams(messages),
                     "is_group": True if dialog.chat.type in ['group', 'supergroup', 'channel'] else False,
-                    "chad_id": dialog.chat.id
+                    "chat_id": dialog.chat.id
                 }
             )
         return data

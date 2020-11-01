@@ -39,7 +39,7 @@ class PyrogramTest(unittest.TestCase):
             self.execute_setup_intent()
             self.pyrogram_manager = PyrogramManager(StateManager(self.handler_input))
 
-        res = self.pyrogram_manager.get_unread_telegrams()
+        dialogs = self.pyrogram_manager.get_unread_dialogs()
 
     def execute_setup_intent(self):
         """

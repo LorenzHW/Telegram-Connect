@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.utils import is_intent_name
 
@@ -20,45 +22,45 @@ class MessageIntentHandler(AbstractRequestHandler):
         if not pyrogram_manager.is_authorized:
             return handler_input.response_builder.speak(self.i18n.NOT_AUTHORIZED).set_should_end_session(True).response
 
-        if 'new_telegrams' not in sess_attrs:
-            new_telegrams = pyrogram_manager.get_unread_telegrams()
-            sess_attrs['new_telegrams'] = new_telegrams
-            if not new_telegrams:
+        if 'unread_dialogs' not in sess_attrs:
+            unread_dialogs = pyrogram_manager.get_unread_dialogs()
+            sess_attrs['unread_dialogs'] = unread_dialogs
+            if not unread_dialogs:
                 speech = self.i18n.NO_NEW_TELEGRAMS + ' ' + self.i18n.get_random_goodbye()
                 return handler_input.response_builder.speak(speech).response
 
-        new_telegrams_index = sess_attrs.get('new_telegrams_index', 0)
-        new_telegrams = sess_attrs.get('new_telegrams', [])
+        unread_dialogs_index = sess_attrs.get('unread_dialog_index', 0)
+        unread_dialogs = sess_attrs.get('unread_dialogs', [])
 
         speech_text = ''
-        if new_telegrams_index == 0:
-            first_names = self.get_first_names(new_telegrams)
+        if unread_dialogs_index == 0:
+            first_names = self.get_first_names(unread_dialogs)
             speech_text += self.i18n.NEW_TELEGRAMS_FROM.format(first_names)
 
-        dialog = new_telegrams[new_telegrams_index]
+        dialog = unread_dialogs[unread_dialogs_index]
         pyrogram_manager.read_history(dialog['chat_id'])
         speech_text += self.construct_output_speech_for_dialog(dialog)
 
-        if new_telegrams_index == len(new_telegrams) - 1:
+        if unread_dialogs_index == len(unread_dialogs) - 1:
             speech_text += self.i18n.BREAK_2000 + ' ' + self.i18n.NO_MORE_TELEGRAMS
             return handler_input.response_builder.speak(speech_text).set_should_end_session(True).response
 
         speech_text += self.i18n.BREAK_2000 + ' ' + self.i18n.NEXT_TELEGRAMS
-        sess_attrs['new_telegrams_index'] = new_telegrams_index + 1
+        sess_attrs['unread_dialog_index'] = unread_dialogs_index + 1
         return handler_input.response_builder.speak(speech_text).ask(self.i18n.FALLBACK).response
 
-    def get_first_names(self, new_telegrams) -> str:
-        if len(new_telegrams) == 1:
-            return new_telegrams[0]['name'] + self.i18n.BREAK_200
+    def get_first_names(self, unread_dialogs: List[dict]) -> str:
+        if len(unread_dialogs) == 1:
+            return unread_dialogs[0]['name'] + self.i18n.BREAK_200
 
         # Don't loop over last, because we add an 'and' for the voice output
-        names = [telegram['name'] for telegram in new_telegrams[:-1]]
+        names = [telegram['name'] for telegram in unread_dialogs[:-1]]
         first_names = ", ".join(names) + self.i18n.BREAK_200
-        first_names += ' ' + self.i18n.AND + ' ' + new_telegrams[-1]['name'] + self.i18n.BREAK_200
+        first_names += ' ' + self.i18n.AND + ' ' + unread_dialogs[-1]['name'] + self.i18n.BREAK_200
         # Constructs a string like: "Tom, Paul, and Julia"
         return first_names
 
-    def construct_output_speech_for_dialog(self, dialog):
+    def construct_output_speech_for_dialog(self, dialog: dict):
         speech_text = self.i18n.PERSONAL_DIALOG_INTRO.format(dialog['name'])
         if dialog['is_group']:
             speech_text = self.i18n.GROUP_DIALOG_INTRO.format(dialog['name']) + ': '
@@ -73,7 +75,7 @@ class MessageIntentHandler(AbstractRequestHandler):
         speech_text += (' ' + self.i18n.BREAK_350).join(spoken_telegrams)
         return speech_text
 
-    def construct_spoken_telegrams(self, telegrams, is_group):
+    def construct_spoken_telegrams(self, telegrams: List[Tuple[str, str]], is_group: bool):
         spoken_telegrams = []
         for telegram, from_user in telegrams:
             to_append = telegram

@@ -42,7 +42,7 @@ class MessageIntentTest(unittest.TestCase):
     def test_when_user_has_no_new_telegrams(self, locale):
         i18n = get_i18n(locale, "America/Los_Angeles")
         req = update_request(message_request, locale, TEST_USER_AUTHORIZED)
-        PyrogramManager.get_unread_telegrams = Mock(return_value=[])
+        PyrogramManager.get_unread_dialogs = Mock(return_value=[])
 
         event = self.handler(req, None)
         output_text = remove_ssml_tags(event.get('response').get('outputSpeech').get('ssml'))
@@ -51,11 +51,11 @@ class MessageIntentTest(unittest.TestCase):
 
     def test_when_user_has_new_telegrams(self, locale):
         req = update_request(message_request, locale, TEST_USER_AUTHORIZED)
-        PyrogramManager.get_unread_telegrams = Mock(return_value=mock_data)
+        PyrogramManager.get_unread_dialogs = Mock(return_value=mock_data)
         PyrogramManager.read_history = Mock(return_value=True)
 
         for new_telegrams_index in range(len(mock_data)):
-            req["session"]["attributes"]["new_telegrams_index"] = new_telegrams_index
+            req["session"]["attributes"]["unread_dialog_index"] = new_telegrams_index
 
             event = self.handler(req, None)
             output_text = event.get('response').get('outputSpeech').get('ssml')

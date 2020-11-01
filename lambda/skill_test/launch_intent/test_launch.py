@@ -33,7 +33,7 @@ class LaunchIntentTest(unittest.TestCase):
         i18n = get_i18n(locale, "America/Los_Angeles")
         req = update_request(launch_request, locale, TEST_USER_AUTHORIZED)
         PyrogramManager.is_authorized = PropertyMock(return_value=True)
-        PyrogramManager.get_unread_telegrams = Mock(return_value=[])
+        PyrogramManager.get_unread_dialogs = Mock(return_value=[])
 
         event = self.handler(req, None)
         output = remove_ssml_tags(event.get('response').get('outputSpeech').get('ssml'))
@@ -44,9 +44,9 @@ class LaunchIntentTest(unittest.TestCase):
         unread_telegrams = ['something']
         req = update_request(launch_request, locale, TEST_USER_AUTHORIZED)
         PyrogramManager.is_authorized = PropertyMock(return_value=True)
-        PyrogramManager.get_unread_telegrams = Mock(return_value=unread_telegrams)
+        PyrogramManager.get_unread_dialogs = Mock(return_value=unread_telegrams)
 
         event = self.handler(req, None)
 
         self.assertEqual(event.get("sessionAttributes").get("explore_intent"), ExploreIntents.EXPLORE_MESSAGE_INTENT)
-        self.assertEqual(event.get('sessionAttributes').get('new_telegrams'), unread_telegrams)
+        self.assertEqual(event.get('sessionAttributes').get('unread_dialogs'), unread_telegrams)
