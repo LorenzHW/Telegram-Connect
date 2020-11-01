@@ -125,6 +125,7 @@ class PyrogramManager:
         data = []
         for dialog in unread_dialogs:
             messages = self.client.get_history(dialog.chat.id, dialog.unread_messages_count)
+            self.client.read_history(dialog.chat.id)
             data.append(
                 {
                     "name": dialog.chat.first_name if dialog.chat.first_name else dialog.chat.title,

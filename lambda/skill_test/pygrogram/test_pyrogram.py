@@ -34,8 +34,11 @@ class PyrogramTest(unittest.TestCase):
         self.handler = sb.lambda_handler()
 
     def test_pyrogram_manager(self):
-        self.execute_setup_intent()
-        self.pyrogram_manager = PyrogramManager(StateManager(self.handler))
+        self.pyrogram_manager = PyrogramManager(StateManager(self.handler_input))
+        if not self.pyrogram_manager.is_authorized:
+            self.execute_setup_intent()
+            self.pyrogram_manager = PyrogramManager(StateManager(self.handler_input))
+
         res = self.pyrogram_manager.get_unread_telegrams()
 
     def execute_setup_intent(self):
