@@ -25,7 +25,9 @@
         },
         {
           "name": "AMAZON.YesIntent",
-          "samples": []
+          "samples": [
+            "continue"
+          ]
         },
         {
           "name": "AMAZON.NoIntent",
@@ -136,5 +138,5 @@
       }
     ]
   },
-  "version": "18"
+  "version": "4"
 }

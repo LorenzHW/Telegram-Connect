@@ -8,8 +8,8 @@
             "default": {
               "lambda": {
                 "arn": "arn:aws:lambda:us-east-1:410662029421:function:ask-telegram-connect-default-default-1604091349582",
-                "lastModified": "2020-10-30T23:01:52.995+0000",
-                "revisionId": "227b0301-107b-454f-8f65-399e76402b24"
+                "lastModified": "2020-11-01T15:46:06.763+0000",
+                "revisionId": "8c56143b-a908-4719-9a72-495dab890dff"
               },
               "iamRole": "arn:aws:iam::410662029421:role/ask-lambda-telegram-connect-1604091347923"
             }
@@ -18,11 +18,11 @@
       },
       "skillId": "amzn1.ask.skill.f0db5990-fc15-48fa-8633-fa6624b4c121",
       "skillMetadata": {
-        "lastDeployHash": "7CRWmB30/Nhnk9FNLb5/B09eyVA="
+        "lastDeployHash": "nmlr44dnIzKGBAZa0umrzoydrB0="
       },
       "code": {
         "default": {
-          "lastDeployHash": "HCIigTKt0odhCyUdwthjeLPiepg="
+          "lastDeployHash": "E1XYBci/q42m7iXqHRaKr3Tp9uQ="
         }
       }
     }
