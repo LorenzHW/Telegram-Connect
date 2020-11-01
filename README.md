@@ -3,7 +3,7 @@
 
 ### High Level Overview
 <p align="center">
-  <img src="https://raw.githubusercontent.com/LorenzHW/My-Telegrams/telegram-connect/icons/highlevel-overview.png"/>
+  <img src="https://raw.githubusercontent.com/LorenzHW/My-Telegrams/telegram-connect/skill-package/assets/highlevel-overview.png"/>
 </p>
 
 
@@ -72,13 +72,13 @@ ask deploy
 This will create a new skill in your Alexa Developer Console, an AWS Lambda function and DynamoDB database.
 
 You need to grant your lambda function access to your DynamoDB database. 
-- Head over to [AWS](https://aws.amazon.com/de/console/)
-- IAM -> Roles. Find the role that is associated with your lambda function (something like: ask-lambda-telegram-connect)
-- Attach policy: AmazonDynamoDBFullAccess
+1. Head over to [AWS](https://aws.amazon.com/de/console/)
+2. IAM -> Roles. Find the role that is associated with your lambda function (something like: ask-lambda-telegram-connect)
+3. Attach policy: AmazonDynamoDBFullAccess
 
 At last you need to increase the timeout of your lambda function.
-- Inside the AWS console go to lambda and find you lambda function.
-- After you clicked on it, edit Basic Settings->Timeout to 8 seconds. 
+1. Inside the AWS console go to lambda and find you lambda function.
+2. After you clicked on it, edit Basic Settings->Timeout to 8 seconds. 
 
 
 Feel free to create PR's!
