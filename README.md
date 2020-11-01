@@ -16,12 +16,11 @@
 - Add [Voice Profiles](https://developer.amazon.com/blogs/alexa/post/1ad16e9b-4f52-4e68-9187-ec2e93faae55/recognize-voices-and-personalize-your-skills)
 for people who use the same Alexa device but different telegram accounts.
 
-### Getting started
-If you just want to contribute jump to step x  
+### Getting started  
 If you want to play around with the skill in your own Alexa Developer Console, follow these steps:
 
 **Prerequisites**  
-[ASK cli](https://developer.amazon.com/en-US/docs/alexa/smapi/quick-start-alexa-skills-kit-command-line-interface.html) (Version 2.19 or higher)
+- [ASK cli](https://developer.amazon.com/en-US/docs/alexa/smapi/quick-start-alexa-skills-kit-command-line-interface.html) (Version 2.19 or higher)
 
 Clone the repository
 ```
