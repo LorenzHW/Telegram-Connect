@@ -1,0 +1,30 @@
+{
+  "askcliStatesVersion": "2020-03-31",
+  "profiles": {
+    "default": {
+      "skillInfrastructure": {
+        "@ask-cli/lambda-deployer": {
+          "deployState": {
+            "default": {
+              "lambda": {
+                "arn": "arn:aws:lambda:us-east-1:410662029421:function:ask-telegram-connect-default-default-1604091349582",
+                "lastModified": "2020-11-03T19:36:29.215+0000",
+                "revisionId": "abeed6d0-f1c0-4da9-8a45-48b39ea866ff"
+              },
+              "iamRole": "arn:aws:iam::410662029421:role/ask-lambda-telegram-connect-1604091347923"
+            }
+          }
+        }
+      },
+      "skillId": "amzn1.ask.skill.f0db5990-fc15-48fa-8633-fa6624b4c121",
+      "skillMetadata": {
+        "lastDeployHash": "nmlr44dnIzKGBAZa0umrzoydrB0="
+      },
+      "code": {
+        "default": {
+          "lastDeployHash": "8gYFevRJ68s50LXLK8H5GDAPNIE="
+        }
+      }
+    }
+  }
+}
