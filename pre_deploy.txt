@@ -1,4 +1,0 @@
-./hooks/pre_deploy_hook.sh My_Telegrams true all
-ask lambda upload -f myTelegrams -s lambda/us-east-1_myTelegrams/lambda_upload/
-
-source My_Telegrams/.venv/skill_env/bin/activate
