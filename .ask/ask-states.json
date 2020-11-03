@@ -8,8 +8,8 @@
             "default": {
               "lambda": {
                 "arn": "arn:aws:lambda:us-east-1:410662029421:function:ask-telegram-connect-default-default-1604091349582",
-                "lastModified": "2020-11-02T22:27:55.690+0000",
-                "revisionId": "42de5736-1670-4731-9040-d6960b761c7f"
+                "lastModified": "2020-11-03T19:36:29.215+0000",
+                "revisionId": "abeed6d0-f1c0-4da9-8a45-48b39ea866ff"
               },
               "iamRole": "arn:aws:iam::410662029421:role/ask-lambda-telegram-connect-1604091347923"
             }
@@ -22,7 +22,7 @@
       },
       "code": {
         "default": {
-          "lastDeployHash": "d8xDzyidw69GLS4uzlYZrSrW+Z4="
+          "lastDeployHash": "8gYFevRJ68s50LXLK8H5GDAPNIE="
         }
       }
     }
