@@ -107,7 +107,11 @@ class PyrogramManager:
 
     def __init__(self, state_manager: StateManager):
         self.client = Client(DynamoDBStorage('my_dynamo_db_storage', state_manager), API_ID, API_HASH)
-        self.is_authorized = self.client.connect()
+        self._is_authorized = self.client.connect()
+
+    @property
+    def is_authorized(self):
+        return self._is_authorized
 
     def send_code(self, phone_number):
         print('PyrogramManager send_code')

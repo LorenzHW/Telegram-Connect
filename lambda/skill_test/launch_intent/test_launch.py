@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import Mock, PropertyMock
+from unittest.mock import Mock, patch
 
 from skill.helper_functions import remove_ssml_tags, ExploreIntents
 from skill.i18n.util import get_i18n
@@ -15,13 +15,17 @@ class LaunchIntentTest(unittest.TestCase):
 
     def test_launch_intent(self):
         for locale in ["en-US"]:
-            self.test_new_user_who_has_not_completed_setup(locale)
-            self.test_user_who_has_no_new_telegrams(locale)
-            self.test_user_who_has_unread_telegrams(locale)
+            self._test_new_user_who_has_not_completed_setup(locale)
+            self._test_user_who_has_no_new_telegrams(locale)
+            self._test_user_who_has_unread_telegrams(locale)
 
-    def test_new_user_who_has_not_completed_setup(self, locale):
+    @patch("skill.telegram_connect.StateManager")
+    @patch("skill.telegram_connect.PyrogramManager", spec=PyrogramManager)
+    def _test_new_user_who_has_not_completed_setup(self, locale, mock_pyrogram_manager, mock_state_manager):
         i18n = get_i18n(locale, "America/Los_Angeles")
         req = update_request(launch_request, locale, TEST_USER_UNAUTHORIZED)
+        mock_pyrogram_manager.is_authorized = Mock(return_value=False)
+        mock_pyrogram_manager.return_value = mock_pyrogram_manager
 
         event = self.handler(req, None)
         output = remove_ssml_tags(event.get('response').get('outputSpeech').get('ssml'))
@@ -29,22 +33,28 @@ class LaunchIntentTest(unittest.TestCase):
         self.assertEqual(output, i18n.NEW_SETUP)
         self.assertEqual(event.get("sessionAttributes").get("explore_intent"), ExploreIntents.EXPLORE_SETUP_INTENT)
 
-    def test_user_who_has_no_new_telegrams(self, locale):
+    @patch("skill.telegram_connect.StateManager")
+    @patch("skill.telegram_connect.PyrogramManager", spec=PyrogramManager)
+    def _test_user_who_has_no_new_telegrams(self, locale, mock_pyrogram_manager, mock_state_manager):
         i18n = get_i18n(locale, "America/Los_Angeles")
-        req = update_request(launch_request, locale, TEST_USER_AUTHORIZED)
-        PyrogramManager.is_authorized = PropertyMock(return_value=True)
-        PyrogramManager.get_unread_dialogs = Mock(return_value=[])
+        req = update_request(launch_request, locale, "TEST_USER_AUTHORIZED")
+        mock_pyrogram_manager.is_authorized = Mock(return_value=True)
+        mock_pyrogram_manager.get_unread_dialogs = Mock(return_value=[])
+        mock_pyrogram_manager.return_value = mock_pyrogram_manager
 
         event = self.handler(req, None)
         output = remove_ssml_tags(event.get('response').get('outputSpeech').get('ssml'))
 
         self.assertTrue(i18n.WELCOME_BACK + ' ' + i18n.NO_NEW_TELEGRAMS in output)
 
-    def test_user_who_has_unread_telegrams(self, locale):
+    @patch("skill.telegram_connect.StateManager")
+    @patch("skill.telegram_connect.PyrogramManager", spec=PyrogramManager)
+    def _test_user_who_has_unread_telegrams(self, locale, mock_pyrogram_manager, mock_state_manager):
         unread_telegrams = ['something']
         req = update_request(launch_request, locale, TEST_USER_AUTHORIZED)
-        PyrogramManager.is_authorized = PropertyMock(return_value=True)
-        PyrogramManager.get_unread_dialogs = Mock(return_value=unread_telegrams)
+        mock_pyrogram_manager.is_authorized = Mock(return_value=True)
+        mock_pyrogram_manager.get_unread_dialogs = Mock(return_value=unread_telegrams)
+        mock_pyrogram_manager.return_value = mock_pyrogram_manager
 
         event = self.handler(req, None)
 

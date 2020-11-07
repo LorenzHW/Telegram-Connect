@@ -38,7 +38,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
         i18n = get_i18n(handler_input.request_envelope.request.locale, sess_attrs.get("tz_database_name"))
         pyrogram_manager = PyrogramManager(StateManager(handler_input))
 
-        if not pyrogram_manager.is_authorized:
+        if not pyrogram_manager.is_authorized():
             set_explore_sess_attr(sess_attrs, ExploreIntents.EXPLORE_SETUP_INTENT)
             return handler_input.response_builder.speak(i18n.NEW_SETUP).ask(i18n.FALLBACK).response
 
