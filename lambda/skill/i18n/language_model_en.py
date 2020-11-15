@@ -73,6 +73,7 @@ class LanguageModelEN(LanguageModelABC):
         self.PHONE_NUM_UNOCCUPIED = 'This phone number is not known to Telegram. Please create a Telegram account first. Bye for now.'
         self.TWO_STEP_ON = "You have two-step verification turned on. Alexa can't be coupled with Telegram while this is on. Please, first go to telegram and disable two-step verificiation. Then come back and try again. Afte you successfully coupled Alexa with Telegram, you can turn it on again. Bye for now."
         self.ALREADY_AUTHORIZED = 'You already successfully coupled Alexa with Telegram. Bye for now.'
+        self.EXCEPTION_RETRIEVING_PHONE_NUM = 'There was a problem retrieving your phone number from your Amazon profile. Please make sure that you have granted access to Telegram Connect to access your phone number and that you have a valid phone number in your Amazon Profile. Bye for now.'
 
         ##############################
         # MessageIntent

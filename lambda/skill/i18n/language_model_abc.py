@@ -64,6 +64,7 @@ class LanguageModelABC(abc.ABC):
     PHONE_NUM_UNOCCUPIED: str
     TWO_STEP_ON: str
     ALREADY_AUTHORIZED: str
+    EXCEPTION_RETRIEVING_PHONE_NUM: str
 
     ##############################
     # MessageIntent
