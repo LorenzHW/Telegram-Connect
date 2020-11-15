@@ -6,7 +6,7 @@ from ask_sdk_model.ui import SimpleCard, AskForPermissionsConsentCard
 from skill.helper_functions import remove_ssml_tags
 from skill.i18n.util import get_i18n
 from skill.services.alexa_settings_service import AlexaSettingsService
-from skill.state import State
+from skill.state_manager import StateManager
 
 
 class LoggingRequestInterceptor(AbstractRequestInterceptor):
@@ -16,9 +16,8 @@ class LoggingRequestInterceptor(AbstractRequestInterceptor):
 
 class CardResponseInterceptor(AbstractResponseInterceptor):
     def process(self, handler_input, response):
-        locale = handler_input.request_envelope.request.locale
         sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = get_i18n(locale, sess_attrs.get("tz_database_name"))
+        i18n = get_i18n(handler_input)
 
         if response.output_speech:
             response.card = SimpleCard(
@@ -41,9 +40,9 @@ class StateRequestInterceptor(AbstractRequestInterceptor):
                                                     handler_input.request_envelope.request.locale)
             tz_database_name = settings_service.get_tz_database_name()
             sess_attrs["tz_database_name"] = tz_database_name
-            timezone = pytz.timezone(tz_database_name)
-            state = State(timezone, handler_input.attributes_manager.persistent_attributes)
-            state.new_session_count += 1
+            state_manager = StateManager(handler_input)
 
-            handler_input.attributes_manager.persistent_attributes = state.to_dict()
+            state_manager.state.new_session_count += 1
+
+            handler_input.attributes_manager.persistent_attributes = state_manager.state.to_dict()
             handler_input.attributes_manager.save_persistent_attributes()

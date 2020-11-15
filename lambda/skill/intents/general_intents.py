@@ -18,8 +18,7 @@ class HelpIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = get_i18n(handler_input.request_envelope.request.locale, sess_attrs.get("tz_database_name"))
+        i18n = get_i18n(handler_input)
         return handler_input.response_builder.speak(i18n.HELP).ask(i18n.FALLBACK).response
 
 
@@ -29,8 +28,7 @@ class FallbackIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = get_i18n(handler_input.request_envelope.request.locale, sess_attrs.get("tz_database_name"))
+        i18n = get_i18n(handler_input)
         return handler_input.response_builder.speak(i18n.SUGGEST_WHAT_TO_DO).ask(i18n.FALLBACK).response
 
 
@@ -44,9 +42,7 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        locale = handler_input.request_envelope.request.locale
-        sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = get_i18n(locale, sess_attrs.get("tz_database_name"))
+        i18n = get_i18n(handler_input)
 
         speech_text = " " + i18n.get_random_goodbye()
         handler_input.response_builder.speak(speech_text).set_should_end_session(True)
@@ -84,32 +80,3 @@ class IntentReflectorHandler(AbstractRequestHandler):
         intent_name = ask_utils.get_intent_name(handler_input)
         speak_output = "Triggered {}.".format(intent_name)
         return handler_input.response_builder.speak(speak_output).response
-
-
-class CatchAllExceptionHandler(AbstractExceptionHandler):
-    """Generic error handling to capture any syntax or routing errors. If you receive an error
-    stating the request handler chain is not found, you have not implemented a handler for
-    the intent being invoked or included it in the skill builder below.
-    """
-
-    def can_handle(self, handler_input, exception):
-        # type: (HandlerInput, Exception) -> bool
-        return True
-
-    def handle(self, handler_input, exception):
-        print("ENCOUNTERED FOLLOWING EXCEPTION:")
-        print("PRINTING: TRACEBACK: ")
-        print(traceback.format_exc())
-        print(exception)
-        rb = handler_input.response_builder
-        locale = handler_input.request_envelope.request.locale
-        sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = get_i18n(locale, sess_attrs.get("tz_database_name", "America/Los_Angeles"))
-
-        sess_attrs = handler_input.attributes_manager.session_attributes
-        sess_attrs.clear()
-
-        speech = i18n.EXCEPTION
-
-        rb.speak(speech).set_should_end_session(True)
-        return rb.response

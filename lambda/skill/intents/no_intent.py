@@ -14,10 +14,6 @@ class NoIntentHandler(AbstractRequestHandler):
             return True
 
     def handle(self, handler_input):
-        sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = get_i18n(handler_input.request_envelope.request.locale, sess_attrs.get("tz_database_name"))
-        intent_to_explore = sess_attrs.get("explore_intent", "")
-
         intent = Intent(name="AMAZON.StopIntent")
         handler_input.response_builder.add_directive(DelegateDirective(updated_intent=intent))
         return handler_input.response_builder.response

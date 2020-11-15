@@ -1,13 +1,13 @@
 import unittest
 
 from skill.i18n.language_model_abc import LanguageModelABC
-from skill.i18n.util import get_i18n
+from skill_test.util import get_i18n_for_tests
 
 
 class LanguageModelTest(unittest.TestCase):
     def test_language_model(self):
-        german = get_i18n("de-DE", "Europe/Vienna")
-        us = get_i18n("en-US", "America/Los_Angeles")
+        german = get_i18n_for_tests("de-DE")
+        us = get_i18n_for_tests("en-US")
         us_attrs = dir(us)
         german_attrs = dir(german)
         abc_annotations = LanguageModelABC.__annotations__

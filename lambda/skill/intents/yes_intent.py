@@ -16,7 +16,7 @@ class YesIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
         intent_to_explore = sess_attrs.get("explore_intent", "")
-        i18n = get_i18n(handler_input.request_envelope.request.locale, sess_attrs.get("tz_database_name"))
+        i18n = get_i18n(handler_input)
 
         if intent_to_explore == ExploreIntents.EXPLORE_SETUP_INTENT:
             slots = {"code": Slot(name="code")}

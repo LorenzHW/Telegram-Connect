@@ -6,10 +6,11 @@ from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_model import Response
 
+from skill.exceptions.all_exceptions import CatchAllExceptionHandler
 from skill.helper_functions import set_explore_sess_attr, ExploreIntents
 from skill.i18n.util import get_i18n
 from skill.intents.general_intents import HelpIntentHandler, CancelOrStopIntentHandler, SessionEndedRequestHandler, \
-    IntentReflectorHandler, CatchAllExceptionHandler, FallbackIntentHandler
+    IntentReflectorHandler, FallbackIntentHandler
 from skill.intents.learn_more_intent import LearnMoreIntentHandler
 from skill.intents.message_intent import MessageIntentHandler
 from skill.intents.no_intent import NoIntentHandler
@@ -35,7 +36,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput) -> Response:
         sess_attrs = handler_input.attributes_manager.session_attributes
-        i18n = get_i18n(handler_input.request_envelope.request.locale, sess_attrs.get("tz_database_name"))
+        i18n = get_i18n(handler_input)
         pyrogram_manager = PyrogramManager(StateManager(handler_input))
 
         if not pyrogram_manager.is_authorized():

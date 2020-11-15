@@ -16,7 +16,7 @@ class MessageIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         sess_attrs = handler_input.attributes_manager.session_attributes
-        self.i18n = get_i18n(handler_input.request_envelope.request.locale, sess_attrs.get("tz_database_name"))
+        self.i18n = get_i18n(handler_input)
         pyrogram_manager = PyrogramManager(StateManager(handler_input))
 
         if not pyrogram_manager.is_authorized:
