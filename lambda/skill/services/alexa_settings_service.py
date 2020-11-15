@@ -1,4 +1,5 @@
 import requests
+from typing import Tuple
 
 
 class AlexaSettingsService:
@@ -29,13 +30,15 @@ class AlexaSettingsService:
 
         return tz_database_name
 
-    def get_phone_number(self) -> str:
+    def get_phone_number(self) -> Tuple[str, bool]:
         response = self._execute_get_request(self.phone_number_endpoint)
+        is_success = False
         if 'countryCode' in response and 'phoneNumber' in response:
-            return response['countryCode'] + response['phoneNumber']
+            is_success = True
+            return response['countryCode'] + response['phoneNumber'], is_success
         elif 'code' in response:
-            return response['code']
-        return ""
+            return response['code'], is_success
+        return "", is_success
 
     def _execute_get_request(self, url):
         auth_string = "Bearer " + self.api_access_token
