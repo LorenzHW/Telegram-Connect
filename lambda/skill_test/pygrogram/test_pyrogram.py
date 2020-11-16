@@ -7,13 +7,12 @@ from ask_sdk_core.skill import CustomSkill
 from ask_sdk_model import RequestEnvelope
 
 from skill.helper_functions import remove_ssml_tags
-from skill.i18n.util import get_i18n
 from skill.pyrogram.pyrogram_manager import PyrogramManager
 from skill.state_manager import StateManager
 from skill.telegram_connect import sb
 from skill_test.message_intent.message_request import message_request
 from skill_test.setup_intent.setup_intent_request import setup_request
-from skill_test.util import update_request, TEST_USER_AUTHORIZED
+from skill_test.util import update_request, get_i18n_for_tests
 
 
 class PyrogramTest(unittest.TestCase):
@@ -26,7 +25,7 @@ class PyrogramTest(unittest.TestCase):
 
     def setUp(self) -> None:
         skill = CustomSkill(skill_configuration=sb.skill_configuration)
-        req = update_request(message_request, 'en-US', TEST_USER_AUTHORIZED)
+        req = update_request(message_request, 'en-US')
         request_envelope = skill.serializer.deserialize(payload=json.dumps(req), obj_type=RequestEnvelope)
         attributes_manager = AttributesManager(request_envelope=request_envelope,
                                                persistence_adapter=skill.persistence_adapter)
@@ -49,8 +48,11 @@ class PyrogramTest(unittest.TestCase):
         This user can then be used to actually fetch data from the Telegram API like in the PyrogramTest
         """
         locale = 'en-US'
-        i18n = get_i18n(locale, "America/Los_Angeles")
-        req = update_request(setup_request, locale, TEST_USER_AUTHORIZED)
+        i18n = get_i18n_for_tests(locale)
+        req = update_request(setup_request, locale)
+        req["session"]["user"]["userId"] = "AUTHORIZED_USER"
+        req["context"]["System"]["user"]["userId"] = "AUTHORIZED_USER"
+
         req["session"]["attributes"]["phone_num"] = input('Type in your phone number (e.g.: 49123456)')
 
         event = self.handler(req, None)
