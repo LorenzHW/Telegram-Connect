@@ -15,7 +15,8 @@ class LanguageModelTest(unittest.TestCase):
         self.assertTrue(len(us_attrs) == len(german_attrs))
         for attr in abc_annotations.keys():
             self.assertTrue(attr in us_attrs, '{} not in us_attrs'.format(attr))
+            self.assertTrue(attr in german_attrs, '{} not in german_aatrs'.format(attr))
 
-        # same_attrs = all([True if attr_en == german_attrs[i] else False for i, attr_en in enumerate(us_attrs)])
-        # self.assertTrue(same_attrs is True)
+        same_attrs = all([True if attr_en == german_attrs[i] else False for i, attr_en in enumerate(us_attrs)])
+        self.assertTrue(same_attrs is True)
         print('HELLO WORLD')

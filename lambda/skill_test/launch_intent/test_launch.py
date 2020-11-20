@@ -17,7 +17,7 @@ class LaunchIntentTest(unittest.TestCase):
     @patch("skill.telegram_connect.StateManager")
     @patch("skill.telegram_connect.PyrogramManager", spec=PyrogramManager)
     def test_launch_intent(self, mock_pyrogram_manager, mock_state_manager):
-        for locale in ["en-US"]:
+        for locale in ["en-US", "de-DE"]:
             self._test_new_user_who_has_not_completed_setup(locale, mock_pyrogram_manager)
             self._test_user_who_has_no_new_telegrams(locale, mock_pyrogram_manager)
             self._test_user_who_has_unread_telegrams(locale, mock_pyrogram_manager)
@@ -31,7 +31,7 @@ class LaunchIntentTest(unittest.TestCase):
         event = self.handler(req, None)
         output = remove_ssml_tags(event.get('response').get('outputSpeech').get('ssml'))
 
-        self.assertEqual(output, i18n.NEW_SETUP)
+        self.assertEqual(output, remove_ssml_tags(i18n.NEW_SETUP))
         self.assertEqual(event.get("sessionAttributes").get("explore_intent"), ExploreIntents.EXPLORE_SETUP_INTENT)
 
     def _test_user_who_has_no_new_telegrams(self, locale, mock_pyrogram_manager):

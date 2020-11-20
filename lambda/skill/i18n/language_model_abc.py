@@ -55,7 +55,6 @@ class LanguageModelABC(abc.ABC):
     # SetupIntent
     ##############################
     NO_PERMISSION: str
-    NO_PHONE_NUMBER: str
     CODE_SENT: str
     SUCCESS_SETUP: str
     PHONE_CODE_INVALID: str

@@ -22,10 +22,17 @@ mock_data = [
     }
 ]
 
-expected_results = [
-    "<speak>You received new telegrams from: Bello<break time='200ms'/> and My Group<break time='200ms'/>. Bello wrote: This is the first message <break time='350ms'/>This is the second message<break time='2000ms'/> Do you want to hear the telegrams from your next contact?</speak>",
-    "<speak>In My Group: Chico wrote: <break time=\'200ms\'/>Group Message A <break time=\'350ms\'/>Bello wrote: <break time=\'200ms\'/>Group Message B<break time=\'2000ms\'/> There are no more new telegrams. Bye for now.</speak>"
-]
+expected_results = {
+    "de-DE": [
+        "<speak>Du hast neue Telegramme erhalten von: Bello<break time='200ms'/> und My Group<break time='200ms'/>. Bello schrieb: This is the first message <break time='350ms'/>This is the second message<break time='2000ms'/> Möchtest du die Telegramme vom nächsten Kontakt hören?</speak>",
+        "<speak>In My Group: Chico schrieb: <break time='200ms'/>Group Message A <break time='350ms'/>Bello schrieb: <break time='200ms'/>Group Message B<break time='2000ms'/> Es gibt keine weiteren Telegramme. Bis später.</speak>"
+    ],
+    "en-US": [
+        "<speak>You received new telegrams from: Bello<break time='200ms'/> and My Group<break time='200ms'/>. Bello wrote: This is the first message <break time='350ms'/>This is the second message<break time='2000ms'/> Do you want to hear the telegrams from your next contact?</speak>",
+        "<speak>In My Group: Chico wrote: <break time=\'200ms\'/>Group Message A <break time=\'350ms\'/>Bello wrote: <break time=\'200ms\'/>Group Message B<break time=\'2000ms\'/> There are no more new telegrams. Bye for now.</speak>"
+    ]
+}
+
 
 
 class MessageIntentTest(unittest.TestCase):
@@ -35,7 +42,7 @@ class MessageIntentTest(unittest.TestCase):
     @patch("skill.intents.message_intent.StateManager")
     @patch("skill.intents.message_intent.PyrogramManager", spec=PyrogramManager)
     def test_message_intent(self, mock_pyrogram_manager, mock_state_manager):
-        for locale in ["en-US"]:
+        for locale in ["en-US", "de-DE"]:
             mock_pyrogram_manager.is_authorized = True
             mock_pyrogram_manager.return_value = mock_pyrogram_manager
 
@@ -65,4 +72,4 @@ class MessageIntentTest(unittest.TestCase):
             event = self.handler(req, None)
             output_text = event.get('response').get('outputSpeech').get('ssml')
 
-            self.assertEqual(output_text, expected_results[new_telegrams_index])
+            self.assertEqual(output_text, expected_results[locale][new_telegrams_index])

@@ -1,5 +1,6 @@
 import pytz
 
+from skill.i18n.language_model_de import LanguageModelDE
 from skill.i18n.language_model_en import LanguageModelEN
 
 
@@ -14,5 +15,5 @@ def get_i18n_for_tests(locale):
     timezone = pytz.timezone("America/Los_Angeles")
     language_model = LanguageModelEN(timezone)
     if locale == 'de-DE':
-        pass
+        language_model = LanguageModelDE(timezone)
     return language_model

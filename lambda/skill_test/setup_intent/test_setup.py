@@ -17,7 +17,9 @@ class SetupIntentTest(unittest.TestCase):
     @patch("skill.intents.setup_intent.StateManager")
     @patch("skill.intents.setup_intent.PyrogramManager", spec=PyrogramManager)
     def test_setup_intent(self, mock_pyrogram_manager, mock_state_manager):
-        for locale in ["en-US"]:
+        for locale in ["en-US", "de-DE"]:
+            setup_request["session"]["attributes"]["phone_code_hash"] = None
+            setup_request["request"]["intent"]["slots"]["code"]["value"] = None
             mock_pyrogram_manager.send_code = Mock(return_value='random_phone_code_hash')
             mock_pyrogram_manager.is_authorized = False
             mock_pyrogram_manager.sign_in = Mock(return_value=None)

@@ -1,7 +1,6 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "telegram connect",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
@@ -26,7 +25,7 @@
         {
           "name": "AMAZON.YesIntent",
           "samples": [
-            "continue"
+            "weiter"
           ]
         },
         {
@@ -42,9 +41,9 @@
             }
           ],
           "samples": [
-            "{code}",
-            "start setup",
-            "start the setup"
+            "starte setup",
+            "starte das setup",
+            "{code}"
           ]
         },
         {
@@ -58,19 +57,21 @@
           "name": "MessageIntent",
           "slots": [],
           "samples": [
-            "do i have new telegrams",
-            "what are my telegrams",
-            "check my messages",
-            "check my telegrams"
+            "habe ich neue nachrichten",
+            "was sind meine nachrichten",
+            "was sind meine telegramme",
+            "checke meine nachrichten",
+            "checke meine telegramme",
+            "habe ich neue telegramme"
           ]
         },
         {
           "name": "LearnMoreIntent",
           "slots": [],
           "samples": [
-            "learn more about telegram connect",
-            "learn more",
-            "learn more about the skill"
+            "lerne mehr über telegram connect",
+            "lerne mehr über den skill",
+            "lerne mehr"
           ]
         }
       ],
@@ -138,5 +139,5 @@
       }
     ]
   },
-  "version": "5"
+  "version": "2"
 }
