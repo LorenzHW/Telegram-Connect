@@ -14,9 +14,10 @@ class SetupIntentTest(unittest.TestCase):
     def setUp(self) -> None:
         self.handler = sb.lambda_handler()
 
+    @patch("skill.intents.setup_intent.AlexaSettingsService")
     @patch("skill.intents.setup_intent.StateManager")
     @patch("skill.intents.setup_intent.PyrogramManager", spec=PyrogramManager)
-    def test_setup_intent(self, mock_pyrogram_manager, mock_state_manager):
+    def test_setup_intent(self, mock_pyrogram_manager, mock_state_manager, mock_alexa_settings_service):
         for locale in ["en-US", "de-DE"]:
             setup_request["session"]["attributes"]["phone_code_hash"] = None
             setup_request["request"]["intent"]["slots"]["code"]["value"] = None
@@ -24,6 +25,8 @@ class SetupIntentTest(unittest.TestCase):
             mock_pyrogram_manager.get_is_authorized = Mock(return_value=False)
             mock_pyrogram_manager.sign_in = Mock(return_value=None)
             mock_pyrogram_manager.return_value = mock_pyrogram_manager
+            mock_alexa_settings_service.get_phone_number = Mock(return_value=("random_phone_number", True))
+            mock_alexa_settings_service.return_value = mock_alexa_settings_service
 
             self._test_start_of_setup_intent(locale)
             self._test_user_provides_correct_code(locale)
@@ -35,11 +38,13 @@ class SetupIntentTest(unittest.TestCase):
         event = self.handler(req, None)
 
         self.assertTrue(event.get("sessionAttributes").get("phone_code_hash") == 'random_phone_code_hash')
+        self.assertTrue(event.get("sessionAttributes").get("phone_num") == 'random_phone_number')
         self.assertEqual(event.get('response').get('directives')[0].get('type'), 'Dialog.ElicitSlot')
 
     def _test_user_provides_correct_code(self, locale):
         i18n = get_i18n_for_tests(locale)
         req = update_request(setup_request, locale)
+        req["session"]["attributes"]["phone_num"] = 'random_phone_number'
         req["session"]["attributes"]["phone_code_hash"] = 'random_code_hash'
         req["request"]["intent"]["slots"]["code"]["value"] = 1234
 

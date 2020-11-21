@@ -30,7 +30,7 @@ class LanguageModelDE(LanguageModelABC):
         self.GOOD_BYE_MORNING = "Schönen Tag noch!"
 
         self.FALLBACK = self.get_random_dont_understand() + ", was hast du gesagt?"
-        self.EXCEPTION = "Ein unerwarteter Fehler ist aufgetreten. Wenn du Zeit hast, lass uns auf GitHub wissen was passiert ist." \
+        self.EXCEPTION = "Ein unerwarteter Fehler ist aufgetreten. Wenn du Zeit hast, lass uns auf <lang xml:lang='en-US'>GitHub</lang> wissen was passiert ist." \
                          " Bis später"
 
         ##############################
@@ -47,7 +47,7 @@ class LanguageModelDE(LanguageModelABC):
         ##############################
         self.HELP = "{} verbindet Alexa mit dem Telegram Messenger. Um " \
                     "das Setup zu starten sage: 'Starte das Setup'. Um zu schauen ob du neue Telegramme hast sage: 'checke " \
-                    "meine Telegramme'. Wenn du mehr über den Skill erfahren möchtest, sage: 'Lerne mehr über den Skill'." \
+                    "meine Telegramme'. Wenn du mehr über den Skill erfahren möchtest, sage: 'Lerne mehr über den Skill'. " \
                     "Also, was möchtest du machen?".format(self.SKILL_NAME_SPOKEN_EN)
         self.RATE_SKILL = "Wenn dir {} gefällt, schreibe eine Bewertung auf Amazon. Wir schätzen jegliche Art von " \
                           "Feedback und versuchen den Skill durchgehend zu verbessern. Danke!" \
@@ -56,8 +56,8 @@ class LanguageModelDE(LanguageModelABC):
         ##############################
         # SetupIntent
         ##############################
-        self.NO_PERMISSION = 'Du gewährst {} keinen Zugriff auf deine Telefonnummer.' \
-                             'Um deinen Telegram Messenger mit Alexa zu koppeln, benötigen wir den Zugriff.' \
+        self.NO_PERMISSION = 'Du gewährst {} keinen Zugriff auf deine Telefonnummer. ' \
+                             'Um deinen Telegram Messenger mit Alexa zu koppeln, benötigen wir den Zugriff. ' \
                              'Öffne die Alexa App und gestatte den entsprechenden Zugriff. Bis später.' \
             .format(self.SKILL_NAME_SPOKEN_EN)
 
@@ -91,8 +91,8 @@ class LanguageModelDE(LanguageModelABC):
         ##############################
         # LearnMoreIntent
         ##############################
-        self.LEARN_MORE = '{} koppelt Alexa mit Telegram. Der Code für diesen Skill ist open-source und jeder ' \
-                          'ist willkommen mitzuarbeiten. Wir suchen Leute die den Skill in verschiedene Sprachen übersetzen ' \
-                          'wie zum Beispiel italienisch oder spanisch. Wenn du Probleme mit diesem Skill hast ' \
-                          'oder ein Feature vermisst, melde dich bei uns auf GitHub. Bis dann.' \
+        self.LEARN_MORE = "{} koppelt Alexa mit Telegram. Der Code für diesen Skill ist open-source und jeder " \
+                          "ist willkommen mitzuarbeiten. Wir suchen Leute die den Skill in verschiedene Sprachen übersetzen " \
+                          "wie zum Beispiel italienisch oder spanisch. Wenn du Probleme mit diesem Skill hast " \
+                          "oder ein Feature vermisst, melde dich bei uns auf <lang xml:lang='en-US'>GitHub</lang>. Bis dann." \
             .format(self.SKILL_NAME_SPOKEN_EN)

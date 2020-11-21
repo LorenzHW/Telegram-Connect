@@ -75,9 +75,10 @@ You need to grant your lambda function access to your DynamoDB database.
 2. IAM -> Roles. Find the role that is associated with your lambda function (something like: ask-lambda-telegram-connect)
 3. Attach policy: AmazonDynamoDBFullAccess
 
-At last you need to increase the timeout of your lambda function.
+At last you need to increase the timeout and the memory of your lambda function.
 1. Inside the AWS console go to lambda and find you lambda function.
 2. After you clicked on it, edit Basic Settings->Timeout to 20 seconds.
+3. Increase the memory of the function as well.
 
 Since we are using the phone number of the user, we need set according permissions for that inside the Alexa Developer Console
 1. On the main page of the Alexa Developer Console go edit the newly deployed skill

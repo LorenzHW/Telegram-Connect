@@ -70,6 +70,7 @@ class SetupIntentHandler(AbstractRequestHandler):
             elif not success:
                 return CatchNoSuccessRetrievingPhonenumberExceptionHandler() \
                     .handle(self.handler_input, NoSuccessRetrievingPhonenumberException(phone_num))
+            self.sess_attrs["phone_num"] = phone_num
 
         try:
             phone_code_hash = self.pyrogram_manager.send_code(phone_num)

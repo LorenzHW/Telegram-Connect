@@ -29,7 +29,7 @@ class CatchNoSuccessRetrievingPhonenumberExceptionHandler(AbstractExceptionHandl
     def handle(self, handler_input, exception):
         rb = handler_input.response_builder
         i18n = get_i18n(handler_input)
-
+        print("CATCH EXCEPTION")
         sess_attrs = handler_input.attributes_manager.session_attributes
         sess_attrs.clear()
         speech = i18n.EXCEPTION_RETRIEVING_PHONE_NUM
