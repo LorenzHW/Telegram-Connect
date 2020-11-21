@@ -1,6 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
+      "invocationName": "telegram connect",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
