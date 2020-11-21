@@ -1,23 +1,5 @@
 {
   "manifest": {
-    "publishingInformation": {
-      "locales": {
-        "en-US": {
-          "summary": "Sample Short Description",
-          "examplePhrases": [
-            "Alexa open hello world",
-            "hello",
-            "help"
-          ],
-          "name": "telegram-connect",
-          "description": "Sample Full Description"
-        }
-      },
-      "isAvailableWorldwide": true,
-      "testingInstructions": "Sample Testing Instructions.",
-      "category": "KNOWLEDGE_AND_TRIVIA",
-      "distributionCountries": []
-    },
     "apis": {
       "custom": {
         "endpoint": {
@@ -25,6 +7,56 @@
         }
       }
     },
-    "manifestVersion": "1.0"
+    "manifestVersion": "1.0",
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "containsAds": false,
+      "isChildDirected": false,
+      "isExportCompliant": true,
+      "locales": {
+        "en-US": {
+          "privacyPolicyUrl": "https://raw.githubusercontent.com/LorenzHW/Telegram-Connect/master/PRIVACY_POLICY.md",
+          "termsOfUseUrl": "https://raw.githubusercontent.com/LorenzHW/Telegram-Connect/master/LICENSE"
+        }
+      },
+      "usesPersonalInfo": true
+    },
+    "publishingInformation": {
+      "automaticDistribution": {
+        "isActive": false
+      },
+      "category": "COMMUNICATION",
+      "distributionCountries": [],
+      "distributionMode": "PUBLIC",
+      "isAvailableWorldwide": true,
+      "locales": {
+        "en-US": {
+          "description": "Telegram Connect couples Alexa with the Telegram Messenger. You can listen to new messages you received. \n \nThe code of this skill is entirely open-source and you can find it here: https://github.com/LorenzHW/Telegram-Connect. Feel free to make contributions.",
+          "examplePhrases": [
+            "Alexa, open Telegram Connect",
+            "Check my Telegrams",
+            "Learn more about the skill"
+          ],
+          "keywords": [
+            "telegram",
+            "connect",
+            "messaging",
+            "telegram",
+            "whatsapp",
+            "messenger",
+            "threema",
+            "friends",
+            "family",
+            "communication",
+            "open-source"
+          ],
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/2160/d1c355937c434917ba2c32b6bc48b53f/APP_ICON_LARGE?versionId=AsSQNRCzUAcga2toF24fr9.e2LzRYwuH&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20201121T120520Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAWBV6LQ4QHAYALYJ7%2F20201121%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=6d91af71360b3178bbcdd5353645983d2c631939f2736a3cfddb0f222889fbcf",
+          "name": "Telegram Connect",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/3e1c/cd806b19b17c4433b66c034a8152366f/APP_ICON?versionId=naNt5mIKiAEhDwxf0CH.LTvn5LIPHRNj&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20201121T120520Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAWBV6LQ4QHAYALYJ7%2F20201121%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=989def74c55c2682ae95a827bf606e41f3fedece6fc14f0da3eef132f79d67f3",
+          "summary": "Telegram Connect couples Alexa with the Telegram Messenger"
+        }
+      },
+      "testingInstructions": "In order to test this skill you need an Amazon Account with a phone number and a Telegram Messenger Account that is linked to that phone number.\n\nTo get a free phone number you can use:\nwww.textnow.com\nLogin: TODO\nPassword: TODO\n\nAdd this phone number to the Amazon testing account.\n\nCreate a Telegram Messenger account with you phone number:\n- Download the Telegram Messenger for your OS at: https://telegram.org/\n- At some point Telegram will sent you a code to your FreeNow number. Check your texts for that code.\n\nTest the skill\n- Alexa, open telegram connect\n- Couple Alexa with Telegram Messenger:\n        Alexa will ask you for a code. Check you Telegram Messenger for that code.\n- After you successfully coupled Alexa with Telegram, you can say:\n       Check my Telegrams\n       Learn more about the skill"
+    }
   }
 }
