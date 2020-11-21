@@ -19,7 +19,7 @@ class MessageIntentHandler(AbstractRequestHandler):
         self.i18n = get_i18n(handler_input)
         pyrogram_manager = PyrogramManager(StateManager(handler_input))
 
-        if not pyrogram_manager.is_authorized:
+        if not pyrogram_manager.get_is_authorized():
             return handler_input.response_builder.speak(self.i18n.NOT_AUTHORIZED).set_should_end_session(True).response
 
         if 'unread_dialogs' not in sess_attrs:

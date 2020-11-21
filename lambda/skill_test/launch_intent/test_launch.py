@@ -25,7 +25,7 @@ class LaunchIntentTest(unittest.TestCase):
     def _test_new_user_who_has_not_completed_setup(self, locale, mock_pyrogram_manager):
         i18n = get_i18n_for_tests(locale)
         req = update_request(launch_request, locale)
-        mock_pyrogram_manager.is_authorized = Mock(return_value=False)
+        mock_pyrogram_manager.get_is_authorized = Mock(return_value=False)
         mock_pyrogram_manager.return_value = mock_pyrogram_manager
 
         event = self.handler(req, None)
@@ -37,7 +37,7 @@ class LaunchIntentTest(unittest.TestCase):
     def _test_user_who_has_no_new_telegrams(self, locale, mock_pyrogram_manager):
         i18n = get_i18n_for_tests(locale)
         req = update_request(launch_request, locale)
-        mock_pyrogram_manager.is_authorized = Mock(return_value=True)
+        mock_pyrogram_manager.get_is_authorized = Mock(return_value=True)
         mock_pyrogram_manager.get_unread_dialogs = Mock(return_value=[])
         mock_pyrogram_manager.return_value = mock_pyrogram_manager
 
@@ -49,7 +49,7 @@ class LaunchIntentTest(unittest.TestCase):
     def _test_user_who_has_unread_telegrams(self, locale, mock_pyrogram_manager):
         unread_telegrams = ['something']
         req = update_request(launch_request, locale)
-        mock_pyrogram_manager.is_authorized = Mock(return_value=True)
+        mock_pyrogram_manager.get_is_authorized = Mock(return_value=True)
         mock_pyrogram_manager.get_unread_dialogs = Mock(return_value=unread_telegrams)
         mock_pyrogram_manager.return_value = mock_pyrogram_manager
 

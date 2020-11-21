@@ -43,7 +43,7 @@ class MessageIntentTest(unittest.TestCase):
     @patch("skill.intents.message_intent.PyrogramManager", spec=PyrogramManager)
     def test_message_intent(self, mock_pyrogram_manager, mock_state_manager):
         for locale in ["en-US", "de-DE"]:
-            mock_pyrogram_manager.is_authorized = True
+            mock_pyrogram_manager.get_is_authorized = Mock(return_value=True)
             mock_pyrogram_manager.return_value = mock_pyrogram_manager
 
             self.test_when_user_has_no_new_telegrams(locale, mock_pyrogram_manager)

@@ -21,7 +21,7 @@ class SetupIntentTest(unittest.TestCase):
             setup_request["session"]["attributes"]["phone_code_hash"] = None
             setup_request["request"]["intent"]["slots"]["code"]["value"] = None
             mock_pyrogram_manager.send_code = Mock(return_value='random_phone_code_hash')
-            mock_pyrogram_manager.is_authorized = False
+            mock_pyrogram_manager.get_is_authorized = Mock(return_value=False)
             mock_pyrogram_manager.sign_in = Mock(return_value=None)
             mock_pyrogram_manager.return_value = mock_pyrogram_manager
 

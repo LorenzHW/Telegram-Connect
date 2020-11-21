@@ -24,7 +24,7 @@ class SetupIntentHandler(AbstractRequestHandler):
         self.pyrogram_manager = PyrogramManager(StateManager(handler_input))
         self.handler_input = handler_input
 
-        if self.pyrogram_manager.is_authorized:
+        if self.pyrogram_manager.get_is_authorized():
             return handler_input.response_builder.speak(self.i18n.ALREADY_AUTHORIZED) \
                 .set_should_end_session(True).response
 
