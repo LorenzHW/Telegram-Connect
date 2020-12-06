@@ -80,10 +80,6 @@ At last you need to increase the timeout and the memory of your lambda function.
 2. After you clicked on it, edit Basic Settings->Timeout to 20 seconds.
 3. Increase the memory of the function as well.
 
-Since we are using the phone number of the user, we need set according permissions for that inside the Alexa Developer Console
-1. On the main page of the Alexa Developer Console go edit the newly deployed skill
-2. In the menu on the left choose Tools->Permission and activate: 'Customer Phone Number'
-
 
 Feel free to create PR's!
 
