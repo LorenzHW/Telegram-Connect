@@ -1,0 +1,63 @@
+#####################
+# Short description
+#####################
+Send and receive messages with the Telegram Messenger.
+
+#####################
+# Full Skill description
+#####################
+My Telegrams enables you to hear and send messages via Telegram Messenger (https://telegram.org/).
+Check the video to see the skill in action (in the video you see an older version): bit.ly/my-telegrams-video
+
+How it works:
+- Authorize yourself.
+- Send or listen to messages.
+
+Before you can start, you need to authorize yourself:
+1.: Go to: www.bit.ly/my-telegrams and login. Enter your telephone number.
+2.: YOU: "Alexa, start My Telegrams"
+    ALEXA: "Welcome...."
+    YOU: "Start authorization"
+3.: Check Telegram for code. Say code to Alexa digit by digit.
+
+After you are authorized you can execute following commands:
+- Check my telegrams.
+- Send a telegram.
+- Open settings
+Or:
+- Alexa, ask My Telegrams to check my telegrams.
+- Alexa, ask My Telegrams to send a telegram.
+Or:
+- Alexa, ask My Telegrams to send a telegram to Michael.
+
+Speed dial:
+If you have contact names that Alexa can not understand you have the possibility to add a speed dial contact.
+1.: Go to: www.bit.ly/my-telegrams and login
+2.: Add a speed dial contact. (e.g.: Assign number 8 to a contact).
+3.: You: "Alexa, ask My Telegrams to send a telegram
+    Alexa: "What is the first name or speed dial number of you contact?"
+    You: "8"
+
+If you have unread telegrams Alexa will ask if you want to hear and reply to them.
+
+Notes:
+- Two Step Verification is not supported.
+- The link mentioned above will not work in Internet explorer. Try any other browser.
+
+
+#####################
+# Update Box
+#####################
+- Added Non-verbose mode
+
+
+#####################
+# Example phrases
+#####################
+Alexa, start My Telegrams.
+Alexa, ask My Telegrams to check my telegrams.
+Alexa, ask My Telegrams to send a telegram.
+
+telegramm, telegram, messenger, whatsapp, threema, signal, sms, message, telexa, daily, telegrams, send, get, news, updates, friends, family, connection, instant, messaging, android, iphone, russia, cloud, instagram, mastermind, productivity, secure, jeopardy, relaxtion
+https://www.lorenzhofmannw.com/privacy
+https://www.lorenzhofmannw.com/terms
