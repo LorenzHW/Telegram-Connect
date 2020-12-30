@@ -3,7 +3,7 @@
 
 ### High Level Overview
 <p align="center">
-  <img src="https://raw.githubusercontent.com/LorenzHW/My-Telegrams/telegram-connect/skill-package/assets/highlevel-overview.png"/>
+  <img src="https://raw.githubusercontent.com/LorenzHW/Telegram-Connect/master/skill-package/assets/highlevel-overview.png"/>
 </p>
 
 
