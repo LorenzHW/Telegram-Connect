@@ -1,0 +1,143 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "telegram connect",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": [
+            "continue"
+          ]
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        },
+        {
+          "name": "SetupIntent",
+          "slots": [
+            {
+              "name": "code",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "{code}",
+            "start setup",
+            "start the setup"
+          ]
+        },
+        {
+          "name": "DummyIntent",
+          "slots": [],
+          "samples": [
+            "open dummy intent"
+          ]
+        },
+        {
+          "name": "MessageIntent",
+          "slots": [],
+          "samples": [
+            "ho nuovi messaggi telegram",
+            "quali sono i miei messaggi telegram",
+            "controlla i miei messaggi",
+            "controlla i miei telegram",
+            "controlla i miei messaggi telegram",
+          ]
+        },
+        {
+          "name": "LearnMoreIntent",
+          "slots": [],
+          "samples": [
+            "informazioni su telegram connect",
+            "più informazioni su questa skill",
+            "informazioni su questa skill"
+          ]
+        }
+      ],
+      "types": [],
+      "modelConfiguration": {
+        "fallbackIntentSensitivity": {
+          "level": "LOW"
+        }
+      }
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "SetupIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "code",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        },
+        {
+          "name": "DummyIntent",
+          "confirmationRequired": true,
+          "prompts": {
+            "confirmation": "Confirm.Intent.446957080577"
+          },
+          "slots": []
+        }
+      ],
+      "delegationStrategy": "SKILL_RESPONSE"
+    },
+    "prompts": [
+      {
+        "id": "Elicit.Slot.756835067603.1469033770602",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "dummy slot"
+          }
+        ]
+      },
+      {
+        "id": "Confirm.Intent.820816165566",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Dummy Confirmation So we can turn of auto delegation..."
+          }
+        ]
+      },
+      {
+        "id": "Confirm.Intent.446957080577",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Dummy Confirmation So we can turn of auto delegation..."
+          }
+        ]
+      }
+    ]
+  },
+  "version": "5"
+}
